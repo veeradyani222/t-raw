@@ -1,0 +1,15 @@
+.venv/
+__pycache__/
+*.pyc
+.env
+trader.log
+.pytest_cache/
+
+# Large local-only data + third-party reference EAs — not published
+data/
+ea-library/
+
+# Regenerable backtest outputs
+logs/
+backtest-orb-*.csv
+xauusd-*.csv
