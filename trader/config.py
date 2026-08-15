@@ -71,6 +71,8 @@ class Config:
     mt5_login: int = int(os.getenv("MT5_LOGIN", "0"))
     mt5_password: str = os.getenv("MT5_PASSWORD", "")
     mt5_server: str = os.getenv("MT5_SERVER", "")
+    mt5_path: str = os.getenv("MT5_PATH", "")  # full path to terminal64.exe;
+                                               # blank = let the bridge auto-detect
 
 
 CONFIG = Config()

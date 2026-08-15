@@ -25,8 +25,10 @@ def connect(cfg: Config) -> None:
     """Attach to the running/installed terminal. Uses .env credentials if set,
     otherwise whatever account the terminal is logged into."""
     kwargs = {}
+    if cfg.mt5_path:
+        kwargs["path"] = cfg.mt5_path
     if cfg.mt5_login:
-        kwargs = dict(login=cfg.mt5_login, password=cfg.mt5_password,
+        kwargs.update(login=cfg.mt5_login, password=cfg.mt5_password,
                       server=cfg.mt5_server)
     if not mt5.initialize(**kwargs):
         raise MT5Error(f"mt5.initialize failed: {mt5.last_error()}")
