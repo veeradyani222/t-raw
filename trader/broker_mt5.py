@@ -68,6 +68,19 @@ class MT5Broker:
             raise MT5Error(f"account_info failed: {mt5.last_error()}")
         return info.equity
 
+    def balance(self) -> float:
+        info = mt5.account_info()
+        if info is None:
+            raise MT5Error(f"account_info failed: {mt5.last_error()}")
+        return info.balance
+
+    def realized_pnl(self, ticket: int) -> float:
+        """Net closed profit for a position (profit + swap + commission), read
+        from the deal history — used to report what a trade actually made."""
+        deals = mt5.history_deals_get(position=ticket) or []
+        return sum(d.profit + d.swap + d.commission
+                   for d in deals if d.entry == mt5.DEAL_ENTRY_OUT)
+
     def open_positions(self) -> list[Position]:
         raw = mt5.positions_get(symbol=self.cfg.symbol) or []
         return [

@@ -50,9 +50,15 @@ class Config:
     # Risk rails
     risk_per_trade: float = 0.01   # 1% of equity risked per trade
     max_open_positions: int = 1
-    daily_loss_halt: float = 0.03  # stop trading for the day at -3% equity
-    max_drawdown_halt: float = 0.0  # permanent stop at this fraction below the
-                                    # equity peak (prop-firm rule); 0 = off
+    daily_loss_halt: float = 0.03  # legacy: -% of the day's start equity.
+                                   # prop mode (loss_baseline set): flat $ cap =
+                                   # daily_loss_halt * loss_baseline.
+    max_drawdown_halt: float = 0.0  # permanent stop this fraction below the
+                                    # equity PEAK (trailing); 0 = off
+    loss_baseline: float = 0.0     # prop mode: fixed $ the daily/total limits are
+                                   # measured against (e.g. 10_000). 0 = legacy %.
+    total_loss_halt: float = 0.0   # prop mode: permanent stop this fraction below
+                                   # the fixed baseline (static); 0 = off
     min_lot: float = 0.01
     max_lot: float = 1.0
 

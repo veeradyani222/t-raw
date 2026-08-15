@@ -72,3 +72,53 @@ def test_max_drawdown_disabled_by_default():
     guard.on_new_bar(date(2026, 1, 5), 500.0)
     guard.on_new_bar(date(2026, 1, 6), 100.0)     # -80%, rule off
     assert not guard.blown
+
+
+# --- prop mode: fixed-baseline dollar limits -------------------------------
+
+def _prop_guard():
+    # $10k baseline, daily stop 3% ($300), total stop 6% ($600)
+    return RiskGuard(max_open_positions=1, daily_loss_halt=0.03,
+                     loss_baseline=10_000.0, total_loss_halt=0.06)
+
+
+def test_daily_halt_is_a_flat_dollar_cap_off_day_start():
+    guard = _prop_guard()
+    guard.on_new_bar(date(2026, 1, 5), 10_000)
+    guard.on_new_bar(date(2026, 1, 5), 9_750)     # -$250: fine
+    assert guard.may_open(0)[0]
+    guard.on_new_bar(date(2026, 1, 5), 9_700)     # -$300: halt
+    assert not guard.may_open(0)[0]
+    guard.on_new_bar(date(2026, 1, 6), 9_700)     # new day: reset
+    assert guard.may_open(0)[0]
+
+
+def test_daily_cap_is_fixed_dollars_not_percent_of_current_equity():
+    # Account has grown to 10.5k; the cap is still a flat $300 off the day start,
+    # NOT 3% of current equity.
+    guard = _prop_guard()
+    guard.on_new_bar(date(2026, 2, 1), 10_500)
+    guard.on_new_bar(date(2026, 2, 1), 10_250)    # -$250: fine
+    assert guard.may_open(0)[0]
+    guard.on_new_bar(date(2026, 2, 1), 10_200)    # -$300: halt
+    assert not guard.may_open(0)[0]
+
+
+def test_total_halt_is_static_from_baseline_and_permanent():
+    guard = _prop_guard()
+    guard.on_new_bar(date(2026, 1, 5), 9_401)     # -$599: alive
+    assert guard.may_open(0)[0]
+    guard.on_new_bar(date(2026, 1, 6), 9_400)     # -$600 from 10k: blown
+    assert not guard.may_open(0)[0] and guard.blown
+    guard.on_new_bar(date(2026, 1, 7), 10_500)    # recovery never revives it
+    assert guard.blown
+
+
+def test_total_halt_measures_from_baseline_not_the_peak():
+    # Account ran up to 11k; a trailing 6% rule would trip at 10,340, but the
+    # static rule only trips at the fixed 9,400 floor.
+    guard = _prop_guard()
+    guard.on_new_bar(date(2026, 1, 5), 10_000)
+    guard.on_new_bar(date(2026, 1, 6), 11_000)    # peak
+    guard.on_new_bar(date(2026, 1, 7), 10_000)    # -9% from peak, still > 9,400
+    assert not guard.blown

@@ -114,7 +114,8 @@ def run_backtest(history: pd.DataFrame, cfg: Config,
                  starting_equity: float = 10_000.0) -> dict:
     broker = SimBroker(history, cfg, starting_equity)
     guard = RiskGuard(cfg.max_open_positions, cfg.daily_loss_halt,
-                      cfg.max_drawdown_halt)
+                      cfg.max_drawdown_halt, cfg.loss_baseline,
+                      cfg.total_loss_halt)
 
     blown_at = None
     for i in range(len(history)):

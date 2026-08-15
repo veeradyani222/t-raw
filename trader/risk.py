@@ -31,26 +31,49 @@ class RiskGuard:
     backtest and live so the rules can't diverge."""
 
     max_open_positions: int
-    daily_loss_halt: float          # e.g. 0.03 = halt at -3% on the day
+    daily_loss_halt: float          # e.g. 0.03. Legacy: fraction of the day's
+                                    # START equity. Prop mode (loss_baseline set):
+                                    # fraction of the FIXED baseline, i.e. a flat
+                                    # dollar cap = daily_loss_halt * loss_baseline.
     max_drawdown_halt: float = 0.0  # e.g. 0.05 = PERMANENT halt at -5% from the
-                                    # equity peak (prop-firm style). 0 disables.
+                                    # equity PEAK (trailing). 0 disables.
+    loss_baseline: float = 0.0      # prop mode: fixed $ the limits are measured
+                                    # against (e.g. 10_000). 0 = legacy % mode.
+    total_loss_halt: float = 0.0    # prop mode: fraction of loss_baseline for a
+                                    # PERMANENT halt measured STATICALLY from the
+                                    # baseline (equity <= baseline*(1-this)). Takes
+                                    # precedence over max_drawdown_halt. 0 = off.
     _day: date | None = field(default=None, repr=False)
     _day_start_equity: float = field(default=0.0, repr=False)
     _peak_equity: float = field(default=0.0, repr=False)
     halted: bool = False
-    blown: bool = False             # max-drawdown rule breached; never resets
+    blown: bool = False             # total-loss rule breached; never resets
 
     def on_new_bar(self, today: date, equity: float) -> None:
-        """Call once per bar/tick batch. Resets the daily anchor on a new day;
-        the peak-drawdown check never resets."""
-        if self.max_drawdown_halt > 0:
+        """Call once per bar OR per live poll, with the CURRENT equity (which on
+        MT5 includes floating P&L). Resets the daily anchor on a new day; the
+        permanent total-loss / drawdown check never resets.
+
+        Prop mode (loss_baseline > 0): the daily cap is a flat dollar amount
+        (daily_loss_halt * loss_baseline) off the day's starting equity, and the
+        permanent halt is measured statically from the baseline — neither uses
+        current equity as its base, exactly as a prop firm scores you."""
+        # --- permanent total-loss / drawdown halt ---
+        if self.loss_baseline > 0 and self.total_loss_halt > 0:
+            if equity <= self.loss_baseline * (1.0 - self.total_loss_halt):
+                self.blown = True
+        elif self.max_drawdown_halt > 0:
             self._peak_equity = max(self._peak_equity, equity)
             if equity <= self._peak_equity * (1.0 - self.max_drawdown_halt):
                 self.blown = True
+        # --- daily loss halt ---
         if self._day != today:
             self._day = today
             self._day_start_equity = equity
             self.halted = False
+        elif self.loss_baseline > 0:
+            if self._day_start_equity - equity >= self.daily_loss_halt * self.loss_baseline:
+                self.halted = True
         elif self._day_start_equity > 0:
             drawdown = 1.0 - equity / self._day_start_equity
             if drawdown >= self.daily_loss_halt:
