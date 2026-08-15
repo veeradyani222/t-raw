@@ -178,6 +178,12 @@ def main(argv: list[str] | None = None) -> None:
                    help="stop trading for the day at this loss fraction")
     p.add_argument("--max-dd-halt", type=float, default=0.0,
                    help="PERMANENT stop this far below the equity peak (0 = off)")
+    p.add_argument("--loss-baseline", type=float, default=0.0,
+                   help="prop mode: fixed $ base the daily/total limits are "
+                        "measured against, e.g. 10000 (0 = legacy %% mode)")
+    p.add_argument("--total-loss-halt", type=float, default=0.0,
+                   help="prop mode: PERMANENT stop this fraction below the fixed "
+                        "baseline (static), e.g. 0.06 for -$600 on a $10k base")
     p.add_argument("--monthly", action="store_true",
                    help="print a month-by-month P/L table")
     p.add_argument("--spread-pips", type=float, default=None)
@@ -209,6 +215,7 @@ def main(argv: list[str] | None = None) -> None:
         orb_structure_filter=not args.no_structure_filter,
         risk_per_trade=args.risk, daily_loss_halt=args.daily_halt,
         max_drawdown_halt=args.max_dd_halt,
+        loss_baseline=args.loss_baseline, total_loss_halt=args.total_loss_halt,
     )
 
     start = pd.Timestamp(args.date_from)
