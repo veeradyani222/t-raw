@@ -24,6 +24,13 @@ log = logging.getLogger("trader")
 
 POLL_SECONDS = 10
 STATUS_EVERY_SECONDS = 30 * 60   # floating-P&L heartbeat while in a trade
+DAILY_HEARTBEAT_SECONDS = 24 * 60 * 60   # "still alive" ping even when flat/idle
+
+
+def _heartbeat_due(now: float, last: float, interval: float) -> bool:
+    """True once `interval` seconds have elapsed since the last heartbeat.
+    Pulled out of the loop so the timing is unit-testable on its own."""
+    return now - last >= interval
 
 
 def _daily_cap(cfg: Config) -> float:
@@ -69,6 +76,20 @@ def _report_floating(cfg: Config, broker: MT5Broker, candles) -> None:
                     f"floating {floating:+.2f} | equity {equity:.2f}")
 
 
+def _report_daily_heartbeat(cfg: Config, broker: MT5Broker, bars_checked: int) -> None:
+    """Once-a-day 'I'm alive' ping, sent even when flat. This is what makes
+    silence meaningful: if this stops arriving, the bot is DOWN — not just a
+    quiet market — so an outage can't go unnoticed for days again."""
+    positions = broker.open_positions()
+    equity = broker.equity()
+    held = ("flat" if not positions
+            else ", ".join(f"{p.side.upper()} {p.lots} @ {p.entry_price:.2f}"
+                           for p in positions))
+    send_alert(cfg, f"✅ alive: {cfg.symbol} {cfg.timeframe} ({cfg.strategy}) | "
+                    f"equity {equity:.2f} | {held} | "
+                    f"{bars_checked} candles since last check")
+
+
 def run_live(cfg: Config) -> None:
     broker_mt5.connect(cfg)
     broker = MT5Broker(cfg)
@@ -84,6 +105,8 @@ def run_live(cfg: Config) -> None:
     was_halted = False
     was_blown = False
     last_status = time.time()
+    last_heartbeat = time.time()
+    bars_since_heartbeat = 0
     try:
         while True:
             try:
@@ -106,6 +129,7 @@ def run_live(cfg: Config) -> None:
                 # New closed candle → run the strategy/engine once.
                 if bar_time != last_bar_time:
                     last_bar_time = bar_time
+                    bars_since_heartbeat += 1
                     before = {p.ticket: p for p in broker.open_positions()}
                     event = on_bar(broker, guard, cfg)
                     after = {p.ticket: p for p in broker.open_positions()}
@@ -117,6 +141,13 @@ def run_live(cfg: Config) -> None:
                 if time.time() - last_status >= STATUS_EVERY_SECONDS:
                     _report_floating(cfg, broker, candles)
                     last_status = time.time()
+
+                # Daily "still alive" ping — fires even when flat and idle, so
+                # a stalled/killed bot shows up as missing heartbeats.
+                if _heartbeat_due(time.time(), last_heartbeat, DAILY_HEARTBEAT_SECONDS):
+                    _report_daily_heartbeat(cfg, broker, bars_since_heartbeat)
+                    last_heartbeat = time.time()
+                    bars_since_heartbeat = 0
 
             except broker_mt5.MT5Error as exc:
                 log.error("MT5 error: %s", exc)
