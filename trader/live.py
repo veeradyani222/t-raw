@@ -16,9 +16,11 @@ import time
 from . import broker_mt5
 from .alerts import send_alert
 from .broker_mt5 import MT5Broker
+from .commands import HELP, run_command
 from .config import Config
 from .engine import on_bar
 from .risk import RiskGuard
+from .telegram_commands import fetch_commands
 
 log = logging.getLogger("trader")
 
@@ -100,6 +102,12 @@ def run_live(cfg: Config) -> None:
                     f"({cfg.strategy}), equity {broker.equity():.2f}. Risk "
                     f"{cfg.risk_per_trade:.0%}/trade | daily stop -{_daily_cap(cfg):.0f} "
                     f"| total stop -{_total_cap(cfg):.0f}.")
+    send_alert(cfg, HELP)
+
+    # Drain any backlog of Telegram messages WITHOUT acting on them, so a `buy`
+    # texted while the bot was down never fires on startup. tg_offset then marks
+    # our place; each poll consumes only genuinely new messages.
+    _, tg_offset = fetch_commands(cfg, None)
 
     last_bar_time = None
     was_halted = False
@@ -148,6 +156,14 @@ def run_live(cfg: Config) -> None:
                     _report_daily_heartbeat(cfg, broker, bars_since_heartbeat)
                     last_heartbeat = time.time()
                     bars_since_heartbeat = 0
+
+                # Inbound Telegram commands (manual buy/sell/close/status/help).
+                # XAUUSD only (run_command acts on cfg.symbol); reply goes back
+                # to the same chat. An order rejection raises MT5Error below and
+                # surfaces as a ⚠️ ERROR alert — exactly what we want to see.
+                cmds, tg_offset = fetch_commands(cfg, tg_offset)
+                for cmd in cmds:
+                    send_alert(cfg, run_command(broker, cfg, cmd))
 
             except broker_mt5.MT5Error as exc:
                 log.error("MT5 error: %s", exc)
