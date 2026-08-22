@@ -21,6 +21,31 @@ class MT5Error(RuntimeError):
     pass
 
 
+def _filling_order() -> list[int]:
+    """Order-filling modes to try, in preference order. Try IOC first (what gold
+    fills with — keeps its behavior unchanged), fall back to FOK (which USDJPY
+    needs on this demo — IOC there is rejected with retcode 10030), and keep
+    RETURN as a final backstop. The SYMBOL_FILLING_* bitmask constants aren't
+    exposed by this MT5 build, so we probe by trying rather than reading flags."""
+    return [mt5.ORDER_FILLING_IOC, mt5.ORDER_FILLING_FOK, mt5.ORDER_FILLING_RETURN]
+
+
+def _send_order(request: dict, symbol: str):
+    """order_send with automatic filling-mode fallback: on an INVALID_FILL
+    (10030) rejection, retry the same order with the next filling mode. Any
+    other failure is real and stops the retry."""
+    result = None
+    for fill in _filling_order():
+        request["type_filling"] = fill
+        result = mt5.order_send(request)
+        if result is not None and result.retcode == mt5.TRADE_RETCODE_DONE:
+            return result
+        if result is None or result.retcode != mt5.TRADE_RETCODE_INVALID_FILL:
+            break        # a non-filling failure — don't keep retrying
+    raise MT5Error(f"order_send failed: {getattr(result, 'retcode', None)} "
+                   f"{getattr(result, 'comment', '')} {mt5.last_error()}")
+
+
 def connect(cfg: Config) -> None:
     """Attach to the running/installed terminal. Uses .env credentials if set,
     otherwise whatever account the terminal is logged into."""
@@ -119,12 +144,8 @@ class MT5Broker:
             "magic": 424242,
             "comment": "mt5-trader",
             "type_time": mt5.ORDER_TIME_GTC,
-            "type_filling": mt5.ORDER_FILLING_IOC,
         }
-        result = mt5.order_send(request)
-        if result is None or result.retcode != mt5.TRADE_RETCODE_DONE:
-            raise MT5Error(f"order_send failed: {getattr(result, 'retcode', None)} "
-                           f"{getattr(result, 'comment', '')} {mt5.last_error()}")
+        result = _send_order(request, self.cfg.symbol)
         return Position(side, lots, result.price, sl, tp, ticket=result.order)
 
     def close_position(self, position: Position) -> float:
@@ -143,11 +164,7 @@ class MT5Broker:
             "magic": 424242,
             "comment": "mt5-trader close",
             "type_time": mt5.ORDER_TIME_GTC,
-            "type_filling": mt5.ORDER_FILLING_IOC,
         }
-        result = mt5.order_send(request)
-        if result is None or result.retcode != mt5.TRADE_RETCODE_DONE:
-            raise MT5Error(f"close failed: {getattr(result, 'retcode', None)} "
-                           f"{mt5.last_error()}")
+        _send_order(request, self.cfg.symbol)   # raises on failure
         deals = mt5.history_deals_get(position=position.ticket) or []
         return sum(d.profit for d in deals if d.entry == mt5.DEAL_ENTRY_OUT)
