@@ -46,6 +46,13 @@ def connect(cfg: Config) -> None:
              info.login, info.server, info.balance, info.currency)
 
 
+def select_symbol(symbol: str) -> None:
+    """Make a symbol tradable in the terminal (needed for every symbol the bot
+    trades beyond the one connect() selected)."""
+    if not mt5.symbol_select(symbol, True):
+        raise MT5Error(f"symbol_select({symbol}) failed: {mt5.last_error()}")
+
+
 def shutdown() -> None:
     mt5.shutdown()
 
@@ -90,6 +97,7 @@ class MT5Broker:
                 side="long" if p.type == mt5.POSITION_TYPE_BUY else "short",
                 lots=p.volume, entry_price=p.price_open,
                 sl=p.sl, tp=p.tp, ticket=p.ticket,
+                open_time=pd.to_datetime(p.time, unit="s"),
             )
             for p in raw
         ]

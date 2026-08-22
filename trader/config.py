@@ -41,6 +41,16 @@ class Config:
     # "r_multiple": v1 behavior, TP = orb_tp_r × stop distance.
     orb_tp_mode: str = "r_multiple"
     orb_tp_min_r: float = 1.0
+
+    # session (time-of-day) strategy — enters LONG at a fixed server hour,
+    # protective ATR stop on the server, NO take-profit; the live loop closes it
+    # by TIME after session_hold_bars bars. Validated on USDJPY morning (the
+    # Tokyo→London handover) in wf_search.py. See docs.
+    session_entry_hour: int = 6       # broker server-time hour to enter
+    session_hold_bars: int = 12       # bars to hold before a time exit
+    session_side: str = "long"        # the drift is a long (JPY weakens intraday)
+    session_stop_atr_mult: float = 2.0  # protective stop = this × ATR
+    session_atr_n: int = 14           # ATR lookback (bars)
     sl_pips: float = 30.0
     tp_pips: float = 60.0
     pip_size: float = 0.0001       # EURUSD pip

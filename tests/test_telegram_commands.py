@@ -30,10 +30,10 @@ def _msg(update_id, chat_id, text):
 
 
 def test_returns_commands_from_the_authorized_chat(monkeypatch):
-    payload = _updates(_msg(10, 555, "buy"), _msg(11, 555, "/Close please"))
+    payload = _updates(_msg(10, 555, "buy usdjpy"), _msg(11, 555, "/Close please"))
     monkeypatch.setattr(requests, "get", lambda *a, **k: FakeResp(payload))
     cmds, offset = telegram_commands.fetch_commands(CFG, None)
-    assert cmds == ["buy", "/Close"]      # first word only, order preserved
+    assert cmds == ["buy usdjpy", "/Close please"]   # FULL text, order preserved
     assert offset == 12                   # max update_id + 1
 
 

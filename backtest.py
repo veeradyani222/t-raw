@@ -33,6 +33,13 @@ SYMBOLS = {
     "XAUUSD": dict(pip_size=0.1, pip_value_per_lot=10.0, spread_pips=3.0),
     "EURUSD": dict(pip_size=0.0001, pip_value_per_lot=10.0, spread_pips=1.0),
     "GBPUSD": dict(pip_size=0.0001, pip_value_per_lot=10.0, spread_pips=1.5),
+    # JPY-quoted: pip = 0.01. Risk-normalized backtest P&L is invariant to the
+    # exact JPY->USD pip value (lots scale as 1/pip_value, profit as pip_value),
+    # so pip_value_per_lot=10 is fine; only pip_size and spread matter.
+    "GBPJPY": dict(pip_size=0.01, pip_value_per_lot=10.0, spread_pips=2.5),
+    "USDJPY": dict(pip_size=0.01, pip_value_per_lot=10.0, spread_pips=1.0),
+    "AUDJPY": dict(pip_size=0.01, pip_value_per_lot=10.0, spread_pips=2.0),
+    "EURJPY": dict(pip_size=0.01, pip_value_per_lot=10.0, spread_pips=1.5),
 }
 
 LOG_COLUMNS = [

@@ -1,9 +1,15 @@
 """Run the live loop against the demo account. Ctrl+C to stop.
 
-Configured here for the strategy we actually forward-test: gold (XAUUSD)
-opening-range breakout on H1 with structure-derived exits, plus the prop-account
-risk rails — 1% risk/trade, daily stop $300, total stop $600 — all measured
-against the FIXED $10k baseline on floating equity (see trader/risk.py).
+Runs TWO strategies on one account:
+  1. Gold (XAUUSD) opening-range breakout, H1, structure-derived exits.
+  2. USDJPY session (Tokyo-morning long): enter at server hour 6, protective ATR
+     stop, no take-profit, closed by time after 12 bars. Validated in
+     wf_search.py and survives real morning spreads (see docs).
+
+Both share ONE account-wide set of prop rails — 1% risk/trade each, daily stop
+$300 (3%), total stop $600 (6%), measured on floating equity against the FIXED
+$10k baseline (see trader/risk.py). Those buffers sit under the firm's real
+4%/8% limits.
 
 MT5 login and Telegram come from .env (never hard-coded here).
 """
@@ -19,19 +25,31 @@ logging.basicConfig(
               logging.FileHandler("trader.log", encoding="utf-8")],
 )
 
-CONFIG = Config(
-    # --- market / strategy (gold ORB, the validated config) ---
-    symbol="XAUUSD", timeframe="H1", strategy="orb",
-    pip_size=0.1, pip_value_per_lot=10.0, spread_pips=3.0,
-    orb_session_start_hour=1, orb_box_candles=3,
-    orb_tp_mode="structure", orb_tp_r=3.0, orb_tp_min_r=1.0,
-    orb_structure_filter=True, orb_vol_filter=False,
-    # --- prop risk rails, measured off the FIXED $10k baseline ---
+# Shared prop rails — the same values on every config, because they gate ONE
+# combined account.
+RAILS = dict(
     risk_per_trade=0.01, max_open_positions=1,
     loss_baseline=10_000.0,
     daily_loss_halt=0.03,    # flat $300/day
     total_loss_halt=0.06,    # flat $600 total (permanent)
 )
 
+GOLD = Config(
+    symbol="XAUUSD", timeframe="H1", strategy="orb",
+    pip_size=0.1, pip_value_per_lot=10.0, spread_pips=3.0,
+    orb_session_start_hour=1, orb_box_candles=3,
+    orb_tp_mode="structure", orb_tp_r=3.0, orb_tp_min_r=1.0,
+    orb_structure_filter=True, orb_vol_filter=False,
+    **RAILS,
+)
+
+USDJPY = Config(
+    symbol="USDJPY", timeframe="H1", strategy="session",
+    pip_size=0.01, pip_value_per_lot=10.0, spread_pips=1.0,
+    session_entry_hour=6, session_hold_bars=12, session_side="long",
+    session_stop_atr_mult=2.0, session_atr_n=14,
+    **RAILS,
+)
+
 if __name__ == "__main__":
-    run_live(CONFIG)
+    run_live([GOLD, USDJPY])

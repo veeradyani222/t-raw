@@ -40,10 +40,14 @@ def on_bar(broker: Broker, guard: RiskGuard, cfg: Config) -> dict | None:
 
     if isinstance(result, Setup):
         side, setup_sl, setup_tp = result.side, result.sl, result.tp
+        # A Setup with tp=None means NO take-profit (e.g. the session strategy,
+        # which exits by time) — do NOT fall back to the fixed-pip TP.
+        tp_is_none = result.tp is None
         meta = result.meta or {}
     else:
         side = "long" if result is Signal.LONG else "short"
         setup_sl = setup_tp = None
+        tp_is_none = False        # bare signals use the fixed-pip TP fallback
         meta = {}
     price = candles["close"].iloc[-1]
 
@@ -61,16 +65,18 @@ def on_bar(broker: Broker, guard: RiskGuard, cfg: Config) -> dict | None:
                 "reason": reason, "meta": meta}
 
     # Setup-supplied levels win; missing ones fall back to the fixed-pip config.
+    # tp_is_none (a Setup that carries no target) opens with tp=0.0 = no TP on
+    # the broker; validity then only checks the stop side.
     sl_dist = cfg.sl_pips * cfg.pip_size
     tp_dist = cfg.tp_pips * cfg.pip_size
     if side == "long":
         sl = setup_sl if setup_sl is not None else price - sl_dist
-        tp = setup_tp if setup_tp is not None else price + tp_dist
-        valid = sl < price < tp
+        tp = 0.0 if tp_is_none else (setup_tp if setup_tp is not None else price + tp_dist)
+        valid = sl < price and (tp_is_none or price < tp)
     else:
         sl = setup_sl if setup_sl is not None else price + sl_dist
-        tp = setup_tp if setup_tp is not None else price - tp_dist
-        valid = tp < price < sl
+        tp = 0.0 if tp_is_none else (setup_tp if setup_tp is not None else price - tp_dist)
+        valid = sl > price and (tp_is_none or tp < price)
     if not valid:
         log.info("%s | %s setup skipped: levels invalid (price %.5f sl %.5f tp %.5f)",
                  bar_time, side, price, sl, tp)

@@ -98,15 +98,17 @@ class SimBroker:
         """Called after the cursor advances: fill SL/TP against the new bar."""
         bar = self.history.iloc[self.cursor]
         for pos in list(self.positions):
+            # tp <= 0 means "no take-profit" (e.g. session strategy, time-exit).
+            has_tp = pos.tp > 0
             if pos.side == "long":
                 if bar["low"] <= pos.sl:
                     self._settle(pos, pos.sl, "sl")
-                elif bar["high"] >= pos.tp:
+                elif has_tp and bar["high"] >= pos.tp:
                     self._settle(pos, pos.tp, "tp")
             else:
                 if bar["high"] >= pos.sl:
                     self._settle(pos, pos.sl, "sl")
-                elif bar["low"] <= pos.tp:
+                elif has_tp and bar["low"] <= pos.tp:
                     self._settle(pos, pos.tp, "tp")
 
 

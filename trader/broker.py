@@ -17,6 +17,7 @@ class Position:
     sl: float
     tp: float
     ticket: int = 0
+    open_time: object = None   # pd.Timestamp when opened (broker time); None if unknown
 
 
 class Broker(Protocol):

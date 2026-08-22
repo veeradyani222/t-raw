@@ -15,11 +15,12 @@ log = logging.getLogger("trader")
 
 def fetch_commands(cfg: Config, offset: int | None,
                    timeout: int = 10) -> tuple[list[str], int | None]:
-    """Return (commands, new_offset).
+    """Return (messages, new_offset).
 
-    `commands` = the first word of each new message from the authorized chat,
-    in arrival order. `new_offset` must be passed back in on the next call so
-    each Telegram update is consumed exactly once (it advances past EVERY
+    `messages` = the FULL text of each new message from the authorized chat, in
+    arrival order (full text, not just the first word, so multi-word commands
+    like `buy usdjpy` survive). `new_offset` must be passed back in on the next
+    call so each Telegram update is consumed exactly once (it advances past EVERY
     update, including ignored ones, so foreign messages don't pile up).
 
     No-ops — returns ([], offset) — when Telegram isn't configured or the HTTP
@@ -52,5 +53,5 @@ def fetch_commands(cfg: Config, offset: int | None,
         text = (msg.get("text") or "").strip()
         if not text:
             continue                 # skip stickers/photos/etc.
-        commands.append(text.split()[0])
+        commands.append(text)        # full text; the command parser splits it
     return commands, new_offset
