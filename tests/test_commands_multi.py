@@ -86,6 +86,14 @@ def test_buy_without_symbol_asks_and_does_not_trade():
     assert "which symbol" in reply.lower()
 
 
+def test_buy_without_symbol_defaults_to_sole_symbol():
+    # Live now runs gold alone: `buy` with no symbol should just buy gold.
+    r = [(GOLD, FakeBroker("XAUUSD"))]
+    reply = run_command_multi(r, Guard(), "buy")
+    assert len(r[0][1].opened) == 1 and r[0][1].opened[0].side == "long"
+    assert "XAUUSD" in reply
+
+
 def test_close_one_symbol_only():
     r = runners(gold_pos=[Position("long", 0.01, 4300.0, 0.0, 0.0, ticket=1)],
                 jpy_pos=[Position("long", 0.01, 150.0, 0.0, 0.0, ticket=2)])

@@ -2,9 +2,9 @@
 and alert on everything that matters. Ctrl+C to stop — open positions are left
 running (they carry a server-side SL).
 
-Runs MULTIPLE strategies on ONE account (e.g. gold BOS + USDJPY session). They
-share a single account-wide RiskGuard, so the prop daily/total limits are
-measured against the COMBINED equity — exactly how the firm scores you. Each
+Can run one or more strategies on ONE account (currently just gold BOS on M30).
+They share a single account-wide RiskGuard, so the prop daily/total limits are
+measured against the account equity — exactly how the firm scores you. Each
 strategy trades its own symbol (max 1 position each).
 
 Two things run on EVERY poll (not just at candle close):
@@ -140,7 +140,7 @@ def run_live(configs) -> None:
 
     # One account-wide guard: prop rails come from the primary config (all
     # configs carry the same rails). max_open_positions is per-symbol (each
-    # broker reports only its own positions), so 1 gold + 1 usdjpy is allowed.
+    # broker reports only its own positions), so each symbol gets 1 position.
     guard = RiskGuard(primary.max_open_positions, primary.daily_loss_halt,
                       primary.max_drawdown_halt, primary.loss_baseline,
                       primary.total_loss_halt)

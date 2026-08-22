@@ -71,8 +71,8 @@ def run_command(broker: Broker, cfg: Config, command: str,
 
 
 # --------------------------------------------------------------------------- #
-# Multi-strategy commands (used by the live bot when several symbols run at     #
-# once). One code path for "buy gold", "close usdjpy", "status", etc.          #
+# Multi-strategy commands (used by the live bot; currently one symbol, gold,    #
+# but stays symbol-agnostic). One code path for "buy gold", "status", etc.      #
 # --------------------------------------------------------------------------- #
 def _help_multi(runners) -> str:
     syms = " / ".join(cfg.symbol for cfg, _ in runners)
@@ -184,8 +184,13 @@ def run_command_multi(runners, guard, text: str) -> str:
 
     if cmd in ("buy", "sell"):
         if not arg:
-            return f"which symbol? e.g. `{cmd} gold` or `{cmd} usdjpy`.\nsymbols: {syms}"
-        sym = _resolve(arg, by_symbol)
+            # One symbol running: act on it directly. Only ask when ambiguous.
+            if len(by_symbol) == 1:
+                sym = next(iter(by_symbol))
+            else:
+                return f"which symbol? e.g. `{cmd} {_friendly(next(iter(by_symbol)))}`.\nsymbols: {syms}"
+        else:
+            sym = _resolve(arg, by_symbol)
         if sym is None:
             return f"unknown symbol '{arg}'. symbols: {syms}"
         cfg, broker = by_symbol[sym]
