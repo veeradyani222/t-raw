@@ -117,3 +117,35 @@ is the designed safety net for a regime shift back. Shares gold ORB's regime
 dependence (running both = correlated, not diversified). Not yet slippage-tested or
 demo-forward-tested. MA50 = safer live pick (consistency + lower daily excursion);
 baseline = higher raw return.
+
+## GO-LIVE (2026-08-23): shipped as a live strategy module
+
+Decision: **replace the H1 gold ORB with BOS+CMF M30** (both are XAUUSD, so they
+can't share one account — they'd fight over the gold slot; and BOS beat ORB in
+every recent window: e.g. 2yr ORB −6.7% BLOWN vs BOS +86% survived, buffered rails).
+Live set is now **BOS-gold-M30 + USDJPY-session** (two symbols, no collision),
+1% risk each, account-wide buffered rails 3% daily / 6% total. Variant = **baseline**
+(plain CMF>0): it beat MA50 on return in every window and MA50's extra smoothness is
+unneeded far from the rails.
+
+**Live TP / lookback finding (important).** Porting to the live module surfaced that
+the structure TARGET = "nearest overhead swing" depends on how far back the bot can
+see. A too-short 400-bar (8-day) window aimed at worse targets and tanked results
+(2yr +33%). The realistic band (3wk–3mo) is stable and strong; **~6 weeks
+(`bos_lookback=2000` M30 bars)** is the sweet spot and BEATS the full-history number.
+Corrected ship numbers (M30 baseline, L=2000, 1% risk, buffered rails):
+
+| window | net | prop |
+|---|---|---|
+| 3 months | +12.7% | survived |
+| 12 months | +67.3% | survived |
+| 2 years | +86.0% | survived |
+| 3 years | −6.8% | BLOWN 2023-09 (the 2023 regime; 0.5% risk survives) |
+
+**Code:** `trader/strategies/bos.py` (canonical `compute_signal`), Config `bos_*`
+fields, registered in the strategy registry, wired into `run_live.py`. The research
+`bos_backtest.make_bos_signal` is a FAST path that reproduces `compute_signal`
+decision-for-decision (asserted in `tests/test_bos.py`, 0 diffs) — so the numbers
+above and the live signals are the same strategy. Telegram gained tappable command
+buttons (reply keyboard). 79 tests pass. Still a DEMO forward test — regime-tilted,
+not proven live.

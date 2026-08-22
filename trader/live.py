@@ -2,7 +2,7 @@
 and alert on everything that matters. Ctrl+C to stop — open positions are left
 running (they carry a server-side SL).
 
-Runs MULTIPLE strategies on ONE account (e.g. gold ORB + USDJPY session). They
+Runs MULTIPLE strategies on ONE account (e.g. gold BOS + USDJPY session). They
 share a single account-wide RiskGuard, so the prop daily/total limits are
 measured against the COMBINED equity — exactly how the firm scores you. Each
 strategy trades its own symbol (max 1 position each).
@@ -20,7 +20,7 @@ import time
 from . import broker_mt5
 from .alerts import send_alert
 from .broker_mt5 import MT5Broker
-from .commands import _price_dp, run_command_multi
+from .commands import _price_dp, command_keyboard, run_command_multi
 from .config import Config
 from .engine import on_bar
 from .risk import RiskGuard
@@ -147,10 +147,12 @@ def run_live(configs) -> None:
 
     strat_list = ", ".join(f"{c.symbol} {c.timeframe} ({c.strategy}, "
                            f"{c.risk_per_trade:.0%})" for c in configs)
+    keyboard = command_keyboard(runners)
     send_alert(primary, f"\U0001F7E2 mt5-trader started: {strat_list}. "
                         f"Equity {brokers[0].equity():.2f}. Account rails: daily stop "
-                        f"-{_daily_cap(primary):.0f} | total stop -{_total_cap(primary):.0f}.")
-    send_alert(primary, run_command_multi(runners, guard, "help"))
+                        f"-{_daily_cap(primary):.0f} | total stop -{_total_cap(primary):.0f}.",
+               reply_markup=keyboard)
+    send_alert(primary, run_command_multi(runners, guard, "help"), reply_markup=keyboard)
 
     # Drain any Telegram backlog WITHOUT acting on it, so a command texted while
     # the bot was down never fires on startup.
@@ -211,7 +213,8 @@ def run_live(configs) -> None:
                 # Locked to the owner's chat; acts across ALL symbols.
                 cmds, tg_offset = fetch_commands(primary, tg_offset)
                 for cmd in cmds:
-                    send_alert(primary, run_command_multi(runners, guard, cmd))
+                    send_alert(primary, run_command_multi(runners, guard, cmd),
+                               reply_markup=keyboard)
 
             except broker_mt5.MT5Error as exc:
                 log.error("MT5 error: %s", exc)

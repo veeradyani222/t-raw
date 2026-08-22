@@ -1,6 +1,6 @@
 """Tests for run_command_multi — the multi-symbol Telegram command dispatcher
 (gold + usdjpy on one account). Driven against fake brokers, no live MT5."""
-from trader.commands import run_command_multi
+from trader.commands import command_keyboard, run_command_multi
 from trader.broker import Position
 from trader.config import Config
 
@@ -48,6 +48,20 @@ class Guard:
 def runners(gold_pos=None, jpy_pos=None):
     return [(GOLD, FakeBroker("XAUUSD", gold_pos)),
             (USDJPY, FakeBroker("USDJPY", jpy_pos))]
+
+
+def test_command_keyboard_has_tappable_buttons_that_route():
+    kb = command_keyboard(runners())
+    flat = [btn for row in kb["keyboard"] for btn in row]
+    # account-wide + per-symbol buttons are present
+    for expected in ("status", "risk", "close all", "buy gold", "sell gold",
+                     "close gold", "buy usdjpy", "close usdjpy", "help"):
+        assert expected in flat, f"missing button: {expected}"
+    assert kb["resize_keyboard"] is True
+    # a tapped button sends its literal text, which must route through the parser
+    r = runners()
+    run_command_multi(r, Guard(), "buy gold")
+    assert len(r[0][1].opened) == 1
 
 
 def test_buy_gold_opens_only_on_gold():

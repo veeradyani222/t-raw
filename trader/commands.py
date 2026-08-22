@@ -85,13 +85,31 @@ def _help_multi(runners) -> str:
         "• close <sym> — close all positions on that symbol\n"
         "• close all — close EVERYTHING\n"
         "• help — show this list\n"
-        f"symbols: {syms}"
+        f"symbols: {syms}\n"
+        "tip: tap the buttons below instead of typing."
     )
 
 
 def _price_dp(cfg: Config) -> int:
     """Decimals to print a price at, from the pip size (gold 2, JPY 3, FX 5)."""
     return {0.1: 2, 0.01: 3, 0.0001: 5}.get(cfg.pip_size, 2)
+
+
+def _friendly(symbol: str) -> str:
+    """Short label used on the buttons and in `buy <x>` commands."""
+    return {"XAUUSD": "gold", "USDJPY": "usdjpy"}.get(symbol, symbol.lower())
+
+
+def command_keyboard(runners) -> dict:
+    """A Telegram reply keyboard: tappable buttons whose text IS the command, so
+    a tap sends e.g. `buy gold` and flows through the normal command parser. One
+    buy/sell/close row per live symbol, plus account-wide buttons."""
+    rows = [["status", "risk"], ["positions", "close all"]]
+    for cfg, _ in runners:
+        f = _friendly(cfg.symbol)
+        rows.append([f"buy {f}", f"sell {f}", f"close {f}"])
+    rows.append(["help"])
+    return {"keyboard": rows, "resize_keyboard": True, "is_persistent": True}
 
 
 def _resolve(token: str, by_symbol: dict) -> str | None:

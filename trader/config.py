@@ -42,6 +42,20 @@ class Config:
     orb_tp_mode: str = "r_multiple"
     orb_tp_min_r: float = 1.0
 
+    # bos — break-of-structure + Chaikin Money Flow (XAUUSD M30). Break of the
+    # most recent fractal swing, confirmed by a candle close and by CMF direction;
+    # structure-derived stop + target (see docs/2026-08-23-gold-bos-cmf-design.md).
+    bos_swing_window: int = 2         # bars each side that a fractal swing must dominate
+    bos_cmf_n: int = 20               # Chaikin Money Flow lookback (bars)
+    bos_lookback: int = 2000          # bars of history the structure-target search sees
+                                      # (~6 weeks of M30). Stable across 1k-4k; 8-day
+                                      # windows aim at worse targets. See the L-sweep.
+    bos_cmf_min: float = 0.0          # require |CMF| > this in the break direction (0 = just the sign)
+    bos_trend_ma: int = 0             # >0: only take breaks in the direction of this SMA (0 = off)
+    bos_tp_mode: str = "structure"    # "structure" = next swing beyond entry, else "r_multiple"
+    bos_tp_r: float = 3.0             # R-multiple target / fallback when no structure target
+    bos_tp_min_r: float = 1.0         # a structure target must be at least this many R away
+
     # session (time-of-day) strategy — enters LONG at a fixed server hour,
     # protective ATR stop on the server, NO take-profit; the live loop closes it
     # by TIME after session_hold_bars bars. Validated on USDJPY morning (the

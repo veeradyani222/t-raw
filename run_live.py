@@ -1,7 +1,11 @@
 """Run the live loop against the demo account. Ctrl+C to stop.
 
 Runs TWO strategies on one account:
-  1. Gold (XAUUSD) opening-range breakout, H1, structure-derived exits.
+  1. Gold (XAUUSD) break-of-structure + Chaikin Money Flow, M30, structure-derived
+     exits. Break of the most recent fractal swing, confirmed by a candle close
+     and CMF direction. Replaced the H1 ORB strategy 2026-08-23: BOS beat ORB in
+     every recent window (backtest) and both are gold, so they can't share the
+     account (they'd fight over the XAUUSD slot). See docs/2026-08-23-*.
   2. USDJPY session (Tokyo-morning long): enter at server hour 6, protective ATR
      stop, no take-profit, closed by time after 12 bars. Validated in
      wf_search.py and survives real morning spreads (see docs).
@@ -35,11 +39,10 @@ RAILS = dict(
 )
 
 GOLD = Config(
-    symbol="XAUUSD", timeframe="H1", strategy="orb",
+    symbol="XAUUSD", timeframe="M30", strategy="bos",
     pip_size=0.1, pip_value_per_lot=10.0, spread_pips=3.0,
-    orb_session_start_hour=1, orb_box_candles=3,
-    orb_tp_mode="structure", orb_tp_r=3.0, orb_tp_min_r=1.0,
-    orb_structure_filter=True, orb_vol_filter=False,
+    bos_swing_window=2, bos_cmf_n=20, bos_cmf_min=0.0, bos_trend_ma=0,
+    bos_lookback=2000, bos_tp_mode="structure", bos_tp_r=3.0, bos_tp_min_r=1.0,
     **RAILS,
 )
 
