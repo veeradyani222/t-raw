@@ -67,3 +67,41 @@ Get-Content C:\Users\Administrator\Desktop\mt5-trader\trader.log -Tail 10
 ```
 
 And on your phone: you should see one `✅ alive` Telegram message per day.
+
+---
+
+## Daily state export (`MT5DailyExport`)
+
+The box publishes its own state to git every day at 23:45, so reading what the
+bot did never needs an RDP session.
+
+**Files it writes** (committed to `ops/state/`):
+
+| File | What it is |
+|---|---|
+| `deals-<date>.csv` | Every filled deal, last 30 days — broker ground truth |
+| `status.json` | Account, equity, open positions, **the commit this box runs** |
+| `trader.log` | Copy of the bot's decision log |
+| `watchdog.log` | Copy of the watchdog's uptime log |
+
+`trader.log` says what the bot **decided**; `deals-<date>.csv` says what the
+broker actually **filled**. SL/TP fills never appear as decisions, so you need
+both to tell a strategy problem from an execution problem.
+
+**One-time setup** (the box has only ever pulled, never pushed):
+
+```
+git config --global credential.helper store
+git push origin main          # paste a GitHub PAT (fine-grained, t-raw, contents:write)
+powershell -ExecutionPolicy Bypass -File ops\install_daily_export.ps1
+```
+
+**Run it now / check it:**
+
+```
+Start-ScheduledTask -TaskName MT5DailyExport
+Get-Content $env:ProgramData\mt5-watchdog\daily_export.log -Tail 20
+```
+
+On a rebase conflict the script aborts and Telegram-alerts rather than forcing —
+a wedged repo would silently break the next code deploy.

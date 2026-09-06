@@ -13,3 +13,9 @@ ea-library/
 logs/
 backtest-orb-*.csv
 xauusd-*.csv
+
+# The box publishes its own state here (ops/daily_export.ps1). These are the
+# committed COPIES — the root trader.log and the logs/ dir stay ignored.
+!ops/state/
+!ops/state/trader.log
+!ops/state/watchdog.log
