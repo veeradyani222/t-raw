@@ -1,6 +1,9 @@
 """The only module that imports MetaTrader5. Implements the Broker interface
 against the real terminal."""
 import logging
+import math
+import time
+from decimal import Decimal, ROUND_FLOOR
 
 import MetaTrader5 as mt5
 import pandas as pd
@@ -108,6 +111,74 @@ class MT5Broker:
             raise MT5Error(f"account_info failed: {mt5.last_error()}")
         return info.balance
 
+    def market_time(self) -> pd.Timestamp:
+        """Latest quote timestamp, in the same time basis as MT5 positions/bars."""
+        tick = mt5.symbol_info_tick(self.cfg.symbol)
+        if tick is None or tick.time <= 0:
+            raise MT5Error(f"no market time: {mt5.last_error()}")
+        return pd.to_datetime(tick.time, unit="s")
+
+    def session_stop_price(self, sl: float) -> float:
+        """Round a long stop outward to an executable broker price increment."""
+        info = mt5.symbol_info(self.cfg.symbol)
+        if info is None or not math.isfinite(info.trade_tick_size) or info.trade_tick_size <= 0:
+            raise MT5Error("missing or invalid broker price increment")
+        if not math.isfinite(sl) or sl <= 0:
+            raise MT5Error("invalid session stop price")
+        step = Decimal(str(info.trade_tick_size))
+        return float((Decimal(str(sl)) / step).to_integral_value(rounding=ROUND_FLOOR) * step)
+
+    def session_entry_lots(self, bar_time, sl: float, equity: float, *, entry_time=None) -> float:
+        """Eligible long-session size, with converted stop loss and cost reserves.
+
+        No fixed USD pip-value shortcut. History checks prevent re-entry after
+        a restart/stop-out; an unavailable broker read never means 'flat'.
+        """
+        cfg = self.cfg
+        tick = mt5.symbol_info_tick(cfg.symbol)
+        if tick is None:
+            raise MT5Error(f"no tick: {mt5.last_error()}")
+        now = pd.to_datetime(tick.time, unit="s")
+        closed_at = (pd.Timestamp(entry_time) if entry_time is not None
+                     else pd.Timestamp(bar_time) + pd.Timedelta(hours=1))
+        age = (now - closed_at).total_seconds()
+        if not 0 <= age <= cfg.session_entry_window_seconds:
+            return 0.0
+        if not 0 <= time.time() - tick.time <= cfg.session_entry_window_seconds:
+            return 0.0
+        positions = mt5.positions_get()
+        if positions is None:
+            raise MT5Error(f"positions_get failed: {mt5.last_error()}")
+        if positions:
+            return 0.0
+        deals = mt5.history_deals_get(int(now.normalize().timestamp()), int(now.timestamp()) + 1)
+        if deals is None:
+            raise MT5Error(f"history_deals_get failed: {mt5.last_error()}")
+        if any(d.symbol == cfg.symbol and d.entry in (mt5.DEAL_ENTRY_IN, mt5.DEAL_ENTRY_INOUT)
+               for d in deals):
+            return 0.0
+        if not all(math.isfinite(v) for v in (equity, sl, tick.ask, tick.bid)):
+            return 0.0
+        if equity <= 0 or sl <= 0 or tick.bid <= sl or tick.ask < tick.bid:
+            return 0.0
+        info = mt5.symbol_info(cfg.symbol)
+        if info is None:
+            raise MT5Error(f"symbol_info failed: {mt5.last_error()}")
+        if not all(math.isfinite(v) and v > 0 for v in
+                   (info.volume_min, info.volume_max, info.volume_step)):
+            raise MT5Error("invalid broker volume limits")
+        slip = cfg.session_slippage_pips * cfg.pip_size
+        loss = mt5.order_calc_profit(mt5.ORDER_TYPE_BUY, cfg.symbol, 1.0,
+                                     tick.ask + slip, sl - slip)
+        if loss is None or not math.isfinite(loss) or loss >= 0:
+            raise MT5Error(f"invalid stop-loss calculation: {mt5.last_error()}")
+        risk_per_lot = -loss + cfg.session_commission_per_lot
+        raw = min(equity * cfg.risk_per_trade / risk_per_lot,
+                  cfg.max_lot, info.volume_max)
+        step = Decimal(str(info.volume_step))
+        lots = float((Decimal(str(raw)) / step).to_integral_value(rounding=ROUND_FLOOR) * step)
+        return lots if lots >= max(cfg.min_lot, info.volume_min) else 0.0
+
     def realized_pnl(self, ticket: int) -> float:
         """Net closed profit for a position (profit + swap + commission), read
         from the deal history — used to report what a trade actually made."""
@@ -116,7 +187,9 @@ class MT5Broker:
                    for d in deals if d.entry == mt5.DEAL_ENTRY_OUT)
 
     def open_positions(self) -> list[Position]:
-        raw = mt5.positions_get(symbol=self.cfg.symbol) or []
+        raw = mt5.positions_get(symbol=self.cfg.symbol)
+        if raw is None:
+            raise MT5Error(f"positions_get failed: {mt5.last_error()}")
         return [
             Position(
                 side="long" if p.type == mt5.POSITION_TYPE_BUY else "short",

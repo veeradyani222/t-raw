@@ -10,6 +10,7 @@ All offline — synthetic candles. Two layers:
 """
 import numpy as np
 import pandas as pd
+import pytest
 
 from trader.config import Config
 from trader.strategies import bos, get_strategy
@@ -136,3 +137,54 @@ def test_live_signal_matches_research_path():
                 diffs += 1
     assert fires >= 10, f"synthetic series produced too few signals ({fires}) to be meaningful"
     assert diffs == 0, f"live compute_signal diverged from research path on {diffs} bars"
+
+
+@pytest.mark.parametrize("side", ["long", "short"])
+@pytest.mark.parametrize("last_close,expected", [
+    (103.9, False),  # wick beyond boundary, body inside
+    (104.0, False),  # body touches boundary, but does not cross
+    (104.01, True),  # only 0.01 of the rectangular body is beyond boundary
+    (105.0, True),  # larger partial-body breakout
+])
+def test_body_portion_beyond_boundary_counts_but_wick_does_not(last_close, side, expected):
+    import bos_backtest as bt
+
+    closes = LONG_CLOSES[:-1] + [last_close]
+    df = frame(closes, [0.5] * 7 + [0.9] * (len(closes) - 7))
+    # Keep the synthetic candle geometry valid, including large body bars.
+    df["high"] = df[["high", "open", "close"]].max(axis=1)
+    df["low"] = df[["low", "open", "close"]].min(axis=1)
+    df.loc[8, "high"] = 104.0  # newest confirmed swing, not the older bar-2 swing
+    df.loc[df.index[-1], ["open", "high", "low"]] = [103.0, 105.5, 102.9]
+    if side == "short":
+        old_high, old_low = df.high.copy(), df.low.copy()
+        df["open"], df["close"] = 210 - df.open, 210 - df.close
+        df["high"], df["low"] = 210 - old_low, 210 - old_high
+    result = bos.compute_signal(df, cfg())
+    fast = bt.make_bos_signal(df, cmf_n=5)(df, len(df) - 1)
+    assert isinstance(result, Setup) == expected
+    assert (fast is not None) == expected
+    if expected:
+        assert result.side == side
+        assert fast.side == side
+        assert fast.sl == pytest.approx(result.sl)
+        assert fast.tp == pytest.approx(result.tp)
+
+
+def test_research_matches_live_with_trend_filter():
+    import bos_backtest as bt
+    df = _synthetic(700)
+    c = cfg(bos_cmf_n=20, bos_trend_ma=30, bos_lookback=80)
+    fast = bt.make_bos_signal(df, cmf_n=20, trend_ma=30, lookback=80)
+    fires = 0
+    for i in range(80, len(df)):
+        f = fast(df, i)
+        r = bos.compute_signal(df.iloc[i + 1 - 80:i + 1], c)
+        live = r if isinstance(r, Setup) else None
+        assert (f is None) == (live is None), i
+        if live is not None:
+            fires += 1
+            assert f.side == live.side
+            assert f.sl == pytest.approx(live.sl)
+            assert f.tp == pytest.approx(live.tp)
+    assert fires >= 10

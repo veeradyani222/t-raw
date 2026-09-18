@@ -1,19 +1,10 @@
-"""Parameterized backtest CLI — no new script per experiment.
+"""Backtest BOS + CMF on a symbol/timeframe/date range.
 
-    python backtest.py XAUUSD H1 --from 2026-05-01 --to 2026-08-11
-    python backtest.py XAUUSD H1 --from 2025-08-11 --to 2026-08-11 \
-        --tp-mode structure --tp-r 3
-    python backtest.py XAUUSD H1 --from 2026-05-01 --to 2026-08-11 \
-        --no-vol-filter --no-structure-filter --tp-mode r_multiple   # v1 behavior
+    python backtest.py XAUUSD M30 --from 2026-08-12 --to 2026-09-11 --quiet
 
-Data comes from data/<symbol>-<tf>.csv when the cache covers the range;
-otherwise it is fetched from the MT5 terminal (chunked) and merged into the
-cache. MT5 is only imported when a fetch is actually needed, so cache-served
-runs work without the terminal.
-
-Every run writes a per-trade CSV log to logs/ — one row per trade (entry,
-exit, why it exited, R multiple, box and filter diagnostics) and one row per
-signal that was blocked or skipped, with the reason.
+History is loaded from a CSV or the MT5 cache, fetching from MT5 when needed.
+CMF requires tick_volume. Every run saves trades and blocked/skipped signals
+with swing-level and CMF diagnostics in logs/.
 """
 import argparse
 import logging
@@ -44,7 +35,7 @@ SYMBOLS = {
 
 LOG_COLUMNS = [
     "kind", "date", "weekday", "time", "side", "entry", "sl", "tp", "lots",
-    "box_high", "box_low", "box_size", "vol_ratio", "structure", "tp_source",
+    "level", "cmf", "structure", "tp_source",
     "exit_time", "exit_price", "exit_reason", "bars_held", "profit",
     "r_multiple", "equity_after", "note",
 ]
@@ -129,8 +120,7 @@ def build_trade_log(result: dict) -> pd.DataFrame:
             "time": f"{entry_time:%H:%M}",
             "side": tr["side"], "entry": tr["entry"], "sl": tr.get("sl"),
             "tp": tr.get("tp"), "lots": tr["lots"],
-            "box_high": tr.get("box_high"), "box_low": tr.get("box_low"),
-            "box_size": tr.get("box_size"), "vol_ratio": tr.get("vol_ratio"),
+            "level": tr.get("level"), "cmf": tr.get("cmf"),
             "structure": tr.get("structure"), "tp_source": tr.get("tp_source"),
             "exit_time": tr["time"], "exit_price": tr["exit"],
             "exit_reason": tr["reason"], "bars_held": tr.get("bars_held"),
@@ -147,8 +137,7 @@ def build_trade_log(result: dict) -> pd.DataFrame:
             "kind": ev["kind"],
             "date": f"{ev['time']:%Y-%m-%d}", "weekday": f"{ev['time']:%A}",
             "time": f"{ev['time']:%H:%M}", "side": ev["side"],
-            "box_high": meta.get("box_high"), "box_low": meta.get("box_low"),
-            "box_size": meta.get("box_size"), "vol_ratio": meta.get("vol_ratio"),
+            "level": meta.get("level"), "cmf": meta.get("cmf"),
             "structure": meta.get("structure"),
             "note": ev["reason"],
             "_sort": ev["time"],
@@ -161,23 +150,21 @@ def build_trade_log(result: dict) -> pd.DataFrame:
 
 
 def main(argv: list[str] | None = None) -> None:
-    p = argparse.ArgumentParser(description="Backtest a strategy over a date range.")
+    p = argparse.ArgumentParser(description="Backtest BOS + CMF over a date range.")
     p.add_argument("symbol", help="e.g. XAUUSD")
     p.add_argument("timeframe", help="M1 M5 M15 M30 H1 H4 D1")
     p.add_argument("--from", dest="date_from", required=True, help="YYYY-MM-DD")
     p.add_argument("--to", dest="date_to", required=True, help="YYYY-MM-DD")
-    p.add_argument("--strategy", default="orb")
+    p.add_argument("--strategy", choices=["bos"], default="bos")
     p.add_argument("--tp-mode", choices=["structure", "r_multiple"], default="structure")
     p.add_argument("--tp-r", type=float, default=3.0)
-    p.add_argument("--vol-filter", action="store_true",
-                   help="opt-in: backtested worse at every threshold tried")
-    p.add_argument("--no-vol-filter", action="store_true",
-                   help="(default; kept for compatibility)")
-    p.add_argument("--vol-mult", type=float, default=1.2)
-    p.add_argument("--vol-lookback", type=int, default=20)
-    p.add_argument("--no-structure-filter", action="store_true")
-    p.add_argument("--box-candles", type=int, default=3)
-    p.add_argument("--session-start-hour", type=int, default=1)
+    p.add_argument("--swing-window", type=int, default=2)
+    p.add_argument("--cmf-n", type=int, default=20)
+    p.add_argument("--cmf-min", type=float, default=0.0)
+    p.add_argument("--trend-ma", type=int, default=200,
+                   help="trend SMA length; 0 disables (live default: 200)")
+    p.add_argument("--lookback", type=int, default=2000)
+    p.add_argument("--tp-min-r", type=float, default=1.0)
     p.add_argument("--equity", type=float, default=10_000.0)
     p.add_argument("--risk", type=float, default=0.01,
                    help="fraction of equity risked per trade (default 0.01)")
@@ -191,6 +178,8 @@ def main(argv: list[str] | None = None) -> None:
     p.add_argument("--total-loss-halt", type=float, default=0.0,
                    help="prop mode: PERMANENT stop this fraction below the fixed "
                         "baseline (static), e.g. 0.06 for -$600 on a $10k base")
+    p.add_argument("--max-open", type=int, default=1,
+                   help="max simultaneous open positions (default 1)")
     p.add_argument("--monthly", action="store_true",
                    help="print a month-by-month P/L table")
     p.add_argument("--spread-pips", type=float, default=None)
@@ -214,22 +203,21 @@ def main(argv: list[str] | None = None) -> None:
         pip_size=args.pip_size if args.pip_size is not None else preset["pip_size"],
         pip_value_per_lot=args.pip_value if args.pip_value is not None else preset["pip_value_per_lot"],
         spread_pips=args.spread_pips if args.spread_pips is not None else preset.get("spread_pips", 1.0),
-        orb_session_start_hour=args.session_start_hour,
-        orb_box_candles=args.box_candles,
-        orb_tp_r=args.tp_r, orb_tp_mode=args.tp_mode,
-        orb_vol_filter=args.vol_filter and not args.no_vol_filter,
-        orb_vol_mult=args.vol_mult, orb_vol_lookback=args.vol_lookback,
-        orb_structure_filter=not args.no_structure_filter,
+        bos_swing_window=args.swing_window,
+        bos_cmf_n=args.cmf_n, bos_cmf_min=args.cmf_min,
+        bos_trend_ma=args.trend_ma, bos_lookback=args.lookback,
+        bos_tp_r=args.tp_r, bos_tp_mode=args.tp_mode, bos_tp_min_r=args.tp_min_r,
         risk_per_trade=args.risk, daily_loss_halt=args.daily_halt,
         max_drawdown_halt=args.max_dd_halt,
         loss_baseline=args.loss_baseline, total_loss_halt=args.total_loss_halt,
+        max_open_positions=args.max_open,
     )
 
     start = pd.Timestamp(args.date_from)
     end = pd.Timestamp(args.date_to)
-    history = load_history(cfg, start, end, args.data, need_volume=cfg.orb_vol_filter)
-    if cfg.orb_vol_filter and "tick_volume" not in history.columns:
-        print("NOTE: data has no tick_volume column — volume filter auto-passes.")
+    history = load_history(cfg, start, end, args.data, need_volume=True)
+    if "tick_volume" not in history.columns:
+        raise SystemExit("BOS CMF requires a tick_volume column in the history CSV.")
 
     result = run_backtest(history, cfg, starting_equity=args.equity)
 
@@ -245,8 +233,8 @@ def main(argv: list[str] | None = None) -> None:
     blocked = trade_log[trade_log["kind"] == "blocked"]
     skipped = trade_log[trade_log["kind"] == "skipped"]
     print(f"\n=== {cfg.symbol} {cfg.timeframe} {span} | strategy={cfg.strategy} "
-          f"tp_mode={cfg.orb_tp_mode} tp_r={cfg.orb_tp_r} "
-          f"vol_filter={cfg.orb_vol_filter} structure_filter={cfg.orb_structure_filter} ===")
+          f"tp_mode={cfg.bos_tp_mode} tp_r={cfg.bos_tp_r} "
+          f"cmf_n={cfg.bos_cmf_n} trend_ma={cfg.bos_trend_ma} ===")
     print(f"bars:          {result['bars']}")
     print(f"trades:        {result['trades']}  (blocked: {len(blocked)}, "
           f"skipped: {len(skipped)})")
@@ -259,7 +247,7 @@ def main(argv: list[str] | None = None) -> None:
         print("blocked by:    " + ", ".join(f"{k} x{v}" for k, v in counts.items()))
     if result["blown_at"] is not None:
         print(f"*** ACCOUNT RULES BREACHED {result['blown_at']:%Y-%m-%d %H:%M} — "
-              f"equity fell {cfg.max_drawdown_halt:.0%} below its peak; "
+              f"the configured total-loss/drawdown limit was reached; "
               f"no trades opened after this point. ***")
     if args.monthly:
         trades = result["trade_log"]

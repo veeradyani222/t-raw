@@ -1,68 +1,92 @@
-"""Tests for the session (time-of-day) strategy and the engine's no-TP path."""
+"""Pure H1 session signals and their configuration contract."""
+from dataclasses import replace
+
+import numpy as np
 import pandas as pd
 import pytest
 
 from trader.config import Config
-from trader.sim import run_backtest
-from trader.strategies import get_strategy, session
+from trader.strategies import get_strategy
 from trader.strategy import Setup, Signal
 
 
-def hourly(closes, start, spread=0.1):
-    closes = pd.Series(closes, dtype=float)
-    opens = closes.shift(1).fillna(closes.iloc[0])
-    return pd.DataFrame({
-        "time": pd.date_range(start, periods=len(closes), freq="h"),
-        "open": opens,
-        "high": pd.concat([opens, closes], axis=1).max(axis=1) + spread,
-        "low": pd.concat([opens, closes], axis=1).min(axis=1) - spread,
-        "close": closes,
-    })
+def config(**kwargs):
+    return replace(Config(), strategy="session", timeframe="H1", **kwargs)
 
 
-def session_cfg():
-    return Config(symbol="USDJPY", timeframe="H1", strategy="session",
-                  session_entry_hour=6, session_hold_bars=12,
-                  session_atr_n=5, session_stop_atr_mult=2.0,
-                  pip_size=0.01, pip_value_per_lot=10.0, max_lot=100.0)
+def candles(n=15, hour=0):
+    index = pd.date_range(end=pd.Timestamp("2026-09-16") + pd.Timedelta(hours=hour), periods=n, freq="h")
+    return pd.DataFrame({"time": index, "open": 190.0, "high": 191.0, "low": 189.0, "close": 190.0})
 
 
-def test_session_enters_long_at_entry_hour_with_no_tp():
-    strat = get_strategy("session")
-    cfg = session_cfg()
-    # 7 bars from 00:00 → last bar at 06:00 (the entry hour).
-    candles = hourly([150.0, 150.1, 149.9, 150.2, 150.0, 150.1, 150.3],
-                     start="2026-01-05 00:00")
-    setup = strat.compute_signal(candles, cfg)
-    assert isinstance(setup, Setup)
-    assert setup.side == "long"
-    assert setup.tp is None                       # no take-profit — exits by time
-    assert setup.sl < candles["close"].iloc[-1]   # protective stop below entry
+def test_session_defaults_and_lookback():
+    cfg = config()
+    assert (cfg.session_hour, cfg.session_atr_n, cfg.session_sl_atr) == (0, 14, 2.0)
+    assert cfg.session_hold_hours == 12.0
+    assert cfg.session_entry_window_seconds == 60
+    assert cfg.session_commission_per_lot == 14.0
+    assert cfg.session_slippage_pips == 0.1
+    assert get_strategy("session").lookback(cfg) == 15
 
 
-def test_session_flat_off_the_entry_hour():
-    strat = get_strategy("session")
-    cfg = session_cfg()
-    candles = hourly([150.0] * 7, start="2026-01-05 01:00")  # last bar 07:00
-    assert strat.compute_signal(candles, cfg) is Signal.FLAT
+def test_session_long_uses_simple_true_range_atr_and_has_no_target():
+    bars = candles()
+    bars.iloc[0, bars.columns.get_loc("close")] = 185.0
+    result = get_strategy("session").compute_signal(bars, config())
+    assert isinstance(result, Setup)
+    assert result.side == "long"
+    assert result.sl == pytest.approx(190 - 2 * (6 + 13 * 2) / 14)
+    assert result.tp is None
 
 
-def test_should_time_exit_after_hold_bars():
-    cfg = session_cfg()  # H1, hold 12 bars
-    opened = pd.Timestamp("2026-01-05 06:00")
-    assert session.should_time_exit(opened, pd.Timestamp("2026-01-05 18:00"), cfg)      # 12 bars
-    assert not session.should_time_exit(opened, pd.Timestamp("2026-01-05 17:00"), cfg)  # 11 bars
-    assert not session.should_time_exit(None, pd.Timestamp("2026-01-05 18:00"), cfg)    # unknown
+@pytest.mark.parametrize("n", [0, 1, 14])
+def test_warmup_is_flat(n):
+    assert get_strategy("session").compute_signal(candles(n), config()) is Signal.FLAT
 
 
-def test_session_opens_position_and_never_exits_by_tp():
-    """Through the real engine + sim: a session entry opens with tp=0 (no target)
-    and is never closed by a take-profit."""
-    cfg = session_cfg()
-    closes = [150.0] * 6 + [150.2] + [150.2] * 20      # entry at 06:00, then flat
-    candles = hourly(closes, start="2026-01-05 00:00")
-    result = run_backtest(candles, cfg, starting_equity=10_000.0)
-    trades = result["trade_log"]
-    assert not trades.empty
-    assert (trades["tp"] == 0.0).all()                 # opened with no take-profit
-    assert "tp" not in set(trades["reason"])           # never exits via TP
+def test_hour_is_completed_candle_opening_label():
+    strategy = get_strategy("session")
+    assert strategy.compute_signal(candles(hour=1), config()) is Signal.FLAT
+    assert isinstance(strategy.compute_signal(candles(hour=1), config(session_hour=1)), Setup)
+
+
+@pytest.mark.parametrize("field,value", [
+    ("timeframe", "M30"), ("session_hour", -1), ("session_hour", 24),
+    ("session_hour", 0.5), ("session_atr_n", 0), ("session_atr_n", 1.5),
+    ("session_sl_atr", 0), ("session_sl_atr", float("nan")),
+    ("session_hold_hours", -1), ("session_hold_hours", float("inf")),
+    ("session_entry_window_seconds", 0), ("session_entry_window_seconds", float("nan")),
+    ("session_commission_per_lot", -1), ("session_slippage_pips", -1),
+])
+def test_invalid_parameters_are_rejected(field, value):
+    cfg = replace(config(), **{field: value})
+    with pytest.raises(ValueError):
+        get_strategy("session").compute_signal(candles(), cfg)
+
+
+@pytest.mark.parametrize("column", ["open", "high", "low", "close"])
+@pytest.mark.parametrize("value", [float("nan"), float("inf")])
+def test_nonfinite_ohlc_is_flat(column, value):
+    bars = candles()
+    bars.loc[bars.index[-2], column] = value
+    assert get_strategy("session").compute_signal(bars, config()) is Signal.FLAT
+
+
+def test_previous_close_must_be_finite():
+    bars = candles()
+    bars.iloc[0, bars.columns.get_loc("close")] = np.nan
+    assert get_strategy("session").compute_signal(bars, config()) is Signal.FLAT
+
+
+def test_zero_atr_is_flat():
+    bars = candles()
+    bars.loc[:, ["open", "high", "low", "close"]] = 190.0
+    assert get_strategy("session").compute_signal(bars, config()) is Signal.FLAT
+
+
+def test_atr_only_uses_the_required_trailing_window():
+    bars = candles(20)
+    bars.loc[0, ["open", "high", "low", "close"]] = np.nan
+    result = get_strategy("session").compute_signal(bars, config())
+    assert isinstance(result, Setup)
+    assert result.sl == 186.0

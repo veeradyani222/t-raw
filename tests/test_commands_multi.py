@@ -5,10 +5,10 @@ from trader.broker import Position
 from trader.config import Config
 
 
-GOLD = Config(symbol="XAUUSD", timeframe="H1", strategy="orb",
+GOLD = Config(symbol="XAUUSD", timeframe="H1", strategy="bos",
               pip_size=0.1, pip_value_per_lot=10.0, loss_baseline=10_000.0,
               daily_loss_halt=0.03, total_loss_halt=0.06)
-USDJPY = Config(symbol="USDJPY", timeframe="H1", strategy="session",
+USDJPY = Config(symbol="USDJPY", timeframe="H1", strategy="bos",
                 pip_size=0.01, pip_value_per_lot=10.0, loss_baseline=10_000.0,
                 daily_loss_halt=0.03, total_loss_halt=0.06)
 

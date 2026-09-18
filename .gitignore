@@ -5,13 +5,11 @@ __pycache__/
 trader.log
 .pytest_cache/
 
-# Large local-only data + third-party reference EAs — not published
+# Large local-only market data
 data/
-ea-library/
 
 # Regenerable backtest outputs
 logs/
-backtest-orb-*.csv
 xauusd-*.csv
 
 # The box publishes its own state here (ops/daily_export.ps1). These are the

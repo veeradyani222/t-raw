@@ -1,12 +1,6 @@
-"""Placeholder strategy: SMA crossover. Pure function — no MT5, no I/O.
-
-The point of this strategy is to exercise the pipeline, not to make money.
-Replace compute_signal() with a real strategy once the infrastructure is proven.
-"""
+"""Signal and diagnostic value types shared by BOS and the trading engine."""
 from dataclasses import dataclass
 from enum import Enum
-
-import pandas as pd
 
 
 class Signal(Enum):
@@ -20,13 +14,12 @@ class Setup:
     """A signal that carries its own structure-derived exit levels.
 
     A strategy may return this instead of a bare Signal when the chart
-    dictates where the stop belongs (e.g. the far side of an opening-range
-    box). `sl`/`tp` are PRICES, not pips; either may be None to fall back to
-    the fixed-pip levels in Config. The engine sizes the position from the
+    dictates where the stop belongs (the opposing confirmed swing). `sl`/`tp` are PRICES, not pips; `sl=None` uses the fixed-pip stop;
+    `tp=None` means no take-profit. The engine sizes the position from the
     actual stop distance, so risk per trade stays constant regardless of how
     wide the setup is.
 
-    `meta` carries diagnostics for the trade log (box levels, volume ratio,
+    `meta` carries diagnostics for the trade log (swing levels, CMF,
     structure state, tp_source) — the engine never acts on it.
     """
     side: str                # "long" | "short"
@@ -46,28 +39,3 @@ class Blocked:
     side: str                # the side the raw breakout wanted
     reason: str              # e.g. "volume 0.8x below 1.2x threshold"
     meta: dict | None = None
-
-
-def compute_signal(candles: pd.DataFrame, fast: int = 20, slow: int = 50) -> Signal:
-    """Signal from the most recent *closed* candle.
-
-    candles: DataFrame with a 'close' column, oldest row first.
-    Returns FLAT until there is enough history.
-    """
-    if len(candles) < slow + 1:
-        return Signal.FLAT
-
-    close = candles["close"]
-    fast_now = close.iloc[-fast:].mean()
-    slow_now = close.iloc[-slow:].mean()
-    fast_prev = close.iloc[-fast - 1:-1].mean()
-    slow_prev = close.iloc[-slow - 1:-1].mean()
-
-    crossed_up = fast_prev <= slow_prev and fast_now > slow_now
-    crossed_down = fast_prev >= slow_prev and fast_now < slow_now
-
-    if crossed_up:
-        return Signal.LONG
-    if crossed_down:
-        return Signal.SHORT
-    return Signal.FLAT

@@ -6,13 +6,11 @@
 All strategies are pure (candles in, signal out — no MT5, no I/O) so backtest
 and live run the exact same code. Select one with Config.strategy.
 """
-from . import bos, orb, session, sma_cross
+from . import bos, session
 
 STRATEGIES = {
-    "sma_cross": sma_cross,
-    "orb": orb,
-    "session": session,
     "bos": bos,
+    "session": session,
 }
 
 

@@ -1,10 +1,8 @@
 """Break-of-Structure + Chaikin Money Flow on gold — ISOLATED research harness.
 
-Does NOT touch engine.py / sim.py / live. Reuses the VALIDATED cost/risk model
-(`wf_search.simulate`: entry at close +- spread, SL/TP filled against later bars
-with SL winning ties, 1% sizing via trader.risk.position_size_lots) plus the
-fractal `swing_points`, `folds`, `walk_forward`, and `per_year` helpers — the same
-building blocks that reproduce trader.sim on ORB with 0 differing decisions.
+Uses wf_search.simulate for shared historical fills and risk limits, plus
+confirmed swing points and walk-forward helpers. The fast signal is checked
+against the production BOS strategy in tests/test_bos.py.
 
 Strategy (see docs/2026-08-23-gold-bos-cmf-design.md):
   - mark the most recent CONFIRMED fractal swing high / swing low
@@ -38,7 +36,7 @@ PIP, PIP_VALUE, SPREAD = wf.PIP, wf.PIP_VALUE, wf.SPREAD
 # Data (WITH volume — CMF needs tick_volume)                                  #
 # --------------------------------------------------------------------------- #
 def load_vol(tf, start="2017-01-01", end="2026-08-22") -> pd.DataFrame:
-    cfg = Config(symbol=wf.SYM, timeframe=tf, strategy="orb",
+    cfg = Config(symbol=wf.SYM, timeframe=tf, strategy="bos",
                  pip_size=PIP, pip_value_per_lot=PIP_VALUE, spread_pips=SPREAD)
     df = wf.bt.load_history(cfg, pd.Timestamp(start), pd.Timestamp(end), None,
                             need_volume=True)
@@ -55,7 +53,7 @@ def load_vol(tf, start="2017-01-01", end="2026-08-22") -> pd.DataFrame:
 # walk-forward / prop numbers here and the live signals are the same strategy.  #
 # --------------------------------------------------------------------------- #
 import numpy as np  # noqa: E402
-from trader.strategies.orb import swing_points  # noqa: E402
+from trader.strategies.structure import swing_points  # noqa: E402
 
 
 def _confirmed_last(swings, window, n):

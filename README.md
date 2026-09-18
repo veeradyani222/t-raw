@@ -1,67 +1,96 @@
 # mt5-trader
 
-Automated forex trading pipeline on MetaTrader 5. Python drives the MT5
-terminal via the official `MetaTrader5` package. **Demo accounts only** — the
-code refuses to trade anything else.
+The live runner selects **CHFJPY H1 session trading only**. It buys after the
+hour-0 candle closes, uses a 2 x simple ATR14 stop from completed history, no take-profit, and closes
+after 12 elapsed hours from actual entry. BOS remains available for research.
+The MT5 broker adapter accepts demo accounts only.
 
-## Run it
+## Run
 
 ```powershell
-# tests (no MT5 needed)
+# Offline tests
 .venv\Scripts\python -m pytest tests -q
 
-# backtest any symbol/timeframe/date range — serves from data/ cache, else
-# fetches from MT5; writes a per-trade CSV log to logs/ every run
-.venv\Scripts\python backtest.py XAUUSD H1 --from 2025-08-11 --to 2026-08-11
+# BOS backtest; CSV cache or MT5 history, with a per-trade log in logs/
+.venv\Scripts\python backtest.py XAUUSD M30 --from 2026-08-12 --to 2026-09-11 --quiet --monthly
 
-# v1-exact behavior for comparison runs:
-.venv\Scripts\python backtest.py XAUUSD H1 --from 2026-05-11 --to 2026-08-11 `
-    --tp-mode r_multiple --no-structure-filter
+# Explicit CSV input (must include tick_volume for CMF)
+.venv\Scripts\python backtest.py XAUUSD M30 --from 2026-08-12 --to 2026-09-11 --data data/xauusd-m30-volume-20260912.csv --quiet
 
-# live loop on the demo account (market hours only)
+# Historical GOLD BOS backtest (not the CHFJPY live configuration)
+.venv\Scripts\python run_backtest.py 5000
+
+# Live loop against the demo account
 .venv\Scripts\python run_live.py
 ```
 
-`backtest.py` defaults to ORB v2: structure filter on (longs need rising
-swing lows, shorts falling swing highs), stop at the far side of the box,
-target at the most recent swing level beyond entry (R-multiple fallback).
-The tick-volume filter is opt-in (`--vol-filter`) — it backtested worse at
-every threshold tried. Design + evidence:
-`docs/2026-08-11-orb-v2-design.md`. Older scripts `run_backtest.py` /
-`run_orb_sweep.py` still work but `backtest.py` supersedes them.
+`backtest.py` exposes BOS controls: `--swing-window`, `--cmf-n`, `--cmf-min`,
+`--trend-ma`, `--lookback`, `--tp-mode`, `--tp-r`, and `--tp-min-r`. Its defaults
+match the retained GOLD research settings. For fixed baseline loss limits,
+add `--loss-baseline 10000 --total-loss-halt 0.06`; the CLI retains its existing
+daily-halt default and optional total/trailing-loss controls. `--help` lists the sizing,
+spread, account-limit and data options. The CLI starts flat at the beginning of
+the selected history; early candles build indicator/structure context.
+
+The simulator uses fixed-spread OHLC fills and closed-balance risk checks;
+live trading uses executable quotes and floating equity. Commission, swap,
+slippage and latency are not modeled. Historical results are not live fills.
+
+## CHFJPY live behavior
+
+`run_live.py` selects only `CHFJPY`; `GOLD` is retained for research imports.
+Risk is 1% equity, at most one lot and one account position, with existing
+$300 daily / $600 total entry halts against a fixed $10,000 baseline.
+The hour is the MT5 data clock, not India local time; the entry targets 01:00
+on the first fresh quote/poll after the hour-0 candle closes, with exit around 13:00.
+Mapping to the research feed's market session remains unverified.
+Entries more than 60 seconds after that candle closes are skipped.
+The forming candle never supplies ATR. The midnight-opening option remains available
+for research but is not selected by the live runner.
+MT5 deal history prevents another entry on the same date after a restart or stop.
+
+Sizing uses executable ask, broker lot steps and MT5 account-currency stop
+valuation, reserving $14/lot round-trip commission and 0.1 pip slippage per
+fill. These are configurable assumptions, not measured fees or guaranteed
+execution bounds. The fixed dollar rails assume a USD account.
+[MT5 valuation API](https://www.mql5.com/en/docs/python_metatrader5/mt5ordercalcprofit_py).
+
+Timed exits run every poll, including while entries are halted. They recover
+opening times from MT5 positions and retry failed closes. The loop and market
+must be available; a stopped loop leaves only the server-side SL active.
+The existing loss rails block entries; they do not liquidate floating positions
+or persist the daily anchor across process restarts. These semantics differ
+from the guarded research simulation. Do not run multiple bot instances.
+
+For CHFJPY historical replay use `research.jpy_account_comparison` and the
+[research report](docs/2026-09-13-jpy-account-comparison.md). The generic BOS
+simulator's fixed pip value cannot replay this live FX sizing path.
+
+## BOS research strategy
+
+BOS enters on a fresh close through the most recent confirmed fractal swing,
+with a bullish body for a long or a bearish body for a short. Any positive
+portion of the body beyond the boundary counts; a wick alone does not.
+CMF must agree, and the trend SMA filters the direction. Stops use the opposing
+swing, with a structure target or an R-multiple fallback.
+
+- `trader/strategies/session.py`: live CHFJPY session signal.
+- `trader/strategies/bos.py`: retained BOS signal and confirmation logic.
+- `trader/strategies/structure.py`: confirmed fractal swing calculation.
+- `trader/engine.py`, `trader/risk.py`, `trader/sim.py`: execution, sizing, limits and simulation.
+- `run_live.py`: deployed-strategy configuration and risk rationale.
+- `bos_backtest.py`, `bos_variants.py`: BOS research and variant comparisons.
+- `wf_search.py`: shared simulation and walk-forward utilities used by BOS research.
+- `ops/`: watchdog and daily state export.
+
+BOS research scripts retain their explicit experiment configurations; they do
+not inherit the CHFJPY live settings. `run_backtest.py` and the BOS CLI
+remain gold research tools. See
+[body-confirmation results](docs/2026-09-12-m30-body-confirmation-results.md).
 
 ## Configure
 
-Copy `.env.example` to `.env`. Everything is optional: leave `MT5_*` empty to
-use the terminal's logged-in account, leave `TELEGRAM_*` empty for log-only
-alerts. Strategy/risk knobs live in `trader/config.py`.
-
-## Strategies
-
-The engine runs whichever strategy `Config.strategy` names, from the registry
-in `trader/strategies/`:
-
-| Name | Idea | Ported from | Authored for |
-|---|---|---|---|
-| `sma_cross` | SMA 20/50 crossover (pipeline proof) | — | EURUSD H1 |
-| `orb` | Opening-range breakout (first 3 bars set the box) | `ea-library/GOLD_ORB` | XAUUSD H1 |
-
-(A BBRSI port was removed 2026-08-11: its source repo admits the raw signal
-is unprofitable without the grid module, which we will never run.)
-
-Every strategy is a pure module — `lookback(cfg)` plus
-`compute_signal(candles, cfg) -> Signal` — so backtest and live run identical
-code, and the ports deliberately EXCLUDE the source EAs' grid/martingale and
-custom stops: sizing, SL/TP, and halts always come from `trader/risk.py`.
-When switching strategy, switch `symbol`/`timeframe`/pip settings in
-`trader/config.py` to match. To add a strategy: new module in
-`trader/strategies/`, register it in `STRATEGIES`, add tests. See
-`docs/2026-08-09-mt5-trader-design.md` for the architecture.
-
-## ea-library/
-
-Open-source MQL5 EAs pulled for evaluation (source only, shipped binaries
-deleted) — candidate strategies to port into `compute_signal()` or to run
-directly in MT5 after compiling from source ourselves. Claimed results are
-unverified until re-backtested here; demo account only, always. Details and
-rules: `ea-library/README.md`.
+Copy `.env.example` to `.env`. Leave MT5 credentials empty to attach to the
+terminal's logged-in account, and Telegram credentials empty for log-only
+alerts. Shared settings live in `trader/config.py`; active live values are in
+`run_live.py`. BOS, broker history and existing research artifacts are retained.

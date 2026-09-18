@@ -19,7 +19,7 @@ log = logging.getLogger("trader")
 
 
 def on_bar(broker: Broker, guard: RiskGuard, cfg: Config) -> dict | None:
-    """Run once per newly closed candle."""
+    """Run once per closed candle, or per new clock hour for opening sessions."""
     strategy = get_strategy(cfg.strategy)
     candles = broker.candles(strategy.lookback(cfg))
     if candles.empty:
@@ -27,9 +27,17 @@ def on_bar(broker: Broker, guard: RiskGuard, cfg: Config) -> dict | None:
 
     equity = broker.equity()
     bar_time = candles["time"].iloc[-1]
-    guard.on_new_bar(bar_time.date(), equity)
+    risk_time = bar_time
+    entry_time = None
+    if cfg.strategy == "session" and cfg.session_entry_at_open:
+        entry_time = broker.market_time().floor("h")
+        risk_time = entry_time
+    guard.on_new_bar(risk_time.date(), equity)
 
-    result = strategy.compute_signal(candles, cfg)
+    result = (strategy.compute_signal(candles, cfg, entry_time=entry_time)
+              if entry_time is not None else strategy.compute_signal(candles, cfg))
+    if entry_time is not None:
+        bar_time = entry_time
     if result is None or result is Signal.FLAT:
         return None
 
@@ -40,8 +48,7 @@ def on_bar(broker: Broker, guard: RiskGuard, cfg: Config) -> dict | None:
 
     if isinstance(result, Setup):
         side, setup_sl, setup_tp = result.side, result.sl, result.tp
-        # A Setup with tp=None means NO take-profit (e.g. the session strategy,
-        # which exits by time) — do NOT fall back to the fixed-pip TP.
+        # A Setup with tp=None means NO take-profit; do not use fixed-pip TP.
         tp_is_none = result.tp is None
         meta = result.meta or {}
     else:
@@ -53,7 +60,7 @@ def on_bar(broker: Broker, guard: RiskGuard, cfg: Config) -> dict | None:
 
     # A crossover against our open position closes it first.
     for pos in broker.open_positions():
-        if pos.side != side:
+        if cfg.strategy != "session" and pos.side != side:
             profit = broker.close_position(pos)
             log.info("%s | closed %s %.2f lots, profit %.2f",
                      bar_time, pos.side, pos.lots, profit)
@@ -67,6 +74,10 @@ def on_bar(broker: Broker, guard: RiskGuard, cfg: Config) -> dict | None:
     # Setup-supplied levels win; missing ones fall back to the fixed-pip config.
     # tp_is_none (a Setup that carries no target) opens with tp=0.0 = no TP on
     # the broker; validity then only checks the stop side.
+    if cfg.strategy == "session":
+        if not hasattr(broker, "session_entry_lots"):
+            raise ValueError("session requires MT5 sizing; use research.jpy_guarded_session for replay")
+        setup_sl = broker.session_stop_price(setup_sl)
     sl_dist = cfg.sl_pips * cfg.pip_size
     tp_dist = cfg.tp_pips * cfg.pip_size
     if side == "long":
@@ -86,15 +97,22 @@ def on_bar(broker: Broker, guard: RiskGuard, cfg: Config) -> dict | None:
     # Size from the ACTUAL stop distance so risk per trade stays constant
     # however wide or narrow the setup is.
     sl_pips = abs(price - sl) / cfg.pip_size
-    lots = position_size_lots(
-        equity, cfg.risk_per_trade, sl_pips, cfg.pip_value_per_lot,
-        cfg.min_lot, cfg.max_lot,
-    )
+    if cfg.strategy == "session":
+        # Session deployment requires executable FX conversion and broker
+        # history; the fixed-pip BOS simulator cannot model this faithfully.
+        lots = (broker.session_entry_lots(bar_time, sl, equity, entry_time=entry_time)
+                if entry_time is not None else broker.session_entry_lots(bar_time, sl, equity))
+    else:
+        lots = position_size_lots(
+            equity, cfg.risk_per_trade, sl_pips, cfg.pip_value_per_lot,
+            cfg.min_lot, cfg.max_lot,
+        )
     if lots <= 0:
         log.info("%s | %s signal skipped: equity too small to size a trade",
                  bar_time, side)
         return {"kind": "skipped", "time": bar_time, "side": side,
-                "reason": "equity too small to size a trade", "meta": meta}
+                "reason": "session entry ineligible or below minimum size" if cfg.strategy == "session"
+                          else "equity too small to size a trade", "meta": meta}
 
     pos = broker.open_position(side, lots, sl, tp)
     log.info("%s | opened %s %.2f lots @ %.5f (sl %.5f, tp %.5f)",

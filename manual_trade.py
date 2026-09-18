@@ -25,7 +25,7 @@ from trader.config import Config
 
 # The live account/market — mirrors run_live.py's market settings.
 CONFIG = Config(
-    symbol="XAUUSD", timeframe="H1", strategy="orb",
+    symbol="XAUUSD", timeframe="M30", strategy="bos",
     pip_size=0.1, pip_value_per_lot=10.0, spread_pips=3.0,
 )
 

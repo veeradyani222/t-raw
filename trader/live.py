@@ -2,20 +2,20 @@
 and alert on everything that matters. Ctrl+C to stop — open positions are left
 running (they carry a server-side SL).
 
-Can run one or more strategies on ONE account (currently just gold BOS on M30).
+Can run one or more strategies on ONE account (currently just CHFJPY session on H1).
 They share a single account-wide RiskGuard, so the prop daily/total limits are
 measured against the account equity — exactly how the firm scores you. Each
 strategy trades its own symbol (max 1 position each).
 
-Two things run on EVERY poll (not just at candle close):
-- the risk limits are re-checked against live (floating) equity, because a prop
-  limit can be breached mid-candle;
-- session positions are time-exited once they've been held long enough.
+Risk limits are re-checked on every poll against live floating equity,
+because a limit can be breached mid-candle.
 
-The engine (signals, sizing, opening) runs only when a new candle closes.
+The engine runs on a new closed candle, or a fresh hour boundary for opening sessions.
 """
 import logging
 import time
+
+import pandas as pd
 
 from . import broker_mt5
 from .alerts import send_alert
@@ -24,7 +24,6 @@ from .commands import _price_dp, command_keyboard, run_command_multi
 from .config import Config
 from .engine import on_bar
 from .risk import RiskGuard
-from .strategies import session as session_strat
 from .telegram_commands import fetch_commands
 
 log = logging.getLogger("trader")
@@ -32,6 +31,22 @@ log = logging.getLogger("trader")
 POLL_SECONDS = 10
 STATUS_EVERY_SECONDS = 30 * 60   # floating-P&L heartbeat while in a trade
 DAILY_HEARTBEAT_SECONDS = 24 * 60 * 60   # "still alive" ping even when flat/idle
+
+
+def _close_expired_positions(cfg: Config, broker: MT5Broker) -> None:
+    """Poll-time exit independent of signals/entry halts; survives restarts."""
+    if cfg.strategy != "session":
+        return
+    positions = broker.open_positions()
+    if not positions:
+        return
+    now = broker.market_time()
+    for pos in positions:
+        if pos.open_time is None or pd.isna(pos.open_time):
+            raise broker_mt5.MT5Error(f"missing opening time for position {pos.ticket}")
+        if now - pd.Timestamp(pos.open_time) >= pd.Timedelta(hours=cfg.session_hold_hours):
+            broker.close_position(pos)
+            log.info("%s | time exit %s ticket %s", now, cfg.symbol, pos.ticket)
 
 
 def _heartbeat_due(now: float, last: float, interval: float) -> bool:
@@ -53,7 +68,7 @@ def _report_open(cfg: Config, event: dict | None) -> None:
         return
     dp = _price_dp(cfg)
     tp = event["tp"]
-    tp_str = f"{tp:.{dp}f}" if tp else "none (time exit)"
+    tp_str = f"{tp:.{dp}f}" if tp else "none"
     send_alert(cfg, f"\U0001F4C8 OPENED {event['side'].upper()} {event['lots']} "
                     f"{cfg.symbol} ({cfg.strategy}) @ {event['entry']:.{dp}f} | "
                     f"SL {event['sl']:.{dp}f} | TP {tp_str}")
@@ -73,25 +88,6 @@ def _report_closes(cfg: Config, broker: MT5Broker, before: dict, after: dict) ->
         send_alert(cfg, f"{'✅' if won else '❌'} CLOSED {pos.side.upper()} "
                         f"{pos.lots} {cfg.symbol} @ {pos.entry_price:.{dp}f} | "
                         f"P/L {pnl:+.2f} | equity {equity:.2f}")
-
-
-def _session_time_exit(cfg: Config, broker: MT5Broker, now_bar_time) -> None:
-    """Close any session position that has been held long enough. Runs every
-    poll so the exit is timely, and reads the open time back from the broker so
-    it survives a bot restart. No-op for non-session strategies."""
-    if cfg.strategy != "session":
-        return
-    dp = _price_dp(cfg)
-    for pos in broker.open_positions():
-        if session_strat.should_time_exit(pos.open_time, now_bar_time, cfg):
-            try:
-                pnl = broker.close_position(pos)
-            except broker_mt5.MT5Error as exc:
-                send_alert(cfg, f"⚠️ ERROR closing {cfg.symbol} on time exit: {exc}")
-                continue
-            send_alert(cfg, f"⌛ TIME EXIT {pos.side.upper()} {pos.lots} {cfg.symbol} "
-                            f"@ {pos.entry_price:.{dp}f} after {cfg.session_hold_bars} "
-                            f"bars | P/L {pnl:+.2f}")
 
 
 def _report_floating(runners) -> None:
@@ -166,9 +162,18 @@ def run_live(configs) -> None:
     try:
         while True:
             try:
+                # Exit recovered positions before risk checks and candle reads.
+                # Rejected closes remain open and are retried on the next poll.
+                for cfg, broker in runners:
+                    before = {p.ticket: p for p in broker.open_positions()}
+                    _close_expired_positions(cfg, broker)
+                    after = {p.ticket: p for p in broker.open_positions()}
+                    _report_closes(cfg, broker, before, after)
                 equity = brokers[0].equity()
                 # Use the primary's latest bar date for the daily anchor.
                 primary_bar_time = brokers[0].candles(2)["time"].iloc[-1]
+                if primary.strategy == "session" and primary.session_entry_at_open:
+                    primary_bar_time = brokers[0].market_time()
 
                 # Account-wide risk check every poll, on live (floating) equity.
                 guard.on_new_bar(primary_bar_time.date(), equity)
@@ -182,11 +187,11 @@ def run_live(configs) -> None:
                                         f"(limit {_daily_cap(primary):.0f}). No new trades until tomorrow.")
                 was_blown, was_halted = guard.blown, guard.halted
 
-                # Each strategy: time-exit its session positions, then run the
-                # engine once per newly closed candle.
+                # Opening sessions use the quote clock; ATR still uses closed bars.
                 for cfg, broker in runners:
                     bar_time = broker.candles(2)["time"].iloc[-1]
-                    _session_time_exit(cfg, broker, bar_time)
+                    if cfg.strategy == "session" and cfg.session_entry_at_open:
+                        bar_time = broker.market_time().floor("h")
                     if bar_time != last_bar_time[cfg.symbol]:
                         last_bar_time[cfg.symbol] = bar_time
                         if cfg.symbol == primary.symbol:

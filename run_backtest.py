@@ -7,7 +7,7 @@ import sys
 
 from trader import broker_mt5
 from trader.broker_mt5 import MT5Broker
-from trader.config import CONFIG
+from run_live import GOLD as CONFIG
 from trader.sim import run_backtest
 
 logging.basicConfig(level=logging.INFO, format="%(message)s")

@@ -15,20 +15,20 @@ The strategy Aaryan designed (see docs/2026-08-23-gold-bos-cmf-design.md):
 Optional trend filter (bos_trend_ma > 0): only take breaks in the direction of
 that SMA. Off by default — the baseline (plain CMF>0) won more out-of-sample.
 
-Exits are structure-derived, like orb: the stop goes at the FAR side of the
+Exits are structure-derived: the stop goes at the FAR side of the
 broken structure (the opposing confirmed swing that invalidates the break); the
 target is the next confirmed swing beyond entry (>= bos_tp_min_r x risk away),
 falling back to bos_tp_r x the stop distance. The engine sizes from the stop
 distance, so every trade risks the same fraction of equity.
 
-Validated: bos_backtest.make_bos_signal wraps THIS function, so the researched
-walk-forward numbers and the live signals are the same code (see tests).
+Validated: bos_backtest.make_bos_signal mirrors this logic through a fast
+research path; tests check matching decisions, stops and targets.
 """
 import numpy as np
 import pandas as pd
 
 from ..strategy import Blocked, Setup, Signal
-from .orb import swing_points
+from .structure import swing_points
 
 _TF_MINUTES = {"M1": 1, "M5": 5, "M15": 15, "M30": 30,
                "H1": 60, "H4": 240, "D1": 1440}
@@ -82,6 +82,9 @@ def compute_signal(candles: pd.DataFrame, cfg) -> Signal | Setup | Blocked:
     cmf_str = round(cmf, 3) if not np.isnan(cmf) else None
 
     # ---- LONG: a fresh close above the last confirmed swing high -------------
+    # On a bullish candle the close is the top of its rectangular body, so
+    # any close beyond the level means some body crossed it. A wick alone
+    # (high > level with close <= level) cannot qualify. Mirror for shorts.
     if last_high >= 0:
         level = high[last_high]
         raw = close[-1] > level and close[-2] <= level and close[-1] > openp[-1]
