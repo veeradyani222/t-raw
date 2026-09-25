@@ -72,6 +72,49 @@ def connect(cfg: Config) -> None:
         raise MT5Error(f"symbol_select({cfg.symbol}) failed: {mt5.last_error()}")
     log.info("connected: account %s (%s), balance %.2f %s",
              info.login, info.server, info.balance, info.currency)
+    preflight(cfg, info)
+
+
+def preflight(cfg: Config, account) -> None:
+    """Fail LOUDLY at startup on anything that would make order_send fail
+    later. Every one of these used to surface only as a retcode at 01:00, or
+    not at all. Raises MT5Error with the exact thing to fix."""
+    term = mt5.terminal_info()
+    if term is None:
+        raise MT5Error(f"terminal_info failed: {mt5.last_error()}")
+    if not term.connected:
+        raise MT5Error("terminal is NOT connected to the trade server "
+                       "(check login/password/server in .env and the internet)")
+    if not term.trade_allowed:
+        raise MT5Error(
+            "Algo Trading is OFF in the terminal, so every order would be rejected "
+            "(retcode 10027). Click the 'Algo Trading' toolbar button in MT5 "
+            "(or Tools > Options > Expert Advisors > Allow algorithmic trading)."
+        )
+    if not account.trade_allowed:
+        raise MT5Error(f"account {account.login} has trading disabled on the server side")
+    if not account.trade_expert:
+        raise MT5Error(f"account {account.login} does not allow automated (EA) trading")
+    sym = mt5.symbol_info(cfg.symbol)
+    if sym is None:
+        raise MT5Error(f"symbol_info({cfg.symbol}) failed: {mt5.last_error()}")
+    if sym.trade_mode != mt5.SYMBOL_TRADE_MODE_FULL:
+        raise MT5Error(f"{cfg.symbol} is not fully tradable on this account "
+                       f"(trade_mode {sym.trade_mode})")
+    # MT5 reports broker-clock seconds *as if* they were UTC, so this offset is
+    # the broker's timezone (e.g. +3h). Logged so a timing question can be
+    # answered from the log alone. Nothing in the entry path may compare the
+    # broker clock against time.time() — that was the bug that skipped every
+    # entry with "session entry ineligible".
+    tick = mt5.symbol_info_tick(cfg.symbol)
+    if tick is not None and tick.time > 0:
+        offset_h = (tick.time - time.time()) / 3600
+        log.info("broker clock is about UTC%+.1fh (last %s tick at %s broker time)",
+                 offset_h, cfg.symbol, pd.to_datetime(tick.time, unit="s"))
+    else:
+        log.warning("no %s tick yet — market closed or symbol not streaming", cfg.symbol)
+    log.info("preflight ok: algo trading on, %s tradable, lots %s..%s step %s",
+             cfg.symbol, sym.volume_min, sym.volume_max, sym.volume_step)
 
 
 def select_symbol(symbol: str) -> None:
@@ -133,6 +176,8 @@ class MT5Broker:
 
         No fixed USD pip-value shortcut. History checks prevent re-entry after
         a restart/stop-out; an unavailable broker read never means 'flat'.
+        Every skip reason is logged so a missed entry is explainable from
+        trader.log alone.
         """
         cfg = self.cfg
         tick = mt5.symbol_info_tick(cfg.symbol)
@@ -141,21 +186,29 @@ class MT5Broker:
         now = pd.to_datetime(tick.time, unit="s")
         closed_at = (pd.Timestamp(entry_time) if entry_time is not None
                      else pd.Timestamp(bar_time) + pd.Timedelta(hours=1))
+        # Freshness is judged entirely on the BROKER clock: the last quote must
+        # sit inside the entry window after the candle closed. Never compare
+        # tick.time with time.time(): MT5 reports broker-local seconds labelled
+        # as UTC, so on a GMT+3 server that difference is ~-10800s and every
+        # entry was being skipped as "stale".
         age = (now - closed_at).total_seconds()
         if not 0 <= age <= cfg.session_entry_window_seconds:
-            return 0.0
-        if not 0 <= time.time() - tick.time <= cfg.session_entry_window_seconds:
+            log.info("session entry skipped: last %s quote %s is %.0fs from the %s close "
+                     "(window %.0fs)", cfg.symbol, now, age, closed_at,
+                     cfg.session_entry_window_seconds)
             return 0.0
         positions = mt5.positions_get()
         if positions is None:
             raise MT5Error(f"positions_get failed: {mt5.last_error()}")
         if positions:
+            log.info("session entry skipped: account already holds %d position(s)", len(positions))
             return 0.0
         deals = mt5.history_deals_get(int(now.normalize().timestamp()), int(now.timestamp()) + 1)
         if deals is None:
             raise MT5Error(f"history_deals_get failed: {mt5.last_error()}")
         if any(d.symbol == cfg.symbol and d.entry in (mt5.DEAL_ENTRY_IN, mt5.DEAL_ENTRY_INOUT)
                for d in deals):
+            log.info("session entry skipped: %s already entered today (%s)", cfg.symbol, now.date())
             return 0.0
         if not all(math.isfinite(v) for v in (equity, sl, tick.ask, tick.bid)):
             return 0.0
@@ -177,7 +230,11 @@ class MT5Broker:
                   cfg.max_lot, info.volume_max)
         step = Decimal(str(info.volume_step))
         lots = float((Decimal(str(raw)) / step).to_integral_value(rounding=ROUND_FLOOR) * step)
-        return lots if lots >= max(cfg.min_lot, info.volume_min) else 0.0
+        if lots < max(cfg.min_lot, info.volume_min):
+            log.info("session entry skipped: %.4f lots is below the minimum (risk/lot %.2f)",
+                     raw, risk_per_lot)
+            return 0.0
+        return lots
 
     def realized_pnl(self, ticket: int) -> float:
         """Net closed profit for a position (profit + swap + commission), read

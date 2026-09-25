@@ -17,13 +17,17 @@
   Telegram creds come from the same .env the bot uses. Nothing here is secret.
 #>
 param(
-    [string]$ProjectDir = "C:\Users\Administrator\Desktop\mt5-trader",
-    [string]$Python     = "python",
+    [string]$ProjectDir = (Split-Path $PSScriptRoot -Parent),
+    [string]$Python     = "",
     [int]$Days          = 30
 )
 
 $ErrorActionPreference = "Stop"
 
+if (-not $Python) {
+    $Python = Join-Path $ProjectDir ".venv\Scripts\python.exe"
+    if (-not (Test-Path $Python)) { $Python = "python" }
+}
 $EnvFile  = Join-Path $ProjectDir ".env"
 $StateDir = Join-Path $ProjectDir "ops\state"
 $LogFile  = Join-Path $env:ProgramData "mt5-watchdog\daily_export.log"
@@ -63,7 +67,7 @@ Set-Location $ProjectDir
 Write-Log "exporting MT5 state ..."
 & $Python (Join-Path $ProjectDir "ops\export_state.py") --days $Days 2>&1 | ForEach-Object { Write-Log $_ }
 if ($LASTEXITCODE -ne 0) {
-    Write-Log "export_state.py failed (exit $LASTEXITCODE) — committing logs anyway"
+    Write-Log "export_state.py failed (exit $LASTEXITCODE) - committing logs anyway"
     Send-Telegram "daily export: MT5 snapshot FAILED (exit $LASTEXITCODE). Logs still committed."
 }
 
@@ -82,7 +86,7 @@ if ($LASTEXITCODE -ne 0) { Write-Log "commit failed"; Send-Telegram "daily expor
 git pull --rebase --quiet origin main
 if ($LASTEXITCODE -ne 0) {
     git rebase --abort 2>$null
-    Write-Log "rebase conflicted — aborted, NOT pushing"
+    Write-Log "rebase conflicted - aborted, NOT pushing"
     Send-Telegram "daily export: git pull --rebase conflicted. Aborted so deploys keep working. Needs a look."
     exit 1
 }
@@ -90,7 +94,7 @@ if ($LASTEXITCODE -ne 0) {
 git push --quiet origin main
 if ($LASTEXITCODE -ne 0) {
     Write-Log "push failed (credentials?)"
-    Send-Telegram "daily export: git push FAILED — check the stored GitHub token on the box."
+    Send-Telegram "daily export: git push FAILED - check the stored GitHub token on the box."
     exit 1
 }
 

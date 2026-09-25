@@ -1,5 +1,5 @@
-MetaTrader5
-pandas
-numpy
-python-dotenv
-requests
+MetaTrader5==5.0.6090
+pandas==3.0.5
+numpy==2.5.1
+python-dotenv==1.2.2
+requests==2.34.2

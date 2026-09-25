@@ -2,8 +2,8 @@
   Registers the mt5-trader watchdog as a scheduled task.
   RUN THIS ONCE, on the server, in an ELEVATED PowerShell (Run as administrator).
 
-    cd C:\Users\Administrator\Desktop\mt5-trader
-    powershell -ExecutionPolicy Bypass -File ops\install_watchdog.ps1
+    powershell -ExecutionPolicy Bypass -File ops\install_watchdog.ps1     # from the repo dir
+  (ops\bootstrap.ps1 runs this for you on a fresh box.)
 
   The task:
     - runs as SYSTEM  -> works whether or not anyone is logged in (survives sign-out)
@@ -13,7 +13,7 @@
   Re-running it is safe: it overwrites the existing task (-Force).
 #>
 param(
-    [string]$ProjectDir = "C:\Users\Administrator\Desktop\mt5-trader",
+    [string]$ProjectDir = (Split-Path $PSScriptRoot -Parent),
     [string]$TaskName   = "MT5Watchdog"
 )
 

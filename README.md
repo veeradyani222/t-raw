@@ -5,6 +5,21 @@ hour-0 candle closes, uses a 2 x simple ATR14 stop from completed history, no ta
 after 12 elapsed hours from actual entry. BOS remains available for research.
 The MT5 broker adapter accepts demo accounts only.
 
+## Deploy to a fresh Windows box (one command)
+
+On a brand-new RDP box with nothing installed, open PowerShell **as
+administrator** and paste (with your own values):
+
+```powershell
+$env:MT5_LOGIN='12345678'; $env:MT5_PASSWORD='xxxx'; $env:MT5_SERVER='FundedNext-Server'; $env:TELEGRAM_BOT_TOKEN='123:abc'; $env:TELEGRAM_CHAT_ID='999'; iex (irm https://raw.githubusercontent.com/veeradyani222/t-raw/main/ops/bootstrap.ps1)
+```
+
+`ops/bootstrap.ps1` installs Git, Python and MetaTrader 5, clones this repo,
+builds `.venv`, writes `.env`, registers the bot / watchdog / daily-export
+scheduled tasks, starts the bot and prints the first log lines. Re-running it
+is safe. See [ops/README.md](ops/README.md) for what each piece does and how
+to check it.
+
 ## Run
 
 ```powershell
@@ -20,8 +35,12 @@ The MT5 broker adapter accepts demo accounts only.
 # Historical GOLD BOS backtest (not the CHFJPY live configuration)
 .venv\Scripts\python run_backtest.py 5000
 
-# Live loop against the demo account
+# Live loop against the demo account (by hand; the MT5Trader task normally does this)
 .venv\Scripts\python run_live.py
+
+# Prove the order path on the live symbol, then flatten
+.venv\Scripts\python manual_trade.py buy
+.venv\Scripts\python manual_trade.py close
 ```
 
 `backtest.py` exposes BOS controls: `--swing-window`, `--cmf-n`, `--cmf-min`,
@@ -44,7 +63,10 @@ $300 daily / $600 total entry halts against a fixed $10,000 baseline.
 The hour is the MT5 data clock, not India local time; the entry targets 01:00
 on the first fresh quote/poll after the hour-0 candle closes, with exit around 13:00.
 Mapping to the research feed's market session remains unverified.
-Entries more than 60 seconds after that candle closes are skipped.
+Entries more than 60 seconds after that candle closes are skipped; freshness
+is judged on the broker clock only (MT5 reports broker-local time labelled as
+UTC, so it must never be compared with the machine clock). Every skipped entry
+is logged with its reason.
 The forming candle never supplies ATR. The midnight-opening option remains available
 for research but is not selected by the live runner.
 MT5 deal history prevents another entry on the same date after a restart or stop.
@@ -87,6 +109,14 @@ BOS research scripts retain their explicit experiment configurations; they do
 not inherit the CHFJPY live settings. `run_backtest.py` and the BOS CLI
 remain gold research tools. See
 [body-confirmation results](docs/2026-09-12-m30-body-confirmation-results.md).
+
+## Startup pre-flight
+
+`broker_mt5.connect()` refuses to start unless the terminal is connected,
+**Algo Trading is on**, the account allows expert trading and the symbol is
+fully tradable, and it logs the broker clock offset from UTC. Each failure
+names the exact fix. `ops/run_bot.ps1` starts the terminal with Algo Trading
+forced on, so the check normally passes without touching the terminal.
 
 ## Configure
 

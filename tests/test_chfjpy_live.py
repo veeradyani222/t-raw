@@ -185,9 +185,53 @@ def test_session_rejects_invalid_stop_valuation(market, profit):
 
 
 def test_session_skips_stale_quote(market, monkeypatch):
+    """Stale = the broker's last quote is outside the window after the close."""
     broker, tick, _ = market
-    monkeypatch.setattr(time, 'time', lambda: tick.time + 120)
+    tick.time = pd.Timestamp('2026-09-17 01:01:01').timestamp()
     assert broker.session_entry_lots(pd.Timestamp('2026-09-17'), 184.82, 10000.) == 0.
+    tick.time = pd.Timestamp('2026-09-17 00:59:59').timestamp()
+    assert broker.session_entry_lots(pd.Timestamp('2026-09-17'), 184.82, 10000.) == 0.
+
+
+@pytest.mark.parametrize('offset_hours', [3, 2, -5, 0])
+def test_session_ignores_wall_clock_vs_broker_clock(market, monkeypatch, offset_hours):
+    """MT5 labels broker-local time as UTC, so tick.time sits hours away from
+    time.time() on a GMT+3 server. That gap must never veto an entry — it
+    skipped every live trade with 'session entry ineligible'."""
+    broker, tick, _ = market
+    monkeypatch.setattr(time, 'time', lambda: tick.time - offset_hours * 3600)
+    assert broker.session_entry_lots(pd.Timestamp('2026-09-17'), 184.82, 10000.) == .67
+
+
+def _preflight_env(monkeypatch, **over):
+    term = SimpleNamespace(connected=True, trade_allowed=True)
+    acct = SimpleNamespace(login=1, trade_allowed=True, trade_expert=True)
+    sym = SimpleNamespace(trade_mode=broker_mt5.mt5.SYMBOL_TRADE_MODE_FULL,
+                          volume_min=.01, volume_max=100., volume_step=.01)
+    for k, v in over.items():
+        obj, attr = k.split('__')
+        setattr({'term': term, 'acct': acct, 'sym': sym}[obj], attr, v)
+    monkeypatch.setattr(broker_mt5.mt5, 'terminal_info', lambda: term)
+    monkeypatch.setattr(broker_mt5.mt5, 'symbol_info', lambda symbol: sym)
+    return acct
+
+
+def test_preflight_passes_on_a_healthy_terminal(market, monkeypatch):
+    acct = _preflight_env(monkeypatch)
+    broker_mt5.preflight(market[0].cfg, acct)
+
+
+@pytest.mark.parametrize('bad, needle', [
+    ({'term__trade_allowed': False}, 'Algo Trading'),
+    ({'term__connected': False}, 'NOT connected'),
+    ({'acct__trade_allowed': False}, 'trading disabled'),
+    ({'acct__trade_expert': False}, 'automated'),
+    ({'sym__trade_mode': broker_mt5.mt5.SYMBOL_TRADE_MODE_DISABLED}, 'not fully tradable'),
+])
+def test_preflight_names_what_would_block_orders(market, monkeypatch, bad, needle):
+    acct = _preflight_env(monkeypatch, **bad)
+    with pytest.raises(MT5Error, match=needle):
+        broker_mt5.preflight(market[0].cfg, acct)
 
 
 def test_session_stop_rounds_down_to_broker_tick_before_sizing(market, monkeypatch):

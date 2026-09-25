@@ -21,13 +21,11 @@ from trader import broker_mt5
 from trader.alerts import send_alert
 from trader.broker_mt5 import MT5Broker
 from trader.commands import run_command
-from trader.config import Config
+from run_live import LIVE_CONFIGS
 
-# The live account/market — mirrors run_live.py's market settings.
-CONFIG = Config(
-    symbol="XAUUSD", timeframe="M30", strategy="bos",
-    pip_size=0.1, pip_value_per_lot=10.0, spread_pips=3.0,
-)
+# The live account/market: the same config run_live.py trades, so a manual
+# `buy` proves the exact symbol and order path the bot will use at 01:00.
+CONFIG = LIVE_CONFIGS[0]
 
 
 def main(argv: list[str] | None = None) -> None:

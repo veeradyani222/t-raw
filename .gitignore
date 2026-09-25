@@ -2,6 +2,7 @@
 __pycache__/
 *.pyc
 .env
+ops/mt5-start.ini
 trader.log
 .pytest_cache/
 

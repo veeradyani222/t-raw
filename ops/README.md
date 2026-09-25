@@ -1,11 +1,57 @@
-# Keeping the live bot alive (ops)
+# Deploying and keeping the live bot alive (ops)
 
-Plain-language notes on why the bot stopped on 2026-08-15 and what now keeps it running.
+## Fresh box in one command
 
-## What happened that time
+Open PowerShell **as administrator** on the new box and paste, with your values:
 
-The bot runs from `mt5-trader.bat` in the Windows **Startup** folder. That `.bat`
-has a restart loop, so it survives a Python crash, and auto-login means it comes
+```powershell
+$env:MT5_LOGIN='12345678'; $env:MT5_PASSWORD='xxxx'; $env:MT5_SERVER='FundedNext-Server'; $env:TELEGRAM_BOT_TOKEN='123:abc'; $env:TELEGRAM_CHAT_ID='999'; iex (irm https://raw.githubusercontent.com/veeradyani222/t-raw/main/ops/bootstrap.ps1)
+```
+
+Optional, set before the same line:
+
+| Variable | Why |
+|---|---|
+| `$env:WINDOWS_AUTOLOGON_PASSWORD='...'` | Windows password of this user. The box then logs itself in after a reboot, so the watchdog's reboot actually brings the bot back. Stored in the registry in plain text. |
+| `$env:MT5_SETUP_URL='https://...'` | Your broker's own MT5 installer, if the generic MetaQuotes one cannot find your server. |
+| `$env:MT5_TRADER_DIR='D:\bot'` | Somewhere other than `<Desktop>\mt5-trader`. |
+
+What runs afterwards:
+
+| Piece | Runs as | What |
+|---|---|---|
+| `MT5Trader` task -> `ops\mt5-trader.bat` -> `ops\run_bot.ps1` | you, at logon | starts `terminal64.exe` with a `/config` ini built from `.env` (login + **Algo Trading on**), then loops `run_live.py`, restarting it 5s after any crash |
+| `MT5Watchdog` task -> `ops\watchdog.ps1` | SYSTEM, every 10 min | Telegram-alerts if `run_live.py` is gone; reboots after 2 misses |
+| `MT5DailyExport` task -> `ops\daily_export.ps1` | SYSTEM, 23:45 | pushes fills + logs to `ops/state/` (needs a stored GitHub PAT, see below) |
+
+First thing to do once it is up, so you never again wait until 01:00 to find
+out that orders are rejected:
+
+```powershell
+cd <Desktop>\mt5-trader
+Get-Content trader.log -Tail 20            # want: "connected:" then "preflight ok"
+.venv\Scripts\python manual_trade.py buy   # 0.01 lot CHFJPY market order
+.venv\Scripts\python manual_trade.py close
+```
+
+## Why no trade ever fired on the AWS box
+
+`session_entry_lots()` required the last quote to be within 60s of the
+**machine** clock (`time.time() - tick.time`). MT5 hands Python broker-local
+seconds labelled as UTC, and the broker runs GMT+3 / GMT+2, so that difference
+was always about -10800s: every entry was judged stale, skipped as
+"session entry ineligible", and nothing said why. Freshness is now judged on
+the broker clock alone, every skip logs its reason, and startup pre-flight
+fails loudly if Algo Trading is off or the symbol is not tradable.
+
+The daily-export scripts also never parsed under Windows PowerShell 5.1
+(em-dashes in a BOM-less UTF-8 file read as a stray quote), which is why
+`ops/state/` stayed empty. They are plain ASCII now.
+
+## What happened the time before (2026-08-15)
+
+The bot ran from `mt5-trader.bat` in the Windows **Startup** folder (now the
+`MT5Trader` logon task, same idea). That `.bat` has a restart loop, so it survives a Python crash, and auto-login means it comes
 back after a reboot. But the whole loop lives **inside your logged-in session** —
 so when the RDP session got **signed out**, the loop was killed too, and nothing
 restarted it. On top of that, a home-IP change locked RDP out, so no one could get
@@ -24,21 +70,18 @@ in to restart it by hand. Result: dead for days, no trades, and no warning.
    `✅ alive` ping, even when it's flat. If that ping stops arriving, you *know*
    it's down — silence is no longer ambiguous.
 
-## Deploying this to the server (one time)
+## Deploying a code change to the server
 
-On your laptop it's already pushed. On the server (RDP in):
+Push from the laptop, then on the server (RDP in, PowerShell as administrator):
 
 ```powershell
-cd C:\Users\Administrator\Desktop\mt5-trader
+cd <Desktop>\mt5-trader
 git pull
-# restart the bot so the new heartbeat code is running:
-#   close the old bot's console window (the looping cmd), then double-click
-#   mt5-trader.bat in the Startup folder — or just reboot the box.
-# install the watchdog (elevated PowerShell — Run as administrator):
-powershell -ExecutionPolicy Bypass -File ops\install_watchdog.ps1
+# kill the running bot; the launcher loop restarts it on the new code in 5s
+Get-CimInstance Win32_Process -Filter "Name='python.exe'" | Where-Object CommandLine -match run_live | ForEach-Object { Stop-Process -Id $_.ProcessId -Force }
 ```
 
-That's it. The installer registers the task and runs it once to confirm.
+Or re-run the one-command bootstrap: it pulls, re-registers the tasks and restarts.
 
 ## The one golden rule
 
@@ -51,8 +94,9 @@ on it.)
 
 The bot does **not** need you logged in to keep trading — RDP is only your window
 in. If RDP won't connect, it's almost always your home IP changed:
-AWS Console → EC2 → Security Groups → `launch-wizard-1` → Inbound rules →
-the RDP (3389) rule → Source = **My IP** → Save.
+AWS: EC2 → Security Groups → the RDP (3389) inbound rule → Source = **My IP**.
+Google Cloud: VPC network → Firewall → the rule allowing tcp:3389 → Source IPv4
+ranges = your current IP followed by `/32`.
 
 ## Quick health checks (on the server)
 
@@ -63,7 +107,7 @@ Get-CimInstance Win32_Process -Filter "Name='python.exe'" | Where-Object Command
 Get-ScheduledTaskInfo MT5Watchdog
 Get-Content "$env:ProgramData\mt5-watchdog\watchdog.log" -Tail 5
 # newest bot log lines
-Get-Content C:\Users\Administrator\Desktop\mt5-trader\trader.log -Tail 10
+Get-Content <Desktop>\mt5-trader\trader.log -Tail 10
 ```
 
 And on your phone: you should see one `✅ alive` Telegram message per day.
@@ -93,8 +137,9 @@ both to tell a strategy problem from an execution problem.
 ```
 git config --global credential.helper store
 git push origin main          # paste a GitHub PAT (fine-grained, t-raw, contents:write)
-powershell -ExecutionPolicy Bypass -File ops\install_daily_export.ps1
 ```
+(The task itself is registered by the bootstrap; until the PAT is stored it
+just fails with a Telegram "push FAILED" alert each night.)
 
 **Run it now / check it:**
 

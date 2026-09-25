@@ -2,8 +2,7 @@
   Registers the mt5-trader daily state export as a scheduled task.
   RUN THIS ONCE, on the server, in an ELEVATED PowerShell (Run as administrator).
 
-    cd C:\Users\Administrator\Desktop\mt5-trader
-    powershell -ExecutionPolicy Bypass -File ops\install_daily_export.ps1
+    powershell -ExecutionPolicy Bypass -File ops\install_daily_export.ps1  # from the repo dir
 
   The task:
     - runs as SYSTEM  -> works whether or not anyone is logged in
@@ -15,11 +14,16 @@
     git push origin main      # paste a GitHub PAT as the password, once
 #>
 param(
-    [string]$ProjectDir = "C:\Users\Administrator\Desktop\mt5-trader",
+    [string]$ProjectDir = (Split-Path $PSScriptRoot -Parent),
     [string]$TaskName   = "MT5DailyExport",
     [string]$At         = "23:45",
-    [string]$Python     = "python"
+    [string]$Python     = ""
 )
+if (-not $Python) {
+    $Python = Join-Path $ProjectDir ".venv\Scripts\python.exe"
+    if (-not (Test-Path $Python)) { $Python = "python" }
+}
+
 
 $ErrorActionPreference = "Stop"
 
@@ -33,7 +37,7 @@ if (-not $isAdmin) {
 
 $script = Join-Path $ProjectDir "ops\daily_export.ps1"
 if (-not (Test-Path $script)) {
-    Write-Host "ERROR: $script not found — git pull first." -ForegroundColor Red
+    Write-Host "ERROR: $script not found - git pull first." -ForegroundColor Red
     exit 1
 }
 
@@ -47,6 +51,6 @@ $settings = New-ScheduledTaskSettingsSet -StartWhenAvailable -AllowStartIfOnBatt
 Register-ScheduledTask -TaskName $TaskName -Action $action -Trigger $trigger `
     -Principal $principal -Settings $settings -Force | Out-Null
 
-Write-Host "Registered '$TaskName' — runs daily at $At as SYSTEM." -ForegroundColor Green
+Write-Host "Registered '$TaskName' - runs daily at $At as SYSTEM." -ForegroundColor Green
 Write-Host "Test it now with:  Start-ScheduledTask -TaskName $TaskName" -ForegroundColor Cyan
 Write-Host "Log:  $env:ProgramData\mt5-watchdog\daily_export.log" -ForegroundColor Cyan
