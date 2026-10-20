@@ -15,7 +15,8 @@
   Reads MT5_LOGIN / MT5_PASSWORD / MT5_SERVER / MT5_PATH from .env.
 #>
 param(
-    [string]$ProjectDir = (Split-Path $PSScriptRoot -Parent)
+    [string]$ProjectDir = (Split-Path $PSScriptRoot -Parent),
+    [switch]$TerminalOnly    # just make sure the terminal is up with Algo Trading on, then exit
 )
 
 $ErrorActionPreference = "Continue"
@@ -70,6 +71,8 @@ if (-not $terminal) {
 } else {
     Write-Host "MT5 terminal already running"
 }
+
+if ($TerminalOnly) { exit 0 }
 
 # --- 2. the bot, forever ------------------------------------------------------
 while ($true) {

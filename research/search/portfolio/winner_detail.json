@@ -1,0 +1,217 @@
+{
+ "is_selected": {
+  "combo": "de40_orb@0.5% + gold_bb@0.5% + gold_cal@0.75%",
+  "oos": {
+   "net": 2812.8763461224294,
+   "avg_month": 82.73165723889498,
+   "green_months": 0.5294117647058824,
+   "worst_month": -330.74475307959347,
+   "max_dd": -917.1888212937002,
+   "worst_day": -220.39878499999895,
+   "trades": 406,
+   "challenge_pass": 26,
+   "challenge_fail": 3,
+   "challenge_attempts": 69,
+   "challenge_unfinished": 40,
+   "challenge_median_days": 140.71875,
+   "max_open_risk": 161.0845535014816,
+   "max_concurrent": 3,
+   "cap_breach_events": 0,
+   "months": 34
+  },
+  "is_": {
+   "net": 9859.036273482252,
+   "avg_month": 91.28737290261344,
+   "green_months": 0.6666666666666666,
+   "max_dd": -598.3524684972363,
+   "worst_day": -155.63873550000062,
+   "trades": 1130,
+   "challenge_pass": 205,
+   "challenge_fail": 0,
+   "challenge_attempts": 231,
+   "challenge_median_days": 355.2916666666667,
+   "max_open_risk": 167.39868784939233,
+   "cap_breach_events": 0,
+   "months": 108
+  },
+  "oos_yearly": {
+   "2024": 1421.0,
+   "2025": 1574.0,
+   "2026": -182.0
+  },
+  "is_yearly": {
+   "2015": -9.0,
+   "2016": 1220.0,
+   "2017": 364.0,
+   "2018": 1761.0,
+   "2019": 1079.0,
+   "2020": 1768.0,
+   "2021": 1063.0,
+   "2022": 2419.0,
+   "2023": 195.0
+  },
+  "oos_per_strategy": {
+   "de40_orb": {
+    "count": 254,
+    "sum": 1217.0
+   },
+   "gold_bb": {
+    "count": 129,
+    "sum": 1181.0
+   },
+   "gold_cal": {
+    "count": 23,
+    "sum": 435.0
+   }
+  }
+ },
+ "winner": {
+  "combo": "de40_orb@0.25% + gold_bb@0.25% + gold_cal@2%",
+  "oos": {
+   "net": 3426.10615821459,
+   "avg_month": 100.76782818278205,
+   "green_months": 0.7352941176470589,
+   "worst_month": -150.40677466482612,
+   "max_dd": -407.26216622536106,
+   "worst_day": -204.04142857143097,
+   "trades": 385,
+   "challenge_pass": 44,
+   "challenge_fail": 0,
+   "challenge_attempts": 69,
+   "challenge_unfinished": 25,
+   "challenge_median_days": 320.3125,
+   "max_open_risk": 222.2517425535717,
+   "max_concurrent": 3,
+   "cap_breach_events": 0,
+   "months": 34
+  },
+  "is_": {
+   "net": 7211.546175169731,
+   "avg_month": 66.77357569601602,
+   "green_months": 0.7037037037037037,
+   "max_dd": -549.7854668453417,
+   "worst_day": -207.05566330000056,
+   "trades": 1126,
+   "challenge_pass": 203,
+   "challenge_fail": 0,
+   "challenge_attempts": 231,
+   "challenge_median_days": 403.4166666666667,
+   "max_open_risk": 237.22335979417448,
+   "cap_breach_events": 0,
+   "months": 108
+  },
+  "oos_yearly": {
+   "2024": 1336.0,
+   "2025": 1531.0,
+   "2026": 559.0
+  },
+  "is_yearly": {
+   "2015": -68.0,
+   "2016": 1369.0,
+   "2017": 82.0,
+   "2018": 1280.0,
+   "2019": 711.0,
+   "2020": 1655.0,
+   "2021": 653.0,
+   "2022": 1252.0,
+   "2023": 278.0
+  },
+  "oos_per_strategy": {
+   "de40_orb": {
+    "count": 251,
+    "sum": 698.0
+   },
+   "gold_bb": {
+    "count": 93,
+    "sum": 569.0
+   },
+   "gold_cal": {
+    "count": 41,
+    "sum": 2217.0
+   }
+  }
+ },
+ "runner_up_lower_risk": {
+  "combo": "de40_orb@0.25% + gold_bb@0.25% + gold_cal@1.25%",
+  "oos": {
+   "net": 2054.4790153574704,
+   "avg_month": 60.42585339286678,
+   "green_months": 0.6176470588235294,
+   "worst_month": -177.82316425830777,
+   "max_dd": -382.4378805110739,
+   "worst_day": -131.27428571428686,
+   "trades": 374,
+   "challenge_pass": 26,
+   "challenge_fail": 0,
+   "challenge_attempts": 69,
+   "challenge_unfinished": 43,
+   "challenge_median_days": 451.88541666666663,
+   "max_open_risk": 160.79352296267572,
+   "max_concurrent": 3,
+   "cap_breach_events": 0,
+   "months": 34
+  },
+  "is_": {
+   "net": 6074.826175169705,
+   "avg_month": 56.248390510830596,
+   "green_months": 0.6944444444444444,
+   "max_dd": -396.45520842170845,
+   "worst_day": -146.03383419285683,
+   "trades": 1126,
+   "challenge_pass": 200,
+   "challenge_fail": 0,
+   "challenge_attempts": 231,
+   "challenge_median_days": 503.76041666666663,
+   "max_open_risk": 165.68828084413647,
+   "cap_breach_events": 0,
+   "months": 108
+  },
+  "oos_yearly": {
+   "2024": 1007.0,
+   "2025": 1081.0,
+   "2026": -33.0
+  },
+  "is_yearly": {
+   "2015": -0.0,
+   "2016": 1030.0,
+   "2017": 126.0,
+   "2018": 1078.0,
+   "2019": 601.0,
+   "2020": 1338.0,
+   "2021": 520.0,
+   "2022": 1166.0,
+   "2023": 216.0
+  },
+  "oos_per_strategy": {
+   "de40_orb": {
+    "count": 251,
+    "sum": 698.0
+   },
+   "gold_bb": {
+    "count": 93,
+    "sum": 569.0
+   },
+   "gold_cal": {
+    "count": 30,
+    "sum": 826.0
+   }
+  }
+ },
+ "oos_monthly_corr": {
+  "de40_orb": {
+   "de40_orb": 1.0,
+   "gold_bb": 0.13,
+   "gold_cal": 0.2
+  },
+  "gold_bb": {
+   "de40_orb": 0.13,
+   "gold_bb": 1.0,
+   "gold_cal": -0.01
+  },
+  "gold_cal": {
+   "de40_orb": 0.2,
+   "gold_bb": -0.01,
+   "gold_cal": 1.0
+  }
+ }
+}

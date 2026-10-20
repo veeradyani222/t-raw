@@ -18,3 +18,9 @@ xauusd-*.csv
 !ops/state/
 !ops/state/trader.log
 !ops/state/watchdog.log
+
+# research scratch outputs (strategy code and notes are committed; caches/results are regenerable)
+research/**/_cache/
+research/**/*.pkl
+research/**/*.log
+logs/

@@ -1,22 +1,21 @@
-"""Run only CHFJPY H1 session trading against the demo account.
+"""Run the live bot against the demo account.
 
-Long after the broker-labelled hour-0 H1 candle closes (normally around 01:00).
-Stop: 2 x simple ATR14. No TP. Exit after 12 elapsed hours from actual entry.
-Risk: 1% equity, max 1 lot / 1 position, existing $300 daily / $600 total
-entry halts against a fixed $10,000 baseline. MT5 supplies account-currency
-stop valuation; sizing reserves $14/lot round-trip commission and 0.1 pip
-slippage per fill. These reserves are assumptions, not measured charges.
+Default: the 66-strategy portfolio from docs/board/portfolio-lp300-66.json
+through trader/multi_live.py (one magic number per strategy, account-wide
+$300 daily close-all and $9,300 permanent floor, demo-only guard).
 
-The clock uses broker bar labels, not local India time. Research-to-broker
-session mapping is unverified. Timed exits require the loop and market to be
-available; they recover from MT5 position timestamps after a restart.
-GOLD below is retained only for existing BOS research imports.
-Credentials come from .env. The broker still refuses non-demo accounts.
+    python run_live.py                # the portfolio
+    python run_live.py --preflight    # connect, print the symbol table, exit
+    python run_live.py --legacy       # the old single-strategy CHFJPY H1 session bot
+
+The legacy configs stay importable (LIVE_CONFIGS / CHFJPY / GOLD) for the
+tests and research scripts that use them. Credentials come from .env. The
+broker still refuses non-demo accounts.
 """
 import logging
+import sys
 
 from trader.config import Config
-from trader.live import run_live
 
 logging.basicConfig(
     level=logging.INFO,
@@ -25,7 +24,7 @@ logging.basicConfig(
               logging.FileHandler("trader.log", encoding="utf-8")],
 )
 
-# Account-wide prop rails.
+# ---- legacy single-strategy configs (kept importable) -------------------------
 RAILS = dict(
     risk_per_trade=0.01, max_open_positions=1,
     loss_baseline=10_000.0,
@@ -53,4 +52,13 @@ CHFJPY = Config(
 LIVE_CONFIGS = (CHFJPY,)
 
 if __name__ == "__main__":
-    run_live(LIVE_CONFIGS)
+    if "--legacy" in sys.argv:
+        from trader.live import run_live
+        run_live(LIVE_CONFIGS)
+    elif "--preflight" in sys.argv:
+        from trader.config import CONFIG
+        from trader.multi_live import startup
+        startup(CONFIG, preflight_only=True)
+    else:
+        from trader.multi_live import run_multi
+        run_multi()

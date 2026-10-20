@@ -1,0 +1,1358 @@
+{
+ "mix": [
+  {
+   "name": "tom_k0_h20_hold72_sl3",
+   "symbol": "DE40",
+   "tf": "H1",
+   "family": "jpy_session",
+   "module": "research.search.jpy_session.strategies",
+   "fn": "build_turn_of_month",
+   "params": {
+    "k": 0,
+    "hour": 20,
+    "hold": 72,
+    "sl_atr": 3.0
+   },
+   "risk": 0.0125,
+   "trades_2y": 19,
+   "old_avg_month": 23.864025718055252
+  },
+  {
+   "name": "bos_trail3_htfD50_H1",
+   "symbol": "XAUUSD",
+   "tf": "H1",
+   "family": "gold_fix",
+   "module": "research.search.gold_fix.strategies",
+   "fn": "build_bos",
+   "params": {
+    "tp_mode": "none",
+    "trail_atr": 3.0,
+    "htf": [
+     "1D",
+     50
+    ]
+   },
+   "risk": 0.01,
+   "trades_2y": 187,
+   "old_avg_month": null
+  },
+  {
+   "name": "bb_breakout_H1_period250_dev2.75",
+   "symbol": "XAUUSD",
+   "tf": "H1",
+   "family": "public_eas",
+   "module": "research.search.public_eas.strategies",
+   "fn": "build_bb_breakout",
+   "params": {
+    "period": 250,
+    "dev": 2.75
+   },
+   "risk": 0.005,
+   "trades_2y": 43,
+   "old_avg_month": 6.2
+  },
+  {
+   "name": "ema_x",
+   "symbol": "US500",
+   "tf": "D1",
+   "family": "indicator_screen",
+   "module": "research.search.indicator_screen.strategies",
+   "fn": "build_rule",
+   "params": {
+    "rule": "ema_x",
+    "trend": false
+   },
+   "risk": 0.015,
+   "trades_2y": 4,
+   "old_avg_month": 0.0662591152652822
+  },
+  {
+   "name": "pweek_sl1_trail8",
+   "symbol": "DE40",
+   "tf": "H1",
+   "family": "breakout",
+   "module": "research.search.breakout.strategies",
+   "fn": "build_prev_week",
+   "params": {
+    "sl_atr": 1.0,
+    "trail_atr": 8.0,
+    "trail_after_r": 1.0,
+    "be_r": 1.0
+   },
+   "risk": 0.0025,
+   "trades_2y": 84,
+   "old_avg_month": 4.5
+  },
+  {
+   "name": "htf_bo50_n24",
+   "symbol": "XAUUSD",
+   "tf": "H1",
+   "family": "trend",
+   "module": "research.search.trend.strategies",
+   "fn": "build_htf_breakout",
+   "params": {
+    "d_n": 50,
+    "n_entry": 24
+   },
+   "risk": 0.005,
+   "trades_2y": 176,
+   "old_avg_month": null
+  },
+  {
+   "name": "tom_short_1_4",
+   "symbol": "USDJPY",
+   "tf": "H1",
+   "family": "published_research",
+   "module": "research.search.published_research.strategies",
+   "fn": "build_turn_of_month",
+   "params": {
+    "side": "short"
+   },
+   "risk": 0.0075,
+   "trades_2y": 23,
+   "old_avg_month": -1.1734491421848263
+  },
+  {
+   "name": "imom_nyclose_h1",
+   "symbol": "XAUUSD",
+   "tf": "H1",
+   "family": "published_research",
+   "module": "research.search.published_research.strategies",
+   "fn": "build_intraday_momentum",
+   "params": {},
+   "risk": 0.0025,
+   "trades_2y": 509,
+   "old_avg_month": null
+  },
+  {
+   "name": "rsi_rev",
+   "symbol": "AUDCAD",
+   "tf": "H4",
+   "family": "indicator_screen",
+   "module": "research.search.indicator_screen.strategies",
+   "fn": "build_rule",
+   "params": {
+    "rule": "rsi_rev",
+    "trend": false
+   },
+   "risk": 0.0075,
+   "trades_2y": 49,
+   "old_avg_month": 0.9059739829105042
+  },
+  {
+   "name": "rsi_rev+trend",
+   "symbol": "CADJPY",
+   "tf": "H4",
+   "family": "indicator_screen",
+   "module": "research.search.indicator_screen.strategies",
+   "fn": "build_rule",
+   "params": {
+    "rule": "rsi_rev",
+    "trend": true
+   },
+   "risk": 0.015,
+   "trades_2y": 6,
+   "old_avg_month": -3.125208879651588
+  },
+  {
+   "name": "connors_rsi2_D1_rsi_n3",
+   "symbol": "US500",
+   "tf": "D1",
+   "family": "public_eas",
+   "module": "research.search.public_eas.strategies",
+   "fn": "build_connors_rsi2",
+   "params": {
+    "rsi_n": 3
+   },
+   "risk": 0.03,
+   "trades_2y": 2,
+   "old_avg_month": -0.5
+  },
+  {
+   "name": "rsi_rev+trend",
+   "symbol": "GBPJPY",
+   "tf": "H4",
+   "family": "indicator_screen",
+   "module": "research.search.indicator_screen.strategies",
+   "fn": "build_rule",
+   "params": {
+    "rule": "rsi_rev",
+    "trend": true
+   },
+   "risk": 0.01,
+   "trades_2y": 9,
+   "old_avg_month": 1.269951141608209
+  },
+  {
+   "name": "connors_rsi2_D1_",
+   "symbol": "USDCHF",
+   "tf": "D1",
+   "family": "public_eas",
+   "module": "research.search.public_eas.strategies",
+   "fn": "build_connors_rsi2",
+   "params": {},
+   "risk": 0.0025,
+   "trades_2y": 12,
+   "old_avg_month": -1.7
+  },
+  {
+   "name": "asia0-9_te14_tp1.0",
+   "symbol": "XAUUSD",
+   "tf": "H1",
+   "family": "breakout",
+   "module": "research.search.breakout.strategies",
+   "fn": "build_session_orb",
+   "params": {
+    "rs": 0,
+    "re": 9,
+    "te": 14,
+    "exit_h": 22,
+    "sl": "far",
+    "tp_r": 1.0
+   },
+   "risk": 0.0025,
+   "trades_2y": 263,
+   "old_avg_month": null
+  },
+  {
+   "name": "bb_fade",
+   "symbol": "EURUSD",
+   "tf": "H1",
+   "family": "mean_reversion",
+   "module": "research.search.mean_reversion.strategies",
+   "fn": "build_bb_fade",
+   "params": {
+    "n": 50,
+    "k": 2.5,
+    "trend": 200,
+    "sides": "long",
+    "stop_atr": 2.0,
+    "max_hold": 24
+   },
+   "risk": 0.0125,
+   "trades_2y": 13,
+   "old_avg_month": 25.3
+  },
+  {
+   "name": "monday_long_downweek",
+   "symbol": "EURJPY",
+   "tf": "H1",
+   "family": "jpy_session",
+   "module": "research.search.jpy_session.strategies",
+   "fn": "build_monday_long",
+   "params": {
+    "prior_n": 120,
+    "prior_dir": "down"
+   },
+   "risk": 0.005,
+   "trades_2y": 43,
+   "old_avg_month": 10.073822501771215
+  },
+  {
+   "name": "dip_combo",
+   "symbol": "US500",
+   "tf": "D1",
+   "family": "mean_reversion",
+   "module": "research.search.mean_reversion.strategies",
+   "fn": "build_dip_combo",
+   "params": {
+    "wpr_n": 10,
+    "wpr_lo": -90,
+    "nlow_n": 5,
+    "ibs_lo": 0.2,
+    "need": 2,
+    "exit_mode": "ma10",
+    "trend": 200,
+    "stop_atr": 3.0,
+    "max_hold": 8
+   },
+   "risk": 0.0025,
+   "trades_2y": 27,
+   "old_avg_month": 25.2
+  },
+  {
+   "name": "connors_rsi2_D1_",
+   "symbol": "EURJPY",
+   "tf": "D1",
+   "family": "public_eas",
+   "module": "research.search.public_eas.strategies",
+   "fn": "build_connors_rsi2",
+   "params": {},
+   "risk": 0.0125,
+   "trades_2y": 6,
+   "old_avg_month": 5.5
+  },
+  {
+   "name": "bb_rev+trend",
+   "symbol": "GBPUSD",
+   "tf": "H4",
+   "family": "indicator_screen",
+   "module": "research.search.indicator_screen.strategies",
+   "fn": "build_rule",
+   "params": {
+    "rule": "bb_rev",
+    "trend": true
+   },
+   "risk": 0.005,
+   "trades_2y": 56,
+   "old_avg_month": -3.094212922591117
+  },
+  {
+   "name": "aroon_x+trend",
+   "symbol": "AUDJPY",
+   "tf": "H4",
+   "family": "indicator_screen",
+   "module": "research.search.indicator_screen.strategies",
+   "fn": "build_rule",
+   "params": {
+    "rule": "aroon_x",
+    "trend": true
+   },
+   "risk": 0.0025,
+   "trades_2y": 58,
+   "old_avg_month": null
+  },
+  {
+   "name": "bos_trail3_htfD50_M30",
+   "symbol": "XAUUSD",
+   "tf": "M30",
+   "family": "gold_fix",
+   "module": "research.search.gold_fix.strategies",
+   "fn": "build_bos",
+   "params": {
+    "tp_mode": "none",
+    "trail_atr": 3.0,
+    "htf": [
+     "1D",
+     50
+    ]
+   },
+   "risk": 0.0025,
+   "trades_2y": 372,
+   "old_avg_month": null
+  },
+  {
+   "name": "zscore",
+   "symbol": "US500",
+   "tf": "H4",
+   "family": "mean_reversion",
+   "module": "research.search.mean_reversion.strategies",
+   "fn": "build_zscore",
+   "params": {
+    "n": 20,
+    "z_in": 2.0,
+    "z_out": 0.5,
+    "sides": "long",
+    "trend": 0,
+    "stop_atr": 3.0,
+    "max_hold": 12
+   },
+   "risk": 0.0025,
+   "trades_2y": 71,
+   "old_avg_month": 12.8
+  },
+  {
+   "name": "persistent_anti_D1_",
+   "symbol": "USDJPY",
+   "tf": "D1",
+   "family": "public_eas",
+   "module": "research.search.public_eas.strategies",
+   "fn": "build_persistent_anti",
+   "params": {},
+   "risk": 0.0125,
+   "trades_2y": 98,
+   "old_avg_month": -3.5
+  },
+  {
+   "name": "connors_rsi2_D1_",
+   "symbol": "EURCHF",
+   "tf": "D1",
+   "family": "public_eas",
+   "module": "research.search.public_eas.strategies",
+   "fn": "build_connors_rsi2",
+   "params": {},
+   "risk": 0.0125,
+   "trades_2y": 12,
+   "old_avg_month": 2.1
+  },
+  {
+   "name": "crabel_k0.5_None",
+   "symbol": "DE40",
+   "tf": "M30",
+   "family": "breakout",
+   "module": "research.search.breakout.strategies",
+   "fn": "build_crabel",
+   "params": {
+    "ss": 10.0,
+    "te": 14.0,
+    "exit_h": 18,
+    "k": 0.5,
+    "filt": null
+   },
+   "risk": 0.0025,
+   "trades_2y": 417,
+   "old_avg_month": null
+  },
+  {
+   "name": "rsi_rev+trend",
+   "symbol": "CADJPY",
+   "tf": "H1",
+   "family": "indicator_screen",
+   "module": "research.search.indicator_screen.strategies",
+   "fn": "build_rule",
+   "params": {
+    "rule": "rsi_rev",
+    "trend": true
+   },
+   "risk": 0.0075,
+   "trades_2y": 40,
+   "old_avg_month": null
+  },
+  {
+   "name": "inside_far_tp2",
+   "symbol": "XAUUSD",
+   "tf": "H1",
+   "family": "breakout",
+   "module": "research.search.breakout.strategies",
+   "fn": "build_nr_break",
+   "params": {
+    "kind": "inside",
+    "ts": 0,
+    "te": 20,
+    "exit_h": null,
+    "max_hold": 48,
+    "sl": "far",
+    "tp_r": 2.0
+   },
+   "risk": 0.005,
+   "trades_2y": 55,
+   "old_avg_month": -1.2
+  },
+  {
+   "name": "de_orb2.0_trNone_tp2.0_ex18",
+   "symbol": "DE40",
+   "tf": "H1",
+   "family": "breakout",
+   "module": "research.search.breakout.strategies",
+   "fn": "build_session_orb",
+   "params": {
+    "rs": 10,
+    "re": 12.0,
+    "te": 14,
+    "exit_h": 18,
+    "sl": "far",
+    "tp_r": 2.0,
+    "trend": null,
+    "min_rng": 0.1
+   },
+   "risk": 0.0075,
+   "trades_2y": 169,
+   "old_avg_month": 0.4
+  },
+  {
+   "name": "stoch_rev+trend",
+   "symbol": "GBPUSD",
+   "tf": "H4",
+   "family": "indicator_screen",
+   "module": "research.search.indicator_screen.strategies",
+   "fn": "build_rule",
+   "params": {
+    "rule": "stoch_rev",
+    "trend": true
+   },
+   "risk": 0.005,
+   "trades_2y": 60,
+   "old_avg_month": null
+  },
+  {
+   "name": "aroon_x+trend",
+   "symbol": "XAUUSD",
+   "tf": "H1",
+   "family": "indicator_screen",
+   "module": "research.search.indicator_screen.strategies",
+   "fn": "build_rule",
+   "params": {
+    "rule": "aroon_x",
+    "trend": true
+   },
+   "risk": 0.005,
+   "trades_2y": 205,
+   "old_avg_month": null
+  },
+  {
+   "name": "mfi_rev+trend",
+   "symbol": "EURUSD",
+   "tf": "D1",
+   "family": "indicator_screen",
+   "module": "research.search.indicator_screen.strategies",
+   "fn": "build_rule",
+   "params": {
+    "rule": "mfi_rev",
+    "trend": true
+   },
+   "risk": 0.01,
+   "trades_2y": 1,
+   "old_avg_month": 0.5764337798189787
+  },
+  {
+   "name": "rsi_rev+trend",
+   "symbol": "GBPJPY",
+   "tf": "D1",
+   "family": "indicator_screen",
+   "module": "research.search.indicator_screen.strategies",
+   "fn": "build_rule",
+   "params": {
+    "rule": "rsi_rev",
+    "trend": true
+   },
+   "risk": 0.03,
+   "trades_2y": 1,
+   "old_avg_month": -3.961824623194463
+  },
+  {
+   "name": "kelt_rev+trend",
+   "symbol": "GBPJPY",
+   "tf": "H4",
+   "family": "indicator_screen",
+   "module": "research.search.indicator_screen.strategies",
+   "fn": "build_rule",
+   "params": {
+    "rule": "kelt_rev",
+    "trend": true
+   },
+   "risk": 0.005,
+   "trades_2y": 21,
+   "old_avg_month": -3.155852081340455
+  },
+  {
+   "name": "kelt_rev+trend",
+   "symbol": "GBPJPY",
+   "tf": "D1",
+   "family": "indicator_screen",
+   "module": "research.search.indicator_screen.strategies",
+   "fn": "build_rule",
+   "params": {
+    "rule": "kelt_rev",
+    "trend": true
+   },
+   "risk": 0.0125,
+   "trades_2y": 1,
+   "old_avg_month": 0.7427363363217961
+  },
+  {
+   "name": "mfi_rev+trend",
+   "symbol": "USDJPY",
+   "tf": "D1",
+   "family": "indicator_screen",
+   "module": "research.search.indicator_screen.strategies",
+   "fn": "build_rule",
+   "params": {
+    "rule": "mfi_rev",
+    "trend": true
+   },
+   "risk": 0.03,
+   "trades_2y": 1,
+   "old_avg_month": 8.943275065599451
+  },
+  {
+   "name": "rsi_rev+trend",
+   "symbol": "GBPUSD",
+   "tf": "D1",
+   "family": "indicator_screen",
+   "module": "research.search.indicator_screen.strategies",
+   "fn": "build_rule",
+   "params": {
+    "rule": "rsi_rev",
+    "trend": true
+   },
+   "risk": 0.01,
+   "trades_2y": 1,
+   "old_avg_month": 1.2427092823330594
+  },
+  {
+   "name": "kelt_rev+trend",
+   "symbol": "GBPUSD",
+   "tf": "D1",
+   "family": "indicator_screen",
+   "module": "research.search.indicator_screen.strategies",
+   "fn": "build_rule",
+   "params": {
+    "rule": "kelt_rev",
+    "trend": true
+   },
+   "risk": 0.005,
+   "trades_2y": 1,
+   "old_avg_month": -0.4791270301358249
+  },
+  {
+   "name": "mfi_rev",
+   "symbol": "GBPCHF",
+   "tf": "H4",
+   "family": "indicator_screen",
+   "module": "research.search.indicator_screen.strategies",
+   "fn": "build_rule",
+   "params": {
+    "rule": "mfi_rev",
+    "trend": false
+   },
+   "risk": 0.0025,
+   "trades_2y": 37,
+   "old_avg_month": null
+  },
+  {
+   "name": "mfi_rev+trend",
+   "symbol": "EURJPY",
+   "tf": "D1",
+   "family": "indicator_screen",
+   "module": "research.search.indicator_screen.strategies",
+   "fn": "build_rule",
+   "params": {
+    "rule": "mfi_rev",
+    "trend": true
+   },
+   "risk": 0.01,
+   "trades_2y": 1,
+   "old_avg_month": -2.158016374027905
+  },
+  {
+   "name": "rsi_rev",
+   "symbol": "US30",
+   "tf": "H1",
+   "family": "indicator_screen",
+   "module": "research.search.indicator_screen.strategies",
+   "fn": "build_rule",
+   "params": {
+    "rule": "rsi_rev",
+    "trend": false
+   },
+   "risk": 0.0025,
+   "trades_2y": 284,
+   "old_avg_month": null
+  },
+  {
+   "name": "connors_rsi2_D1_",
+   "symbol": "CADJPY",
+   "tf": "D1",
+   "family": "public_eas",
+   "module": "research.search.public_eas.strategies",
+   "fn": "build_connors_rsi2",
+   "params": {},
+   "risk": 0.03,
+   "trades_2y": 5,
+   "old_avg_month": 4.8
+  },
+  {
+   "name": "bb_breakout_M30_dev2.5",
+   "symbol": "XAUUSD",
+   "tf": "M30",
+   "family": "public_eas",
+   "module": "research.search.public_eas.strategies",
+   "fn": "build_bb_breakout",
+   "params": {
+    "dev": 2.5
+   },
+   "risk": 0.0025,
+   "trades_2y": 157,
+   "old_avg_month": -0.2
+  },
+  {
+   "name": "free_robot_H4_patternsoldiers_osccci",
+   "symbol": "USDJPY",
+   "tf": "H4",
+   "family": "public_eas",
+   "module": "research.search.public_eas.strategies",
+   "fn": "build_free_robot",
+   "params": {
+    "pattern": "soldiers",
+    "osc": "cci"
+   },
+   "risk": 0.03,
+   "trades_2y": 1,
+   "old_avg_month": 0.8
+  },
+  {
+   "name": "free_robot_H1_patternsoldiers_oscmfi",
+   "symbol": "XAUUSD",
+   "tf": "H1",
+   "family": "public_eas",
+   "module": "research.search.public_eas.strategies",
+   "fn": "build_free_robot",
+   "params": {
+    "pattern": "soldiers",
+    "osc": "mfi"
+   },
+   "risk": 0.025,
+   "trades_2y": 6,
+   "old_avg_month": -2.3
+  },
+  {
+   "name": "mon_long_h0_hold23",
+   "symbol": "EURJPY",
+   "tf": "H1",
+   "family": "jpy_session",
+   "module": "research.search.jpy_session.strategies",
+   "fn": "build_session",
+   "params": {
+    "hour": 0,
+    "hold": 23,
+    "side": "long",
+    "weekdays": [
+     0
+    ]
+   },
+   "risk": 0.01,
+   "trades_2y": 105,
+   "old_avg_month": 6.530065337581646
+  },
+  {
+   "name": "day1-14_te20_tp1.5",
+   "symbol": "DE40",
+   "tf": "H1",
+   "family": "breakout",
+   "module": "research.search.breakout.strategies",
+   "fn": "build_session_orb",
+   "params": {
+    "rs": 1,
+    "re": 14,
+    "te": 20,
+    "exit_h": 23,
+    "sl": "far",
+    "tp_r": 1.5
+   },
+   "risk": 0.0025,
+   "trades_2y": 193,
+   "old_avg_month": -0.6
+  },
+  {
+   "name": "free_robot_H4_patternhammer_oscrsi",
+   "symbol": "USDJPY",
+   "tf": "H4",
+   "family": "public_eas",
+   "module": "research.search.public_eas.strategies",
+   "fn": "build_free_robot",
+   "params": {
+    "pattern": "hammer",
+    "osc": "rsi"
+   },
+   "risk": 0.0025,
+   "trades_2y": 9,
+   "old_avg_month": 0.0
+  },
+  {
+   "name": "prefomc_16to20",
+   "symbol": "EURUSD",
+   "tf": "H1",
+   "family": "published_research",
+   "module": "research.search.published_research.strategies",
+   "fn": "build_pre_fomc",
+   "params": {
+    "side": "long",
+    "entry_hour": 16,
+    "exit_hour": 20
+   },
+   "risk": 0.02,
+   "trades_2y": 16,
+   "old_avg_month": -4.612477064221161
+  },
+  {
+   "name": "connors_rsi2_D1_rsi_n3",
+   "symbol": "GBPUSD",
+   "tf": "D1",
+   "family": "public_eas",
+   "module": "research.search.public_eas.strategies",
+   "fn": "build_connors_rsi2",
+   "params": {
+    "rsi_n": 3
+   },
+   "risk": 0.03,
+   "trades_2y": 2,
+   "old_avg_month": 1.3
+  },
+  {
+   "name": "inside_tp3",
+   "symbol": "EURUSD",
+   "tf": "H1",
+   "family": "breakout",
+   "module": "research.search.breakout.strategies",
+   "fn": "build_nr_break",
+   "params": {
+    "kind": "inside",
+    "ts": 0,
+    "te": 20,
+    "exit_h": null,
+    "max_hold": 48,
+    "sl": "far",
+    "tp_r": 3.0
+   },
+   "risk": 0.0025,
+   "trades_2y": 63,
+   "old_avg_month": null
+  },
+  {
+   "name": "bos_hv_be1_M30",
+   "symbol": "XAUUSD",
+   "tf": "M30",
+   "family": "gold_fix",
+   "module": "research.search.gold_fix.strategies",
+   "fn": "build_bos",
+   "params": {
+    "tp_min_r": 2.0,
+    "atrp_min": 0.6,
+    "be_r": 1.0
+   },
+   "risk": 0.0025,
+   "trades_2y": 196,
+   "old_avg_month": null
+  },
+  {
+   "name": "rsi_rev+trend",
+   "symbol": "EURCHF",
+   "tf": "H4",
+   "family": "indicator_screen",
+   "module": "research.search.indicator_screen.strategies",
+   "fn": "build_rule",
+   "params": {
+    "rule": "rsi_rev",
+    "trend": true
+   },
+   "risk": 0.0025,
+   "trades_2y": 7,
+   "old_avg_month": 7.646476562629298
+  },
+  {
+   "name": "free_robot_H1_patternengulfing_oscrsi",
+   "symbol": "XAUUSD",
+   "tf": "H1",
+   "family": "public_eas",
+   "module": "research.search.public_eas.strategies",
+   "fn": "build_free_robot",
+   "params": {
+    "pattern": "engulfing",
+    "osc": "rsi"
+   },
+   "risk": 0.0025,
+   "trades_2y": 36,
+   "old_avg_month": null
+  },
+  {
+   "name": "vwap",
+   "symbol": "DE40",
+   "tf": "H1",
+   "family": "mean_reversion",
+   "module": "research.search.mean_reversion.strategies",
+   "fn": "build_vwap",
+   "params": {
+    "dev_atr": 2.0,
+    "sides": "short",
+    "stop_atr": 2.0,
+    "max_hold": 24,
+    "trend": 200
+   },
+   "risk": 0.005,
+   "trades_2y": 28,
+   "old_avg_month": 26.0
+  },
+  {
+   "name": "mfi_rev+trend",
+   "symbol": "USDCHF",
+   "tf": "D1",
+   "family": "indicator_screen",
+   "module": "research.search.indicator_screen.strategies",
+   "fn": "build_rule",
+   "params": {
+    "rule": "mfi_rev",
+    "trend": true
+   },
+   "risk": 0.03,
+   "trades_2y": 1,
+   "old_avg_month": -4.372495752150488
+  },
+  {
+   "name": "dmi_x",
+   "symbol": "US30",
+   "tf": "H1",
+   "family": "indicator_screen",
+   "module": "research.search.indicator_screen.strategies",
+   "fn": "build_rule",
+   "params": {
+    "rule": "dmi_x",
+    "trend": false
+   },
+   "risk": 0.0025,
+   "trades_2y": 343,
+   "old_avg_month": null
+  },
+  {
+   "name": "tsmom50",
+   "symbol": "DE40",
+   "tf": "H4",
+   "family": "trend",
+   "module": "research.search.trend.strategies",
+   "fn": "build_tsmom",
+   "params": {
+    "lookback": 50
+   },
+   "risk": 0.0025,
+   "trades_2y": 150,
+   "old_avg_month": -0.45059580379178565
+  },
+  {
+   "name": "prefomc_short",
+   "symbol": "EURUSD",
+   "tf": "H1",
+   "family": "published_research",
+   "module": "research.search.published_research.strategies",
+   "fn": "build_pre_fomc",
+   "params": {
+    "side": "short"
+   },
+   "risk": 0.0075,
+   "trades_2y": 16,
+   "old_avg_month": -4.811792267365907
+  },
+  {
+   "name": "mfi_rev+trend",
+   "symbol": "GBPCHF",
+   "tf": "H4",
+   "family": "indicator_screen",
+   "module": "research.search.indicator_screen.strategies",
+   "fn": "build_rule",
+   "params": {
+    "rule": "mfi_rev",
+    "trend": true
+   },
+   "risk": 0.015,
+   "trades_2y": 8,
+   "old_avg_month": -2.185980834170308
+  },
+  {
+   "name": "squeeze_brk",
+   "symbol": "EURUSD",
+   "tf": "D1",
+   "family": "indicator_screen",
+   "module": "research.search.indicator_screen.strategies",
+   "fn": "build_rule",
+   "params": {
+    "rule": "squeeze_brk",
+    "trend": false
+   },
+   "risk": 0.0075,
+   "trades_2y": 9,
+   "old_avg_month": -0.7947424274201603
+  },
+  {
+   "name": "nr7_far_tp2",
+   "symbol": "EURUSD",
+   "tf": "H1",
+   "family": "breakout",
+   "module": "research.search.breakout.strategies",
+   "fn": "build_nr_break",
+   "params": {
+    "kind": "nr7",
+    "ts": 0,
+    "te": 20,
+    "exit_h": null,
+    "max_hold": 48,
+    "sl": "far",
+    "tp_r": 2.0
+   },
+   "risk": 0.0025,
+   "trades_2y": 61,
+   "old_avg_month": -2.2
+  },
+  {
+   "name": "rsi_rev+trend",
+   "symbol": "XAUUSD",
+   "tf": "H1",
+   "family": "indicator_screen",
+   "module": "research.search.indicator_screen.strategies",
+   "fn": "build_rule",
+   "params": {
+    "rule": "rsi_rev",
+    "trend": true
+   },
+   "risk": 0.005,
+   "trades_2y": 38,
+   "old_avg_month": 0.1386051274560382
+  },
+  {
+   "name": "crabel_k1.0_nr4",
+   "symbol": "EURUSD",
+   "tf": "H1",
+   "family": "breakout",
+   "module": "research.search.breakout.strategies",
+   "fn": "build_crabel",
+   "params": {
+    "ss": 10,
+    "te": 16,
+    "exit_h": 23,
+    "k": 1.0,
+    "filt": "nr4"
+   },
+   "risk": 0.0025,
+   "trades_2y": 104,
+   "old_avg_month": 1.6
+  },
+  {
+   "name": "rsi_rev+trend",
+   "symbol": "US30",
+   "tf": "H1",
+   "family": "indicator_screen",
+   "module": "research.search.indicator_screen.strategies",
+   "fn": "build_rule",
+   "params": {
+    "rule": "rsi_rev",
+    "trend": true
+   },
+   "risk": 0.005,
+   "trades_2y": 43,
+   "old_avg_month": null
+  },
+  {
+   "name": "macd_zero",
+   "symbol": "USTEC",
+   "tf": "H1",
+   "family": "indicator_screen",
+   "module": "research.search.indicator_screen.strategies",
+   "fn": "build_rule",
+   "params": {
+    "rule": "macd_zero",
+    "trend": false
+   },
+   "risk": 0.0025,
+   "trades_2y": 344,
+   "old_avg_month": 82.0466226774711
+  },
+  {
+   "name": "free_robot_H1_patternharami_oscmfi",
+   "symbol": "XAUUSD",
+   "tf": "H1",
+   "family": "public_eas",
+   "module": "research.search.public_eas.strategies",
+   "fn": "build_free_robot",
+   "params": {
+    "pattern": "harami",
+    "osc": "mfi"
+   },
+   "risk": 0.0025,
+   "trades_2y": 63,
+   "old_avg_month": null
+  }
+ ],
+ "last2": {
+  "summary": {
+   "net": 47844.62902449939,
+   "avg_month": 1913.7851609799754,
+   "green": 0.84,
+   "worst_month": -717.2777711834533,
+   "worst_day": -298.67368896307016,
+   "max_dd": -2138.1790468699564,
+   "lowest_equity": 9809.15805109053,
+   "challenge_attempts": 48.0,
+   "challenge_pass": 41.0,
+   "challenge_fail": 7.0,
+   "challenge_unfinished": 0.0,
+   "challenge_pass_rate": 0.8541666666666666,
+   "challenge_median_days": 18.5,
+   "max_open_risk": 1375.0
+  },
+  "monthly": {
+   "2024-10": 1033.54,
+   "2024-11": 1210.33,
+   "2024-12": 13550.12,
+   "2025-01": 2847.93,
+   "2025-02": 1595.82,
+   "2025-03": 3283.37,
+   "2025-04": 1323.1,
+   "2025-05": 661.59,
+   "2025-06": 721.45,
+   "2025-07": 1268.04,
+   "2025-08": -717.28,
+   "2025-09": 3361.43,
+   "2025-10": 2416.75,
+   "2025-11": 2176.7,
+   "2025-12": 2340.45,
+   "2026-01": 2696.61,
+   "2026-02": -131.75,
+   "2026-03": 1453.74,
+   "2026-04": 1710.81,
+   "2026-05": 1246.5,
+   "2026-06": 1768.25,
+   "2026-07": 1404.06,
+   "2026-08": 796.93,
+   "2026-09": -93.11,
+   "2026-10": -80.74
+  },
+  "per_strategy": {
+   "tom_k0_h20_hold72_sl3 DE40 H1": 11201,
+   "bos_trail3_htfD50_H1 XAUUSD H1": 5950,
+   "bb_breakout_H1_period250_dev2.75 XAUUSD H1": 752,
+   "ema_x US500 D1": 811,
+   "pweek_sl1_trail8 DE40 H1": 173,
+   "htf_bo50_n24 XAUUSD H1": 2265,
+   "tom_short_1_4 USDJPY H1": 426,
+   "imom_nyclose_h1 XAUUSD H1": 6,
+   "rsi_rev AUDCAD H4": 1484,
+   "rsi_rev+trend CADJPY H4": 855,
+   "connors_rsi2_D1_rsi_n3 US500 D1": 958,
+   "rsi_rev+trend GBPJPY H4": 513,
+   "connors_rsi2_D1_ USDCHF D1": 60,
+   "asia0-9_te14_tp1.0 XAUUSD H1": 253,
+   "bb_fade EURUSD H1": 1186,
+   "monday_long_downweek EURJPY H1": 808,
+   "dip_combo US500 D1": 127,
+   "connors_rsi2_D1_ EURJPY D1": 373,
+   "bb_rev+trend GBPUSD H4": 661,
+   "aroon_x+trend AUDJPY H4": 339,
+   "bos_trail3_htfD50_M30 XAUUSD M30": 580,
+   "zscore US500 H4": 267,
+   "persistent_anti_D1_ USDJPY D1": 633,
+   "connors_rsi2_D1_ EURCHF D1": 424,
+   "crabel_k0.5_None DE40 M30": 1192,
+   "rsi_rev+trend CADJPY H1": 736,
+   "inside_far_tp2 XAUUSD H1": 475,
+   "de_orb2.0_trNone_tp2.0_ex18 DE40 H1": 1380,
+   "stoch_rev+trend GBPUSD H4": 873,
+   "aroon_x+trend XAUUSD H1": 1093,
+   "mfi_rev+trend EURUSD D1": 133,
+   "rsi_rev+trend GBPJPY D1": 412,
+   "kelt_rev+trend GBPJPY H4": 359,
+   "kelt_rev+trend GBPJPY D1": 153,
+   "mfi_rev+trend USDJPY D1": 414,
+   "rsi_rev+trend GBPUSD D1": 117,
+   "kelt_rev+trend GBPUSD D1": 59,
+   "mfi_rev GBPCHF H4": 215,
+   "mfi_rev+trend EURJPY D1": 123,
+   "rsi_rev US30 H1": 587,
+   "connors_rsi2_D1_ CADJPY D1": 350,
+   "bb_breakout_M30_dev2.5 XAUUSD M30": 635,
+   "free_robot_H4_patternsoldiers_osccci USDJPY H4": 266,
+   "free_robot_H1_patternsoldiers_oscmfi XAUUSD H1": 389,
+   "mon_long_h0_hold23 EURJPY H1": 2020,
+   "day1-14_te20_tp1.5 DE40 H1": 361,
+   "free_robot_H4_patternhammer_oscrsi USDJPY H4": 45,
+   "prefomc_16to20 EURUSD H1": 129,
+   "connors_rsi2_D1_rsi_n3 GBPUSD D1": 163,
+   "inside_tp3 EURUSD H1": 171,
+   "bos_hv_be1_M30 XAUUSD M30": 556,
+   "rsi_rev+trend EURCHF H4": 53,
+   "free_robot_H1_patternengulfing_oscrsi XAUUSD H1": 30,
+   "vwap DE40 H1": 152,
+   "mfi_rev+trend USDCHF D1": 429,
+   "dmi_x US30 H1": 511,
+   "tsmom50 DE40 H4": 274,
+   "prefomc_short EURUSD H1": 28,
+   "mfi_rev+trend GBPCHF H4": 325,
+   "squeeze_brk EURUSD D1": 434,
+   "nr7_far_tp2 EURUSD H1": 72,
+   "rsi_rev+trend XAUUSD H1": 142,
+   "crabel_k1.0_nr4 EURUSD H1": 146,
+   "rsi_rev+trend US30 H1": 224,
+   "macd_zero USTEC H1": 458,
+   "free_robot_H1_patternharami_oscmfi XAUUSD H1": 52
+  }
+ },
+ "old": {
+  "summary": {
+   "net": -6840.584929276948,
+   "avg_month": -58.97055973514609,
+   "green": 0.4827586206896552,
+   "worst_month": -2525.6781086223364,
+   "worst_day": -1052.4404637807497,
+   "max_dd": -14741.472622236908,
+   "lowest_equity": -4237.407034969872,
+   "challenge_attempts": 248.0,
+   "challenge_pass": 33.0,
+   "challenge_fail": 215.0,
+   "challenge_unfinished": 0.0,
+   "challenge_pass_rate": 0.13306451612903225,
+   "challenge_median_days": 15.125
+  },
+  "monthly": {
+   "2015-03": 2.78,
+   "2015-04": -552.33,
+   "2015-05": -970.38,
+   "2015-06": -894.02,
+   "2015-07": 1362.55,
+   "2015-08": 58.55,
+   "2015-09": -496.16,
+   "2015-10": 71.22,
+   "2015-11": 178.9,
+   "2015-12": -320.2,
+   "2016-01": -936.39,
+   "2016-02": -212.8,
+   "2016-03": -948.26,
+   "2016-04": 414.87,
+   "2016-05": 1181.91,
+   "2016-06": -154.48,
+   "2016-07": 1482.35,
+   "2016-08": -575.55,
+   "2016-09": -1944.6,
+   "2016-10": 956.36,
+   "2016-11": -185.04,
+   "2016-12": -245.63,
+   "2017-01": -1182.85,
+   "2017-02": 746.77,
+   "2017-03": 55.37,
+   "2017-04": -1759.33,
+   "2017-05": 391.35,
+   "2017-06": -403.69,
+   "2017-07": 704.46,
+   "2017-08": 99.18,
+   "2017-09": -310.71,
+   "2017-10": -707.06,
+   "2017-11": 252.8,
+   "2017-12": 910.2,
+   "2018-01": -179.8,
+   "2018-02": -457.15,
+   "2018-03": -1277.13,
+   "2018-04": -1625.53,
+   "2018-05": 231.49,
+   "2018-06": 468.4,
+   "2018-07": -394.1,
+   "2018-08": -363.53,
+   "2018-09": -570.22,
+   "2018-10": 8.46,
+   "2018-11": -1391.19,
+   "2018-12": -1099.06,
+   "2019-01": 159.58,
+   "2019-02": 707.52,
+   "2019-03": -1082.31,
+   "2019-04": -284.41,
+   "2019-05": -1655.43,
+   "2019-06": 1281.95,
+   "2019-07": 99.66,
+   "2019-08": 1296.94,
+   "2019-09": -236.61,
+   "2019-10": -1232.84,
+   "2019-11": -1606.13,
+   "2019-12": 28.55,
+   "2020-01": -84.66,
+   "2020-02": 990.35,
+   "2020-03": -389.44,
+   "2020-04": 1009.5,
+   "2020-05": -49.08,
+   "2020-06": -1356.14,
+   "2020-07": 2395.97,
+   "2020-08": 284.01,
+   "2020-09": -952.49,
+   "2020-10": -804.66,
+   "2020-11": 2089.2,
+   "2020-12": 324.99,
+   "2021-01": -173.68,
+   "2021-02": 1283.76,
+   "2021-03": -7.08,
+   "2021-04": -1569.88,
+   "2021-05": 394.85,
+   "2021-06": -309.53,
+   "2021-07": -1464.23,
+   "2021-08": 590.1,
+   "2021-09": -270.91,
+   "2021-10": -933.92,
+   "2021-11": 524.83,
+   "2021-12": 235.88,
+   "2022-01": 40.94,
+   "2022-02": 608.57,
+   "2022-03": 235.74,
+   "2022-04": -649.2,
+   "2022-05": 496.57,
+   "2022-06": -1144.01,
+   "2022-07": 2079.94,
+   "2022-08": 678.42,
+   "2022-09": -68.07,
+   "2022-10": -93.01,
+   "2022-11": 103.62,
+   "2022-12": 1110.16,
+   "2023-01": 413.98,
+   "2023-02": -515.84,
+   "2023-03": 1085.73,
+   "2023-04": -289.89,
+   "2023-05": 268.7,
+   "2023-06": -497.73,
+   "2023-07": -2525.68,
+   "2023-08": -639.66,
+   "2023-09": 446.53,
+   "2023-10": 764.23,
+   "2023-11": 1551.36,
+   "2023-12": 1938.45,
+   "2024-01": -1716.05,
+   "2024-02": -1193.01,
+   "2024-03": 929.53,
+   "2024-04": 216.83,
+   "2024-05": 1078.36,
+   "2024-06": -113.98,
+   "2024-07": -1351.06,
+   "2024-08": -371.46,
+   "2024-09": 1598.29,
+   "2024-10": 27.11
+  },
+  "per_strategy": {
+   "tom_k0_h20_hold72_sl3 DE40 H1": 3883,
+   "bos_trail3_htfD50_H1 XAUUSD H1": 1660,
+   "bb_breakout_H1_period250_dev2.75 XAUUSD H1": 749,
+   "ema_x US500 D1": 143,
+   "pweek_sl1_trail8 DE40 H1": 363,
+   "htf_bo50_n24 XAUUSD H1": 334,
+   "tom_short_1_4 USDJPY H1": -206,
+   "imom_nyclose_h1 XAUUSD H1": -2438,
+   "rsi_rev AUDCAD H4": -741,
+   "rsi_rev+trend CADJPY H4": -1902,
+   "connors_rsi2_D1_rsi_n3 US500 D1": -90,
+   "rsi_rev+trend GBPJPY H4": 264,
+   "connors_rsi2_D1_ USDCHF D1": -29,
+   "asia0-9_te14_tp1.0 XAUUSD H1": -1850,
+   "bb_fade EURUSD H1": 2767,
+   "monday_long_downweek EURJPY H1": 2185,
+   "dip_combo US500 D1": 304,
+   "connors_rsi2_D1_ EURJPY D1": 597,
+   "bb_rev+trend GBPUSD H4": -629,
+   "aroon_x+trend AUDJPY H4": -351,
+   "bos_trail3_htfD50_M30 XAUUSD M30": -1534,
+   "zscore US500 H4": 517,
+   "persistent_anti_D1_ USDJPY D1": -2793,
+   "connors_rsi2_D1_ EURCHF D1": -70,
+   "crabel_k0.5_None DE40 M30": 728,
+   "rsi_rev+trend CADJPY H1": -1907,
+   "inside_far_tp2 XAUUSD H1": 261,
+   "de_orb2.0_trNone_tp2.0_ex18 DE40 H1": 1220,
+   "stoch_rev+trend GBPUSD H4": -1187,
+   "aroon_x+trend XAUUSD H1": -1218,
+   "mfi_rev+trend EURUSD D1": 31,
+   "rsi_rev+trend GBPJPY D1": -1302,
+   "kelt_rev+trend GBPJPY H4": -639,
+   "kelt_rev+trend GBPJPY D1": 177,
+   "mfi_rev+trend USDJPY D1": 1545,
+   "rsi_rev+trend GBPUSD D1": 67,
+   "kelt_rev+trend GBPUSD D1": -37,
+   "mfi_rev GBPCHF H4": -906,
+   "mfi_rev+trend EURJPY D1": -14,
+   "rsi_rev US30 H1": -1461,
+   "connors_rsi2_D1_ CADJPY D1": 1264,
+   "bb_breakout_M30_dev2.5 XAUUSD M30": 164,
+   "free_robot_H4_patternsoldiers_osccci USDJPY H4": -172,
+   "free_robot_H1_patternsoldiers_oscmfi XAUUSD H1": -1919,
+   "mon_long_h0_hold23 EURJPY H1": 3470,
+   "day1-14_te20_tp1.5 DE40 H1": -123,
+   "free_robot_H4_patternhammer_oscrsi USDJPY H4": 37,
+   "prefomc_16to20 EURUSD H1": -726,
+   "connors_rsi2_D1_rsi_n3 GBPUSD D1": 205,
+   "inside_tp3 EURUSD H1": -290,
+   "bos_hv_be1_M30 XAUUSD M30": 402,
+   "rsi_rev+trend EURCHF H4": 44,
+   "free_robot_H1_patternengulfing_oscrsi XAUUSD H1": -544,
+   "vwap DE40 H1": 807,
+   "mfi_rev+trend USDCHF D1": -1238,
+   "dmi_x US30 H1": -1165,
+   "tsmom50 DE40 H4": -163,
+   "prefomc_short EURUSD H1": -949,
+   "mfi_rev+trend GBPCHF H4": -1442,
+   "squeeze_brk EURUSD D1": -207,
+   "nr7_far_tp2 EURUSD H1": -350,
+   "rsi_rev+trend XAUUSD H1": 125,
+   "crabel_k1.0_nr4 EURUSD H1": -75,
+   "rsi_rev+trend US30 H1": -143,
+   "macd_zero USTEC H1": 532,
+   "free_robot_H1_patternharami_oscmfi XAUUSD H1": -875
+  }
+ }
+}

@@ -1,0 +1,10 @@
+{
+  "_comment": "research symbol -> broker symbol. Names not listed map to themselves. Edit this for a broker that names things differently (e.g. FundedNext: DE40 -> GER40). The pre-flight checks every mapped symbol exists, is tradable and has the contract/point/lot-step the research assumed.",
+  "map": {
+    "XAUUSD": "XAUUSD",
+    "DE40": "DE40",
+    "US500": "US500",
+    "US30": "US30",
+    "USTEC": "USTEC"
+  }
+}

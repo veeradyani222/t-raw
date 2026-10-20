@@ -63,16 +63,21 @@ def connect(cfg: Config) -> None:
     info = mt5.account_info()
     if info is None:
         raise MT5Error(f"no account: {mt5.last_error()}")
-    if not info.trade_mode == mt5.ACCOUNT_TRADE_MODE_DEMO:
-        raise MT5Error(
-            f"account {info.login} is NOT a demo account — refusing to trade. "
-            "This guard is removed manually, on purpose, or not at all."
-        )
+    assert_demo(info)
     if not mt5.symbol_select(cfg.symbol, True):
         raise MT5Error(f"symbol_select({cfg.symbol}) failed: {mt5.last_error()}")
     log.info("connected: account %s (%s), balance %.2f %s",
              info.login, info.server, info.balance, info.currency)
     preflight(cfg, info)
+
+
+def assert_demo(info) -> None:
+    """The demo-only guard, shared by the single- and multi-strategy runners."""
+    if not info.trade_mode == mt5.ACCOUNT_TRADE_MODE_DEMO:
+        raise MT5Error(
+            f"account {info.login} is NOT a demo account — refusing to trade. "
+            "This guard is removed manually, on purpose, or not at all."
+        )
 
 
 def preflight(cfg: Config, account) -> None:

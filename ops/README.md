@@ -1,5 +1,68 @@
 # Deploying and keeping the live bot alive (ops)
 
+## The multi-strategy demo forward test (branch `multi-strategy-bot`)
+
+`run_live.py` now runs the 66-strategy portfolio from
+`docs/board/portfolio-lp300-66.json` (`trader/multi.py` + `trader/multi_live.py`):
+every strategy is the same `build_*` research function the backtest used, fed a
+rolling window of 6,000 broker bars, one MT5 magic number per strategy
+(500000 + its index in the mix), sized with the harness formula (risk x $10,000
+at the stop, $14/lot commission reserved, rounded down to the lot step).
+Account-wide rails, checked every 10 s on floating equity: **-$300 on the server
+day closes everything and blocks entries until the next server day; equity at
+$9,300 closes everything and halts for good** (state in `logs/multi_state.json`;
+delete it to clear a halt). The demo-only guard is unchanged.
+
+**Start it (laptop or VM):**
+
+```powershell
+cd <Desktop>\mt5-trader
+git fetch; git checkout multi-strategy-bot; git pull
+.venv\Scripts\python run_live.py --preflight      # symbol table; must say every symbol is ok
+.venv\Scripts\python run_live.py                 # or let the MT5Trader task / opsun_bot.ps1 do it
+```
+
+The pre-flight refuses to run if a symbol is missing, not tradable, or has a
+different contract size / point / lot step / profit currency from what the
+research assumed. On **MetaQuotes-Demo the index CFDs (DE40, US500, US30, USTEC)
+are quote-only ("Trade disabled")**, which takes 15 of the 66 strategies out; to
+run the other 51 anyway set `MULTI_SKIP_UNTRADABLE=1` (the startup Telegram
+message then lists exactly which strategies are off and why). On a broker that
+names symbols differently (FundedNext: `GER40` for `DE40`), edit
+`config/symbols.json`.
+
+**Fresh GCP Windows VM from this branch:** same one-liner as below, with the
+branch's bootstrap and `MT5_TRADER_BRANCH`:
+
+```powershell
+$env:MT5_TRADER_BRANCH='multi-strategy-bot'; $env:MULTI_SKIP_UNTRADABLE='1'; $env:MT5_LOGIN='...'; $env:MT5_PASSWORD='...'; $env:MT5_SERVER='MetaQuotes-Demo'; $env:TELEGRAM_BOT_TOKEN='...'; $env:TELEGRAM_CHAT_ID='...'; iex (irm https://raw.githubusercontent.com/veeradyani222/t-raw/multi-strategy-bot/ops/bootstrap.ps1)
+```
+
+(`MULTI_SKIP_UNTRADABLE` is written into `.env`, so the launcher picks it up on
+every restart.)
+
+**Daily check routine (5 minutes, from the phone):**
+
+1. The morning Telegram report `📊 demo vs backtest — server day …` (sent
+   automatically at the first poll after server midnight, or on demand with the
+   `report` button / `report 2026-10-21`). Per strategy it lists trades taken live
+   vs in the backtest, entry/exit price differences and the P&L difference, then
+   the account totals. What you want to see: the same trades on both sides,
+   entry differences of a spread or so, P&L differences of a few dollars.
+   A backtest trade with no live twin on the first day (position opened before
+   the bot started) is expected; after that, every mismatch needs an explanation.
+   Full text + JSON is in `logs/compare/<date>.{txt,json}` on the box.
+2. `status` on Telegram: equity, today's P&L vs the -$300 stop, open positions.
+3. Once a day the `✅ alive` ping; if it stops, the bot is down (see the watchdog
+   section below).
+4. From a shell on the box: `python compare_demo.py --date YYYY-MM-DD` prints the
+   same report for any past server day.
+
+Telegram buttons: `status`, `risk`, `report`, `close all` (closes everything,
+keeps trading), `halt` (closes everything and stops until the state file is
+deleted), `help`.
+
+
 ## Fresh box in one command
 
 Open PowerShell **as administrator** on the new box and paste, with your values:
