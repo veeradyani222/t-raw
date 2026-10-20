@@ -17,6 +17,11 @@ import sys
 
 from trader.config import Config
 
+# Windows consoles default to cp1252; the reports carry emoji and arrows.
+for _stream in (sys.stdout, sys.stderr):
+    if hasattr(_stream, "reconfigure"):
+        _stream.reconfigure(encoding="utf-8", errors="replace")
+
 logging.basicConfig(
     level=logging.INFO,
     format="%(asctime)s %(levelname)s %(message)s",

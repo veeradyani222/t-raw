@@ -31,6 +31,11 @@ from pathlib import Path
 
 import pandas as pd
 
+# Windows consoles default to cp1252; the reports carry emoji and arrows.
+for _stream in (sys.stdout, sys.stderr):
+    if hasattr(_stream, "reconfigure"):
+        _stream.reconfigure(encoding="utf-8", errors="replace")
+
 os.environ.setdefault("PROP_OOS", "1")           # a forward test IS the verification stage
 
 from research.prop import harness as H                     # noqa: E402
