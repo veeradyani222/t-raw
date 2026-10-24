@@ -1,0 +1,209 @@
+{
+ "XAUUSD": {
+  "digits": 2,
+  "point": 0.01,
+  "contract": 100.0,
+  "profit_ccy": "USD",
+  "vol_min": 0.01,
+  "vol_step": 0.01,
+  "vol_max": 100.0
+ },
+ "XAGUSD": {
+  "digits": 3,
+  "point": 0.001,
+  "contract": 5000.0,
+  "profit_ccy": "USD",
+  "vol_min": 0.01,
+  "vol_step": 0.01,
+  "vol_max": 100.0
+ },
+ "EURUSD": {
+  "digits": 5,
+  "point": 1e-05,
+  "contract": 100000.0,
+  "profit_ccy": "USD",
+  "vol_min": 0.01,
+  "vol_step": 0.01,
+  "vol_max": 500.0
+ },
+ "GBPUSD": {
+  "digits": 5,
+  "point": 1e-05,
+  "contract": 100000.0,
+  "profit_ccy": "USD",
+  "vol_min": 0.01,
+  "vol_step": 0.01,
+  "vol_max": 500.0
+ },
+ "USDJPY": {
+  "digits": 3,
+  "point": 0.001,
+  "contract": 100000.0,
+  "profit_ccy": "JPY",
+  "vol_min": 0.01,
+  "vol_step": 0.01,
+  "vol_max": 500.0
+ },
+ "AUDUSD": {
+  "digits": 5,
+  "point": 1e-05,
+  "contract": 100000.0,
+  "profit_ccy": "USD",
+  "vol_min": 0.01,
+  "vol_step": 0.01,
+  "vol_max": 500.0
+ },
+ "NZDUSD": {
+  "digits": 5,
+  "point": 1e-05,
+  "contract": 100000.0,
+  "profit_ccy": "USD",
+  "vol_min": 0.01,
+  "vol_step": 0.01,
+  "vol_max": 500.0
+ },
+ "USDCAD": {
+  "digits": 5,
+  "point": 1e-05,
+  "contract": 100000.0,
+  "profit_ccy": "CAD",
+  "vol_min": 0.01,
+  "vol_step": 0.01,
+  "vol_max": 500.0
+ },
+ "USDCHF": {
+  "digits": 5,
+  "point": 1e-05,
+  "contract": 100000.0,
+  "profit_ccy": "CHF",
+  "vol_min": 0.01,
+  "vol_step": 0.01,
+  "vol_max": 500.0
+ },
+ "EURJPY": {
+  "digits": 3,
+  "point": 0.001,
+  "contract": 100000.0,
+  "profit_ccy": "JPY",
+  "vol_min": 0.01,
+  "vol_step": 0.01,
+  "vol_max": 500.0
+ },
+ "GBPJPY": {
+  "digits": 3,
+  "point": 0.001,
+  "contract": 100000.0,
+  "profit_ccy": "JPY",
+  "vol_min": 0.01,
+  "vol_step": 0.01,
+  "vol_max": 500.0
+ },
+ "AUDJPY": {
+  "digits": 3,
+  "point": 0.001,
+  "contract": 100000.0,
+  "profit_ccy": "JPY",
+  "vol_min": 0.01,
+  "vol_step": 0.01,
+  "vol_max": 500.0
+ },
+ "CHFJPY": {
+  "digits": 3,
+  "point": 0.001,
+  "contract": 100000.0,
+  "profit_ccy": "JPY",
+  "vol_min": 0.01,
+  "vol_step": 0.01,
+  "vol_max": 500.0
+ },
+ "NZDJPY": {
+  "digits": 3,
+  "point": 0.001,
+  "contract": 100000.0,
+  "profit_ccy": "JPY",
+  "vol_min": 0.1,
+  "vol_step": 0.01,
+  "vol_max": 100.0
+ },
+ "CADJPY": {
+  "digits": 3,
+  "point": 0.001,
+  "contract": 100000.0,
+  "profit_ccy": "JPY",
+  "vol_min": 0.01,
+  "vol_step": 0.01,
+  "vol_max": 500.0
+ },
+ "EURGBP": {
+  "digits": 5,
+  "point": 1e-05,
+  "contract": 100000.0,
+  "profit_ccy": "GBP",
+  "vol_min": 0.01,
+  "vol_step": 0.01,
+  "vol_max": 500.0
+ },
+ "EURCHF": {
+  "digits": 5,
+  "point": 1e-05,
+  "contract": 100000.0,
+  "profit_ccy": "CHF",
+  "vol_min": 0.01,
+  "vol_step": 0.01,
+  "vol_max": 500.0
+ },
+ "GBPCHF": {
+  "digits": 5,
+  "point": 1e-05,
+  "contract": 100000.0,
+  "profit_ccy": "CHF",
+  "vol_min": 0.01,
+  "vol_step": 0.01,
+  "vol_max": 500.0
+ },
+ "AUDCAD": {
+  "digits": 5,
+  "point": 1e-05,
+  "contract": 100000.0,
+  "profit_ccy": "CAD",
+  "vol_min": 0.01,
+  "vol_step": 0.01,
+  "vol_max": 500.0
+ },
+ "US30": {
+  "digits": 2,
+  "point": 0.01,
+  "contract": 1.0,
+  "profit_ccy": "USD",
+  "vol_min": 0.1,
+  "vol_step": 0.1,
+  "vol_max": 250.0
+ },
+ "US500": {
+  "digits": 2,
+  "point": 0.01,
+  "contract": 1.0,
+  "profit_ccy": "USD",
+  "vol_min": 0.1,
+  "vol_step": 0.1,
+  "vol_max": 250.0
+ },
+ "USTEC": {
+  "digits": 2,
+  "point": 0.01,
+  "contract": 1.0,
+  "profit_ccy": "USD",
+  "vol_min": 0.1,
+  "vol_step": 0.1,
+  "vol_max": 250.0
+ },
+ "DE40": {
+  "digits": 2,
+  "point": 0.01,
+  "contract": 1.0,
+  "profit_ccy": "EUR",
+  "vol_min": 0.1,
+  "vol_step": 0.1,
+  "vol_max": 250.0
+ }
+}

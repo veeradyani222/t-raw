@@ -22,6 +22,18 @@ can hold the same symbol at once on a hedging account.
 Account-wide guard (AccountGuard): floating equity down DAILY_STOP from the
 server-day-start balance -> close everything, no new entries until the next
 server day. Equity at or below FLOOR -> close everything, permanent halt.
+
+Risk rules on top (docs/2026-10-25-overlay-lab-results.md, approved by Veer):
+  * drawdown scaling: every NEW trade at SCALE_SIZE of its normal risk while
+    equity (balance + floating) is below SCALE_LOW, full size again only once
+    equity is above SCALE_HIGH;
+  * monthly loss stop: month-to-date P&L = equity minus the balance at the
+    last close of the previous server-time calendar month; at or below
+    -MONTHLY_STOP no new entries for the rest of that month, open trades
+    untouched, cleared on the first server day of the next month;
+  * minimum sizing stop: lots are computed from max(strategy stop distance,
+    MIN_STOP_K x the symbol's average daily range over the last 20 completed
+    D1 bars); the real stop order is unchanged.
 """
 from __future__ import annotations
 
@@ -49,6 +61,13 @@ BASE_MAGIC = 500_000
 WINDOW_BARS = 6000          # warmup: bos_lookback 2000 on M30, SMA1000 on H1, D1 200-bar filters
 DAILY_STOP = 300.0          # $ floating loss on the server day -> close all, block the day
 FLOOR = 9_300.0             # equity at/below this -> permanent halt (buffer above the $9,200 rail)
+SCALE_LOW = 9_700.0         # equity below this -> new trades at SCALE_SIZE of their risk ...
+SCALE_HIGH = 9_900.0        # ... until equity is back above this
+SCALE_SIZE = 0.5
+MONTHLY_STOP = 500.0        # month-to-date loss (incl. floating) -> no new entries this month
+MIN_STOP_K = 0.15           # sizing stop >= MIN_STOP_K x 20-day average daily range (0 = off)
+ADR_DAYS = 20
+SPECS_PATHS = (ROOT / "config" / "symbol_specs.json", ROOT / "data" / "search" / "symbol_specs.json")
 TF_MINUTES = {"M1": 1, "M5": 5, "M15": 15, "M30": 30, "H1": 60, "H4": 240, "D1": 1440}
 
 
@@ -103,17 +122,47 @@ def load_symbol_map(path: Path | str = SYMBOL_MAP_PATH) -> dict[str, str]:
 # --------------------------------------------------------------------------- #
 # Sizing — the harness formula, number for number                              #
 # --------------------------------------------------------------------------- #
+_SPECS: dict | None = None
+
+
+def load_symbol_specs(paths=SPECS_PATHS) -> dict:
+    """Contract / point / lot-step / profit currency per research symbol, the
+    numbers the research was sized with. config/symbol_specs.json is the
+    tracked copy; data/search/symbol_specs.json (git-ignored) the fallback.
+    Refuses to run without either: the defaults would size trades wrong."""
+    for p in paths:
+        p = Path(p)
+        if p.exists():
+            d = json.loads(p.read_text())
+            if not d:
+                continue
+            log.info("symbol specs: %s (%d symbols)", p, len(d))
+            return d
+    raise FileNotFoundError(
+        "symbol_specs.json not found in " + " or ".join(str(p) for p in paths) +
+        " - the bot cannot size trades without the contract/point/lot-step table. "
+        "Restore config/symbol_specs.json from git.")
+
+
 def research_spec(symbol: str) -> dict:
     """Contract/point/lot-step assumptions the research was run with."""
-    return H._spec().get(symbol, {})
+    global _SPECS
+    if _SPECS is None:
+        _SPECS = load_symbol_specs()
+    return _SPECS.get(symbol, {})
 
 
 def size_trade(symbol: str, side: str, close: float, sl: float, tp: float | None,
                bar_spread_points: float, conv: float, risk: float,
-               spread_mult: float = 1.0, max_lots: float = 50.0) -> dict | None:
+               spread_mult: float = 1.0, max_lots: float = 50.0,
+               min_stop_dist: float = 0.0) -> dict | None:
     """Replicates harness.simulate's entry block. Returns None when the harness
     would have skipped the signal (invalid levels or stop too wide to fund),
-    else dict(lots, entry_est, loss_per_lot, risk_usd)."""
+    else dict(lots, entry_est, loss_per_lot, risk_usd, size_dist, resized).
+
+    `min_stop_dist` (price units) is the minimum stop distance used for
+    SIZING only: lots come from max(|entry - sl|, min_stop_dist) while
+    risk_usd and the stop itself stay on the real stop. 0 = the harness."""
     spec = research_spec(symbol)
     contract = float(spec.get("contract", 100.0 if symbol == "XAUUSD" else 100000.0))
     point = float(spec.get("point", 0.01))
@@ -130,16 +179,29 @@ def size_trade(symbol: str, side: str, close: float, sl: float, tp: float | None
         ok = sl > close and (tp is None or tp < entry)
     if not ok or not math.isfinite(sl):
         return None
-    loss_per_lot = (abs(entry - sl) + slip) * contract * conv + comm
+    stop_dist = abs(entry - sl)
+    size_dist = max(stop_dist, float(min_stop_dist or 0.0))
+    loss_per_lot = (stop_dist + slip) * contract * conv + comm
+    size_loss_per_lot = (size_dist + slip) * contract * conv + comm
     if loss_per_lot <= 0:
         return None
     risk_usd = risk * H.BASELINE
-    lots = math.floor(risk_usd / loss_per_lot / vstep) * vstep
+    lots = math.floor(risk_usd / size_loss_per_lot / vstep) * vstep
     lots = min(round(lots, 2), max_lots)
     if lots < vmin:
         return None
     return dict(lots=lots, entry_est=entry, loss_per_lot=loss_per_lot,
-                risk_usd=lots * loss_per_lot)
+                risk_usd=lots * loss_per_lot, stop_dist=stop_dist, size_dist=size_dist,
+                resized=size_dist > stop_dist)
+
+
+def average_daily_range(daily: pd.DataFrame, days: int = ADR_DAYS) -> float | None:
+    """Mean high-low of the last `days` completed D1 bars; None with fewer
+    than half of them (no resizing rather than a guess)."""
+    if daily is None or len(daily) < max(5, days // 2):
+        return None
+    d = daily.tail(days)
+    return float((d["high"] - d["low"]).mean())
 
 
 CONV_PAIR = {"JPY": ("USDJPY", True), "CHF": ("USDCHF", True), "CAD": ("USDCAD", True),
@@ -221,18 +283,38 @@ class AccountGuard:
     blocked_day: str | None = None       # no new entries on this server day
     blown: bool = False                  # permanent halt
     last_equity: float = 0.0
+    # drawdown scaling
+    scale_low: float = SCALE_LOW
+    scale_high: float = SCALE_HIGH
+    scale_size: float = SCALE_SIZE
+    scaled: bool = False                 # new trades at scale_size of their risk
+    # monthly loss stop
+    monthly_stop: float = MONTHLY_STOP
+    month: str | None = None             # server month 'YYYY-MM'
+    month_start_balance: float = 0.0     # balance at the last close of the previous month
+    blocked_month: str | None = None     # no new entries for the rest of this month
 
     def update(self, now: pd.Timestamp, equity: float, balance: float,
-               day_start_balance: float | None = None) -> list[str]:
-        """Returns events: 'new_day', 'daily_stop', 'blown' (each at most
-        once per state change). `day_start_balance` lets the caller supply
-        the true 00:00 balance on a mid-day (re)start."""
+               day_start_balance: float | None = None,
+               month_start_balance: float | None = None) -> list[str]:
+        """Returns events: 'new_day', 'daily_stop', 'blown', 'scale_on',
+        'scale_off', 'month_stop', 'month_released' (each at most once per
+        state change). `day_start_balance` / `month_start_balance` let the
+        caller supply the true 00:00 / 1st-of-month balance on a (re)start."""
         events = []
-        day = str(pd.Timestamp(now).normalize().date())
+        now = pd.Timestamp(now)
+        day = str(now.normalize().date())
+        month = f"{now.year:04d}-{now.month:02d}"
         if day != self.day:
             self.day = day
             self.day_start_balance = balance if day_start_balance is None else day_start_balance
             events.append("new_day")
+        if month != self.month:
+            was_blocked = self.blocked_month is not None and self.blocked_month == self.month
+            self.month = month
+            self.month_start_balance = balance if month_start_balance is None else month_start_balance
+            if was_blocked:
+                events.append("month_released")
         self.last_equity = equity
         if not self.blown and equity <= self.floor:
             self.blown = True
@@ -240,17 +322,41 @@ class AccountGuard:
         if self.blocked_day != day and equity - self.day_start_balance <= -self.daily_stop:
             self.blocked_day = day
             events.append("daily_stop")
+        if self.scaled and equity > self.scale_high:
+            self.scaled = False
+            events.append("scale_off")
+        elif not self.scaled and self.scale_size < 1.0 and equity < self.scale_low:
+            self.scaled = True
+            events.append("scale_on")
+        if self.monthly_stop > 0 and self.blocked_month != month and \
+                equity - self.month_start_balance <= -self.monthly_stop:
+            self.blocked_month = month
+            events.append("month_stop")
         return events
 
     @property
     def blocked(self) -> bool:
-        return self.blown or self.blocked_day == self.day
+        return self.blown or self.blocked_day == self.day or self.month_blocked
+
+    @property
+    def month_blocked(self) -> bool:
+        return self.blocked_month is not None and self.blocked_month == self.month
+
+    @property
+    def size_factor(self) -> float:
+        return self.scale_size if self.scaled else 1.0
+
+    def mtd(self, equity: float | None = None) -> float:
+        """Month-to-date P&L including floating."""
+        return (self.last_equity if equity is None else equity) - self.month_start_balance
 
     def may_open(self) -> tuple[bool, str]:
         if self.blown:
             return False, f"permanent halt: equity reached {self.floor:.0f}"
         if self.blocked_day == self.day:
             return False, f"daily stop hit ({self.daily_stop:.0f}) — no entries until next server day"
+        if self.month_blocked:
+            return False, f"monthly stop hit ({self.monthly_stop:.0f}) — no entries until next month"
         return True, ""
 
     def to_dict(self) -> dict:
@@ -303,7 +409,8 @@ class MultiRunner:
     def __init__(self, market: Market, specs: list[StrategySpec], symbol_map: dict[str, str],
                  alert: Callable[[str], None] = lambda s: None, state_path: Path | None = STATE_PATH,
                  window: int = WINDOW_BARS, guard: AccountGuard | None = None,
-                 disabled: dict[int, str] | None = None, spread_mult: float = 1.0):
+                 disabled: dict[int, str] | None = None, spread_mult: float = 1.0,
+                 min_stop_k: float = MIN_STOP_K):
         self.market = market
         self.specs = specs
         self.symbol_map = symbol_map
@@ -313,6 +420,8 @@ class MultiRunner:
         self.guard = guard or AccountGuard()
         self.disabled = dict(disabled or {})       # idx -> reason (never traded)
         self.spread_mult = spread_mult
+        self.min_stop_k = min_stop_k
+        self._adr: dict[str, tuple[str, float | None]] = {}     # symbol -> (server day, ADR)
         self.states: dict[int, StratState] = {s.idx: StratState() for s in specs}
         self.last_bar: dict[tuple[str, str], pd.Timestamp | None] = {}
         self.keys: dict[tuple[str, str], list[StrategySpec]] = {}
@@ -397,14 +506,25 @@ class MultiRunner:
         if now is None:
             return []
         equity, balance = self.market.account()
-        day_start = None
-        if str(pd.Timestamp(now).normalize().date()) != self.guard.day:
+        now = pd.Timestamp(now)
+        day_start = month_start = None
+        if str(now.normalize().date()) != self.guard.day:
             # true 00:00-server balance = balance now minus what closed today
             try:
-                day_start = balance - self.market.realized_since(pd.Timestamp(now).normalize())
+                day_start = balance - self.market.realized_since(now.normalize())
             except Exception as exc:      # noqa: BLE001 — a history hiccup must not stop the guard
                 log.warning("realized_since failed (%s); anchoring day on current balance", exc)
-        events = self.guard.update(now, equity, balance, day_start)
+        if f"{now.year:04d}-{now.month:02d}" != self.guard.month:
+            # balance at the last close of the previous month = balance now minus what closed this month
+            try:
+                month_start = balance - self.market.realized_since(now.normalize().replace(day=1))
+            except Exception as exc:      # noqa: BLE001
+                log.warning("realized_since failed (%s); anchoring month on current balance", exc)
+        prev_month = self.guard.month
+        events = self.guard.update(now, equity, balance, day_start, month_start)
+        if self.guard.month != prev_month:
+            log.info("server month %s | month-start balance %.2f | equity %.2f",
+                     self.guard.month, self.guard.month_start_balance, equity)
         for ev in events:
             if ev == "new_day":
                 log.info("server day %s | day-start balance %.2f | equity %.2f",
@@ -425,8 +545,52 @@ class MultiRunner:
                            f"not trade again until the halt is cleared by hand "
                            f"(delete {self.state_path}).")
                 self._emit("blown", equity=equity, closed=n)
+            elif ev == "scale_on":
+                self.alert(f"\U0001F53B SIZE CUT: equity {equity:.2f} is below {self.guard.scale_low:.0f}. "
+                           f"New trades at {self.guard.scale_size:g}x their risk until equity is back "
+                           f"above {self.guard.scale_high:.0f}. Open trades untouched.")
+                self._emit("scale_on", equity=equity)
+            elif ev == "scale_off":
+                self.alert(f"\U0001F53C FULL SIZE again: equity {equity:.2f} is above "
+                           f"{self.guard.scale_high:.0f}.")
+                self._emit("scale_off", equity=equity)
+            elif ev == "month_stop":
+                self.alert(f"\u23F8\uFE0F MONTHLY STOP: month {self.guard.month} is "
+                           f"{self.guard.mtd(equity):+.2f} vs the month-start balance "
+                           f"({self.guard.month_start_balance:.2f}). No new trades until "
+                           f"next month; open trades run to their own exits.")
+                self._emit("month_stop", equity=equity, mtd=self.guard.mtd(equity))
+            elif ev == "month_released":
+                self.alert(f"\u25B6\uFE0F new month {self.guard.month}: the monthly stop is "
+                           f"released, trading resumes. Month-start balance "
+                           f"{self.guard.month_start_balance:.2f}.")
+                self._emit("month_released", month=self.guard.month)
         self.save_state()
         return events
+
+    # ---------------------------------------------------------------- sizing stop
+    def min_stop_dist(self, symbol: str) -> float:
+        """MIN_STOP_K x the symbol's 20-day average daily range from the
+        broker's D1 bars, in price units; 0 when the rule is off or the
+        daily history is too short. Cached per symbol per server day."""
+        if self.min_stop_k <= 0:
+            return 0.0
+        day = self.guard.day or ""
+        hit = self._adr.get(symbol)
+        if hit is None or hit[0] != day:
+            adr = None
+            try:
+                daily = self.market.rates(self.broker_symbol(symbol), "D1", ADR_DAYS)
+                adr = average_daily_range(daily, ADR_DAYS)
+                if adr is None:
+                    log.warning("%s: only %d daily bars; minimum sizing stop off for today",
+                                symbol, 0 if daily is None else len(daily))
+            except Exception as exc:      # noqa: BLE001 — a history hiccup must not block entries
+                log.warning("%s: daily bars unavailable (%s); minimum sizing stop off for today",
+                            symbol, exc)
+            self._adr[symbol] = (day, adr)
+            hit = self._adr[symbol]
+        return self.min_stop_k * hit[1] if hit[1] else 0.0
 
     def close_everything(self, reason: str) -> int:
         n = 0
@@ -586,8 +750,10 @@ class MultiRunner:
             return
         spread_pts = float(window["spread"].iloc[i]) if "spread" in window else 0.0
         conv = float(window["conv"].iloc[i])
+        factor = self.guard.size_factor
         sz = size_trade(spec.symbol, entry.side, close, float(entry.sl), entry.tp, spread_pts,
-                        conv, spec.risk, self.spread_mult)
+                        conv, spec.risk * factor, self.spread_mult,
+                        min_stop_dist=self.min_stop_dist(spec.symbol))
         if sz is None:
             log.info("%s | %s signal at %s skipped: stop %.5f cannot be funded at %.2f%% risk",
                      spec.name, entry.side, bar_t, entry.sl, spec.risk * 100)
@@ -602,17 +768,28 @@ class MultiRunner:
         st.entry_bar = str(bar_t)
         st.max_hold, st.exit_hour = entry.max_hold, entry.exit_hour
         st.risk_usd, st.meta, st.extra = sz["risk_usd"], dict(entry.meta), {}
-        log.info("%s | OPEN %s %.2f @ %.5f sl %.5f tp %s (bar %s, risk $%.0f)", spec.name,
-                 entry.side, sz["lots"], pos.entry, entry.sl, entry.tp, bar_t, sz["risk_usd"])
+        notes = []
+        if factor != 1.0:
+            notes.append(f"size x{factor:g} (equity below {self.guard.scale_low:.0f})")
+        if sz["resized"]:
+            notes.append(f"min sizing stop: stop {sz['stop_dist']:.5g} < {sz['size_dist']:.5g} "
+                         f"({self.min_stop_k:g} x ADR{ADR_DAYS}), lots reduced")
+            log.info("%s | RESIZED: stop distance %.5g, sizing distance %.5g, lots %.2f",
+                     spec.name, sz["stop_dist"], sz["size_dist"], sz["lots"])
+            self._emit("resized", magic=spec.magic, strategy=spec.name, time=bar_t,
+                       stop_dist=sz["stop_dist"], size_dist=sz["size_dist"], lots=sz["lots"])
+        log.info("%s | OPEN %s %.2f @ %.5f sl %.5f tp %s (bar %s, risk $%.0f)%s", spec.name,
+                 entry.side, sz["lots"], pos.entry, entry.sl, entry.tp, bar_t, sz["risk_usd"],
+                 (" | " + "; ".join(notes)) if notes else "")
         self._emit("open", magic=spec.magic, strategy=spec.name, time=bar_t, side=entry.side,
                    lots=sz["lots"], sl=float(entry.sl), tp=entry.tp, entry=pos.entry,
-                   ticket=pos.ticket, risk_usd=sz["risk_usd"])
+                   ticket=pos.ticket, risk_usd=sz["risk_usd"], size_factor=factor,
+                   resized=sz["resized"])
+        tp_txt = f"TP {entry.tp:.5g}" if entry.tp is not None else "no TP"
         self.alert(f"\U0001F4C8 {spec.name}: {entry.side.upper()} {sz['lots']} "
                    f"{self.broker_symbol(spec.symbol)} @ {pos.entry:.5g} | SL {entry.sl:.5g} | "
-                   f"TP {entry.tp:.5g} | risk ${sz['risk_usd']:.0f}" if entry.tp is not None else
-                   f"\U0001F4C8 {spec.name}: {entry.side.upper()} {sz['lots']} "
-                   f"{self.broker_symbol(spec.symbol)} @ {pos.entry:.5g} | SL {entry.sl:.5g} | "
-                   f"no TP | risk ${sz['risk_usd']:.0f}")
+                   f"{tp_txt} | risk ${sz['risk_usd']:.0f}" +
+                   (" | " + "; ".join(notes) if notes else ""))
 
     def _close(self, spec: StrategySpec, st: StratState, live: LivePos, reason: str):
         pnl = self.market.close(live, f"ms{spec.idx} {reason}")
@@ -659,10 +836,17 @@ class MultiRunner:
         lines = [f"\U0001F4B0 equity {equity:.2f} | balance {balance:.2f} | day {g.day} start "
                  f"{g.day_start_balance:.2f} ({equity - g.day_start_balance:+.2f} today, stop at "
                  f"-{g.daily_stop:.0f}) | floor {g.floor:.0f}"]
+        size_txt = (f"x{g.size_factor:g} (equity below {g.scale_low:.0f}; full size above {g.scale_high:.0f})"
+                    if g.scaled else f"x1 (half below {g.scale_low:.0f})")
+        lines.append(f"\U0001F4CF size {size_txt} | month {g.month} {g.mtd(equity):+.2f} vs "
+                     f"-{g.monthly_stop:.0f} stop | month block {'ON' if g.month_blocked else 'off'}"
+                     f" | min sizing stop {self.min_stop_k:g} x ADR{ADR_DAYS}")
         if g.blown:
             lines.append("\U0001F6D1 PERMANENT HALT active")
-        elif g.blocked:
+        elif g.blocked_day == g.day:
             lines.append("⏸️ daily stop active — no new entries today")
+        elif g.month_blocked:
+            lines.append("⏸️ monthly stop active — no new entries until next month")
         open_ = [(s, self.states[s.idx]) for s in self.specs if self.states[s.idx].open]
         if not open_:
             lines.append("flat (no open positions)")

@@ -18,7 +18,7 @@ def test_daily_stop_blocks_until_next_server_day():
     assert g.update(T("2026-10-20 09:00"), 9_720, 10_000) == []          # -280: fine
     assert g.update(T("2026-10-20 09:10"), 9_700, 10_000) == ["daily_stop"]
     assert g.blocked and g.may_open()[0] is False
-    assert g.update(T("2026-10-20 15:00"), 9_650, 9_700) == []            # once per day
+    assert g.update(T("2026-10-20 15:00"), 9_650, 9_700) == ["scale_on"]  # once per day (9,650 < 9,700 halves size)
     assert g.update(T("2026-10-20 23:59"), 9_900, 9_700) == []            # recovery does not unblock
     assert g.blocked
     ev = g.update(T("2026-10-21 00:00"), 9_700, 9_700)                     # server day rolls
@@ -98,7 +98,7 @@ def test_runner_closes_every_magic_and_pending_on_daily_stop(tmp_path):
     r.states[specs[0].idx].ticket = 1
     assert r.check_guard(T("2026-10-20 09:00")) == ["new_day"]
     mkt.equity = 9_699.0                                  # -301 floating
-    assert r.check_guard(T("2026-10-20 09:10")) == ["daily_stop"]
+    assert r.check_guard(T("2026-10-20 09:10")) == ["daily_stop", "scale_on"]
     assert sorted(t for t, _ in mkt.closed) == [1, 2, 3]  # ours, another strategy's, and a foreign magic
     assert mkt.pending == 0
     assert not r.states[specs[0].idx].open

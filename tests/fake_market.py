@@ -75,6 +75,14 @@ class FakeMarket:
     # ----------------------------------------------------------- Market API
     def rates(self, symbol, tf, count):
         df = self.frames[symbol]
+        if tf == "D1" and self.tf != "D1":
+            # the bot's minimum sizing stop asks for completed D1 bars
+            past = df[df["time"] < self.now.normalize()]
+            d = past.groupby(past["time"].dt.normalize()).agg(
+                open=("open", "first"), high=("high", "max"), low=("low", "min"),
+                close=("close", "last"), tick_volume=("tick_volume", "sum"), spread=("spread", "max"))
+            d = d.tail(count).reset_index().rename(columns={"time": "time"})
+            return d[["time", "open", "high", "low", "close", "tick_volume", "spread"]]
         if symbol == self.primary:
             lo = max(0, self.i - count + 1)
             return df.iloc[lo:self.i + 1][["time", "open", "high", "low", "close",
