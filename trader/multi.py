@@ -465,6 +465,7 @@ class MultiRunner:
         self.spread_mult = spread_mult
         self.min_stop_k = min_stop_k
         self.month_start_override = month_start_override
+        self._anchor_warned: pd.Timestamp | None = None    # last 'balance_at failed' warning (server time)
         self._adr: dict[str, tuple[str, float | None]] = {}     # symbol -> (server day, ADR)
         self.states: dict[int, StratState] = {s.idx: StratState() for s in specs}
         self.last_bar: dict[tuple[str, str], pd.Timestamp | None] = {}
@@ -571,8 +572,10 @@ class MultiRunner:
                     month_start = self.market.balance_at(now.normalize().replace(day=1))
                     anchor = "history"
                 except Exception as exc:      # noqa: BLE001 — a history hiccup must not stop the guard
-                    log.warning("balance_at failed (%s); anchoring month on current balance until "
-                                "the next poll", exc)
+                    if self._anchor_warned is None or now - self._anchor_warned >= pd.Timedelta(hours=1):
+                        self._anchor_warned = now
+                        log.warning("balance_at failed (%s); anchoring month on current balance and "
+                                    "retrying every poll (this warning repeats at most hourly)", exc)
         prev = (self.guard.month, self.guard.month_start_balance)
         events = self.guard.update(now, equity, balance, day_start, month_start)
         if month_start is not None:

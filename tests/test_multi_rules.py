@@ -225,6 +225,26 @@ def test_month_anchor_for_an_account_opened_mid_month(tmp_path):
     assert r2.guard.month_start_balance == 10_000.0
 
 
+def test_anchor_failure_warns_at_most_hourly_and_keeps_retrying(tmp_path, caplog):
+    import logging
+
+    class Broken(StubMarket):
+        n = 0
+        def balance_at(self, t):
+            self.n += 1
+            raise RuntimeError("history_deals_get returned a result with an exception set")
+
+    mkt = Broken(equity=9_535.0, balance=9_535.0)
+    r = multi.MultiRunner(mkt, multi.load_mix()[:1], {}, state_path=tmp_path / "s.json")
+    with caplog.at_level(logging.WARNING, logger="trader"):
+        for k in range(6):
+            r.check_guard(T("2026-10-28 10:00") + pd.Timedelta(minutes=10 * k))
+        r.check_guard(T("2026-10-28 11:05"))
+    warns = [m for m in caplog.messages if "balance_at failed" in m]
+    assert len(warns) == 2 and mkt.n == 7                      # retried every poll, warned twice in 65 minutes
+    assert r.guard.month_anchor == "balance"
+
+
 # ----------------------------------------------------------------- minimum sizing stop
 def test_min_stop_math_gold():
     # gold long at 4000 with a $2 stop; ADR20 = 50 -> sizing distance 0.15*50 = 7.5

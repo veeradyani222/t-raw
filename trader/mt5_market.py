@@ -10,7 +10,7 @@ from __future__ import annotations
 
 import logging
 import time
-from datetime import datetime, timezone
+from datetime import datetime, timedelta, timezone
 
 import MetaTrader5 as mt5
 import pandas as pd
@@ -28,6 +28,22 @@ COLS = ["time", "open", "high", "low", "close", "tick_volume", "spread"]
 def _ts(t) -> int:
     """Broker-time naive Timestamp -> the integer MT5 wants (same basis)."""
     return int(pd.Timestamp(t).timestamp())
+
+
+HISTORY_FLOOR = datetime(2000, 1, 1)
+
+
+def _history_dt(t) -> datetime:
+    """A naive datetime MT5's history calls accept: broker-time basis, no
+    tzinfo, clamped to 2000-01-01 .. now + 1 day. The C extension returns
+    'a result with an exception set' for dates before 1970, far-future
+    dates or tz-aware datetimes."""
+    dt = pd.Timestamp(t)
+    if dt.tzinfo is not None:
+        dt = dt.tz_localize(None)
+    dt = dt.to_pydatetime().replace(microsecond=0)
+    hi = datetime.now().replace(microsecond=0) + timedelta(days=1)
+    return min(max(dt, HISTORY_FLOOR), hi)
 
 
 def connect(cfg: Config) -> dict:
@@ -277,7 +293,11 @@ class MT5Market:
 
     # ---- history
     def deals_between(self, t0: pd.Timestamp, t1: pd.Timestamp) -> list:
-        d = mt5.history_deals_get(_ts(t0), _ts(t1))
+        """Deals with t0 <= time < t1, both clamped to what MT5 accepts."""
+        a, b = _history_dt(t0), _history_dt(t1)
+        if b <= a:
+            return []
+        d = mt5.history_deals_get(a, b)
         if d is None:
             raise MT5Error(f"history_deals_get failed: {mt5.last_error()}")
         return list(d)
@@ -291,7 +311,7 @@ class MT5Market:
         """Balance just before broker time t: every deal since the account was
         opened (deposits included) summed; for an account opened after t, the
         balance right after its first deposit. Anchors the monthly stop."""
-        deals = self.deals_between(pd.Timestamp("2000-01-01"), pd.Timestamp("2100-01-01"))
+        deals = self.deals_between(HISTORY_FLOOR, datetime.now() + timedelta(days=1))
         return balance_from_deals(deals, t)
 
     def symbol_spec(self, symbol: str) -> dict:
