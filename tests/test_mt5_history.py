@@ -57,19 +57,13 @@ def test_history_dates_are_naive_and_clamped():
     assert _history_dt(pd.Timestamp("2026-10-01 10:00:00.5")) == datetime(2026, 10, 1, 10)
 
 
-def test_balance_at_asks_mt5_with_acceptable_dates(fake):
-    m = MT5Market()
-    assert m.balance_at(pd.Timestamp("2026-10-01")) == 10_000.0          # account younger than the month
-    assert m.balance_at(pd.Timestamp("2026-11-01")) == pytest.approx(9_535.0)
-    for a, b in fake.calls:
-        assert isinstance(a, datetime) and a.tzinfo is None and a.year >= 2000
-        assert b <= datetime.now() + timedelta(days=1, seconds=1)
-
-
-def test_realized_since_uses_the_same_guard(fake):
+def test_realized_since_asks_mt5_with_acceptable_dates(fake):
     m = MT5Market()
     assert m.realized_since(pd.Timestamp("2026-10-22")) == pytest.approx(-465.0)   # 22nd + 23rd within 2 days
     assert m.deals_between(pd.Timestamp("2026-10-25"), pd.Timestamp("2026-10-24")) == []
+    for a, b in fake.calls:
+        assert isinstance(a, datetime) and a.tzinfo is None and a.year >= 2000
+        assert b <= datetime.now() + timedelta(days=1, seconds=1)
 
 
 def test_bad_dates_would_have_raised(fake):

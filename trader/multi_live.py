@@ -10,12 +10,9 @@ re-fetches every window until the newest bar stops moving, then a Telegram
 message listing every strategy with symbol / timeframe / risk and whether it
 is live.
 
-The three risk rules from docs/2026-10-25-overlay-lab-results.md run on top
-of the daily stop and floor (see trader/multi.py): half size below $9,700
-until $9,900, no new trades once a month is down $500, and a minimum stop
-distance for sizing of 0.15 x the 20-day average daily range. The monthly
-stop's anchor comes from the account's deal history (MULTI_MONTH_START_BALANCE
-in .env overrides it).
+Drawdown scaling from docs/2026-10-25-overlay-lab-results.md runs on top of
+the daily stop and floor (see trader/multi.py): new trades at half size
+while equity is below $9,700, full size again above $9,900.
 
 Every POLL_SECONDS: the account guard on floating equity, then each
 symbol/timeframe with a new closed bar. At the first poll of a new server
@@ -34,9 +31,8 @@ from pathlib import Path
 from . import mt5_market
 from .alerts import send_alert
 from .config import CONFIG, Config
-from .multi import (ADR_DAYS, DAILY_STOP, FLOOR, MIN_STOP_K, MIX_PATH, MONTHLY_STOP, SCALE_HIGH,
-                    SCALE_LOW, SCALE_SIZE, STATE_PATH, WINDOW_BARS, MultiRunner, load_mix,
-                    load_symbol_map, load_symbol_specs)
+from .multi import (DAILY_STOP, FLOOR, MIX_PATH, SCALE_HIGH, SCALE_LOW, SCALE_SIZE, STATE_PATH,
+                    WINDOW_BARS, MultiRunner, load_mix, load_symbol_map, load_symbol_specs)
 from .mt5_market import MT5Error, MT5Market
 from .telegram_commands import fetch_commands
 
@@ -67,7 +63,7 @@ def _keyboard() -> dict:
 
 HELP = ("\U0001F916 Commands:\n"
         "• status / positions — equity, today's P&L vs the stop, open positions\n"
-        "• risk — the rails, size factor, month P&L vs the monthly stop\n"
+        "• risk — the rails and the current size factor\n"
         "• report [YYYY-MM-DD] — demo vs backtest comparison (default: yesterday)\n"
         "• close all — close every position now (does not halt)\n"
         "• halt — close everything and stop trading until the state file is deleted\n"
@@ -139,10 +135,8 @@ def startup(cfg: Config, preflight_only: bool = False) -> MultiRunner | None:
               f"{acct['balance']:.2f} {acct['currency']}; {len(specs) - len(disabled)}/{len(specs)} "
               f"strategies runnable")
         return None
-    override = os.environ.get("MULTI_MONTH_START_BALANCE")
     runner = MultiRunner(MT5Market(), specs, symbol_map, alert=lambda t: send_alert(cfg, t),
-                         disabled=disabled, state_path=STATE_PATH,
-                         month_start_override=float(override) if override else None)
+                         disabled=disabled, state_path=STATE_PATH)
     log.info("warming up %d symbol/timeframe windows of %d bars", len(runner.keys), WINDOW_BARS)
     runner.warmup(sleep=time.sleep)
     for key, t in runner.last_bar.items():
@@ -155,9 +149,8 @@ def startup(cfg: Config, preflight_only: bool = False) -> MultiRunner | None:
             f"{live_n}/{len(specs)} strategies live, {len(disabled)} disabled. "
             f"Rails: close ALL at -{DAILY_STOP:.0f} on the server day, permanent halt at equity "
             f"{FLOOR:.0f}. Risk rules: new trades at {SCALE_SIZE:g}x size while equity is below "
-            f"{SCALE_LOW:.0f} (full size above {SCALE_HIGH:.0f}); no new trades once the month is "
-            f"down {MONTHLY_STOP:.0f}; sizing stop at least {MIN_STOP_K:g} x the {ADR_DAYS}-day "
-            f"average daily range. Window {WINDOW_BARS} bars, poll {POLL_SECONDS}s.")
+            f"{SCALE_LOW:.0f} (full size above {SCALE_HIGH:.0f}). Window {WINDOW_BARS} bars, "
+            f"poll {POLL_SECONDS}s.")
     send_alert(cfg, head, reply_markup=_keyboard())
     for chunk in _chunks(strategy_lines(runner)):
         send_alert(cfg, chunk)

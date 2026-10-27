@@ -17,7 +17,7 @@ import pandas as pd
 
 from .broker_mt5 import TIMEFRAMES, MT5Error, _send_order, assert_demo
 from .config import Config
-from .multi import LivePos, balance_from_deals, conv_pair_for, research_spec
+from .multi import LivePos, conv_pair_for, research_spec
 
 log = logging.getLogger("trader")
 
@@ -306,13 +306,6 @@ class MT5Market:
         end = pd.Timestamp(t) + pd.Timedelta(days=2)
         return float(sum(d.profit + d.swap + d.commission for d in self.deals_between(t, end)
                          if d.type in (mt5.DEAL_TYPE_BUY, mt5.DEAL_TYPE_SELL)))
-
-    def balance_at(self, t: pd.Timestamp) -> float:
-        """Balance just before broker time t: every deal since the account was
-        opened (deposits included) summed; for an account opened after t, the
-        balance right after its first deposit. Anchors the monthly stop."""
-        deals = self.deals_between(HISTORY_FLOOR, datetime.now() + timedelta(days=1))
-        return balance_from_deals(deals, t)
 
     def symbol_spec(self, symbol: str) -> dict:
         si = mt5.symbol_info(symbol)

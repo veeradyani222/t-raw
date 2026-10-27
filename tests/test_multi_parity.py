@@ -71,9 +71,9 @@ def test_runner_matches_harness(idx, why, tmp_path):
 
     start, n_bars = _replay_span(df, ref)
     mkt = FakeMarket(frames, spec.tf, start)
-    # the risk rules are OFF here: parity is against the plain harness
+    # drawdown scaling is OFF here: parity is against the plain harness
     runner = multi.MultiRunner(mkt, [spec], {}, state_path=tmp_path / "s.json", window=WINDOW,
-                               min_stop_k=0.0, guard=multi.AccountGuard(scale_size=1.0, monthly_stop=0.0))
+                               guard=multi.AccountGuard(scale_size=1.0))
     runner.warmup()
     runner.last_bar[(spec.symbol, spec.tf)] = mkt.now       # bar `start` is "already seen"
     for _ in range(n_bars):
