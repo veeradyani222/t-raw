@@ -13,7 +13,9 @@ is live.
 The three risk rules from docs/2026-10-25-overlay-lab-results.md run on top
 of the daily stop and floor (see trader/multi.py): half size below $9,700
 until $9,900, no new trades once a month is down $500, and a minimum stop
-distance for sizing of 0.15 x the 20-day average daily range.
+distance for sizing of 0.15 x the 20-day average daily range. The monthly
+stop's anchor comes from the account's deal history (MULTI_MONTH_START_BALANCE
+in .env overrides it).
 
 Every POLL_SECONDS: the account guard on floating equity, then each
 symbol/timeframe with a new closed bar. At the first poll of a new server
@@ -137,8 +139,10 @@ def startup(cfg: Config, preflight_only: bool = False) -> MultiRunner | None:
               f"{acct['balance']:.2f} {acct['currency']}; {len(specs) - len(disabled)}/{len(specs)} "
               f"strategies runnable")
         return None
+    override = os.environ.get("MULTI_MONTH_START_BALANCE")
     runner = MultiRunner(MT5Market(), specs, symbol_map, alert=lambda t: send_alert(cfg, t),
-                         disabled=disabled, state_path=STATE_PATH)
+                         disabled=disabled, state_path=STATE_PATH,
+                         month_start_override=float(override) if override else None)
     log.info("warming up %d symbol/timeframe windows of %d bars", len(runner.keys), WINDOW_BARS)
     runner.warmup(sleep=time.sleep)
     for key, t in runner.last_bar.items():

@@ -28,9 +28,12 @@ Risk rules on top (docs/2026-10-25-overlay-lab-results.md, approved by Veer):
     equity (balance + floating) is below SCALE_LOW, full size again only once
     equity is above SCALE_HIGH;
   * monthly loss stop: month-to-date P&L = equity minus the balance at the
-    last close of the previous server-time calendar month; at or below
-    -MONTHLY_STOP no new entries for the rest of that month, open trades
-    untouched, cleared on the first server day of the next month;
+    last close of the previous server-time calendar month (= the sum of every
+    deal on the account before the month started: deposits, closed P&L,
+    commission, swap); at or below -MONTHLY_STOP no new entries for the rest
+    of that month, open trades untouched, cleared on the first server day of
+    the next month. The anchor is kept in the state file for restarts within
+    the month; MULTI_MONTH_START_BALANCE overrides it;
   * minimum sizing stop: lots are computed from max(strategy stop distance,
     MIN_STOP_K x the symbol's average daily range over the last 20 completed
     D1 bars); the real stop order is unchanged.
@@ -195,6 +198,23 @@ def size_trade(symbol: str, side: str, close: float, sl: float, tp: float | None
                 resized=size_dist > stop_dist)
 
 
+def balance_from_deals(deals, before: pd.Timestamp) -> float:
+    """Account balance as it stood just before `before` (broker time): the
+    sum of profit + swap + commission over every deal with time < before,
+    balance deals (deposits / withdrawals) included. `deals` are MT5 deal
+    records or anything with .time (epoch seconds or Timestamp), .profit,
+    .swap and .commission."""
+    cut = pd.Timestamp(before)
+    cut_s = int(cut.timestamp())
+    total = 0.0
+    for d in deals:
+        t = d.time
+        early = (t < cut_s) if isinstance(t, (int, float)) else (pd.Timestamp(t) < cut)
+        if early:
+            total += float(d.profit) + float(getattr(d, "swap", 0.0)) + float(getattr(d, "commission", 0.0))
+    return total
+
+
 def average_daily_range(daily: pd.DataFrame, days: int = ADR_DAYS) -> float | None:
     """Mean high-low of the last `days` completed D1 bars; None with fewer
     than half of them (no resizing rather than a guess)."""
@@ -269,6 +289,9 @@ class Market(Protocol):
     def realized_since(self, t: pd.Timestamp) -> float:
         """Net closed P&L (profit+swap+commission) of deals at/after broker time t."""
         ...
+    def balance_at(self, t: pd.Timestamp) -> float:
+        """Balance as it stood just before broker time t (every deal before t summed)."""
+        ...
 
 
 # --------------------------------------------------------------------------- #
@@ -292,6 +315,7 @@ class AccountGuard:
     monthly_stop: float = MONTHLY_STOP
     month: str | None = None             # server month 'YYYY-MM'
     month_start_balance: float = 0.0     # balance at the last close of the previous month
+    month_anchor: str = ""               # where it came from: 'history' | 'override' | 'balance' (fallback)
     blocked_month: str | None = None     # no new entries for the rest of this month
 
     def update(self, now: pd.Timestamp, equity: float, balance: float,
@@ -313,8 +337,11 @@ class AccountGuard:
             was_blocked = self.blocked_month is not None and self.blocked_month == self.month
             self.month = month
             self.month_start_balance = balance if month_start_balance is None else month_start_balance
+            self.month_anchor = "balance" if month_start_balance is None else self.month_anchor
             if was_blocked:
                 events.append("month_released")
+        elif month_start_balance is not None and month_start_balance != self.month_start_balance:
+            self.month_start_balance = month_start_balance      # a better anchor for the same month
         self.last_equity = equity
         if not self.blown and equity <= self.floor:
             self.blown = True
@@ -410,7 +437,7 @@ class MultiRunner:
                  alert: Callable[[str], None] = lambda s: None, state_path: Path | None = STATE_PATH,
                  window: int = WINDOW_BARS, guard: AccountGuard | None = None,
                  disabled: dict[int, str] | None = None, spread_mult: float = 1.0,
-                 min_stop_k: float = MIN_STOP_K):
+                 min_stop_k: float = MIN_STOP_K, month_start_override: float | None = None):
         self.market = market
         self.specs = specs
         self.symbol_map = symbol_map
@@ -421,6 +448,7 @@ class MultiRunner:
         self.disabled = dict(disabled or {})       # idx -> reason (never traded)
         self.spread_mult = spread_mult
         self.min_stop_k = min_stop_k
+        self.month_start_override = month_start_override
         self._adr: dict[str, tuple[str, float | None]] = {}     # symbol -> (server day, ADR)
         self.states: dict[int, StratState] = {s.idx: StratState() for s in specs}
         self.last_bar: dict[tuple[str, str], pd.Timestamp | None] = {}
@@ -514,17 +542,26 @@ class MultiRunner:
                 day_start = balance - self.market.realized_since(now.normalize())
             except Exception as exc:      # noqa: BLE001 — a history hiccup must not stop the guard
                 log.warning("realized_since failed (%s); anchoring day on current balance", exc)
-        if f"{now.year:04d}-{now.month:02d}" != self.guard.month:
-            # balance at the last close of the previous month = balance now minus what closed this month
-            try:
-                month_start = balance - self.market.realized_since(now.normalize().replace(day=1))
-            except Exception as exc:      # noqa: BLE001
-                log.warning("realized_since failed (%s); anchoring month on current balance", exc)
-        prev_month = self.guard.month
+        month = f"{now.year:04d}-{now.month:02d}"
+        anchor = self.guard.month_anchor if month == self.guard.month else ""
+        if anchor not in ("history", "override"):
+            # balance at the last close of the previous month = every deal before the 1st summed
+            if self.month_start_override is not None:
+                month_start, anchor = float(self.month_start_override), "override"
+            else:
+                try:
+                    month_start = self.market.balance_at(now.normalize().replace(day=1))
+                    anchor = "history"
+                except Exception as exc:      # noqa: BLE001 — a history hiccup must not stop the guard
+                    log.warning("balance_at failed (%s); anchoring month on current balance until "
+                                "the next poll", exc)
+        prev = (self.guard.month, self.guard.month_start_balance)
         events = self.guard.update(now, equity, balance, day_start, month_start)
-        if self.guard.month != prev_month:
-            log.info("server month %s | month-start balance %.2f | equity %.2f",
-                     self.guard.month, self.guard.month_start_balance, equity)
+        if month_start is not None:
+            self.guard.month_anchor = anchor
+        if (self.guard.month, self.guard.month_start_balance) != prev:
+            log.info("server month %s | month-start balance %.2f (%s) | equity %.2f",
+                     self.guard.month, self.guard.month_start_balance, self.guard.month_anchor, equity)
         for ev in events:
             if ev == "new_day":
                 log.info("server day %s | day-start balance %.2f | equity %.2f",

@@ -132,6 +132,9 @@ class FakeMarket:
     def realized_since(self, t):
         return sum(c["pnl"] for c in self.closes if c["time"] >= t)
 
+    def balance_at(self, t):
+        return self.balance - sum(c["pnl"] for c in self.closes if c["time"] >= t)
+
     def symbol_spec(self, symbol):
         s = dict(H._spec().get(symbol, {}))
         s.setdefault("trade_mode_ok", True)

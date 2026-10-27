@@ -109,7 +109,9 @@ class StubMarket:
     def cancel_pending(self):
         return 0
     def realized_since(self, t):
-        return self.realized_month if t.day == 1 else 0.0
+        return 0.0
+    def balance_at(self, t):
+        return self.balance - self.realized_month if t.day == 1 else self.balance
 
 
 def test_runner_monthly_stop_leaves_open_trades_alone_and_alerts(tmp_path):
@@ -133,6 +135,54 @@ def test_runner_monthly_stop_leaves_open_trades_alone_and_alerts(tmp_path):
     ev = r2.check_guard(T("2026-12-01 00:00"))
     assert "month_released" in ev and r2.guard.may_open()[0] is True
     assert any("released" in a for a in alerts)
+
+
+def test_month_anchor_from_deal_history_spans_the_month_boundary(tmp_path):
+    from collections import namedtuple
+    Deal = namedtuple("Deal", "time profit swap commission type")
+    E = lambda s: int(T(s).timestamp())
+    deals = [Deal(E("2026-09-20 10:00"), 10_000.0, 0.0, 0.0, 2),      # deposit (balance deal)
+             Deal(E("2026-09-25 12:00"), 120.0, -1.0, -7.0, 0),       # September trade
+             Deal(E("2026-10-01 00:00"), 50.0, 0.0, 0.0, 0),          # exactly at the boundary: October
+             Deal(E("2026-10-02 09:00"), -460.0, 0.0, -14.0, 1)]      # October loss
+    assert multi.balance_from_deals(deals, T("2026-10-01")) == pytest.approx(10_112.0)
+    assert multi.balance_from_deals(deals, T("2026-11-01")) == pytest.approx(9_688.0)
+    assert multi.balance_from_deals([], T("2026-10-01")) == 0.0
+
+    class DealMarket(StubMarket):
+        def balance_at(self, t):
+            return multi.balance_from_deals(deals, t)
+
+    # first start on Oct 10 with balance 9,688 and -424 floating: the -460 already lost in October counts
+    mkt = DealMarket(equity=9_264.0 + 400, balance=9_688.0)
+    alerts = []
+    r = multi.MultiRunner(mkt, multi.load_mix()[:1], {}, alert=alerts.append, state_path=tmp_path / "s.json")
+    ev = r.check_guard(T("2026-10-10 10:00"))
+    assert r.guard.month_start_balance == pytest.approx(10_112.0) and r.guard.month_anchor == "history"
+    assert "month_stop" not in ev                                    # 9,664 - 10,112 = -448
+    mkt.equity = 9_600.0
+    assert "month_stop" in r.check_guard(T("2026-10-10 10:05"))      # -512
+    # a restart within the month reuses the stored anchor without asking the broker
+    class NoHistory(StubMarket):
+        def balance_at(self, t):
+            raise AssertionError("history must not be re-read within the month")
+    r2 = multi.MultiRunner(NoHistory(equity=9_600.0, balance=9_688.0), multi.load_mix()[:1], {},
+                           state_path=tmp_path / "s.json")
+    r2.check_guard(T("2026-10-12 10:00"))
+    assert r2.guard.month_start_balance == pytest.approx(10_112.0) and r2.guard.month_blocked
+    # a state file written by the old code (anchor = current balance) is repaired on the next poll
+    r2.guard.month_anchor = ""
+    r2.guard.month_start_balance = 9_688.0
+    r2.save_state()
+    r3 = multi.MultiRunner(DealMarket(equity=9_600.0, balance=9_688.0), multi.load_mix()[:1], {},
+                           state_path=tmp_path / "s.json")
+    r3.check_guard(T("2026-10-12 10:00"))
+    assert r3.guard.month_start_balance == pytest.approx(10_112.0) and r3.guard.month_anchor == "history"
+    # the override wins and is marked as such
+    r4 = multi.MultiRunner(DealMarket(equity=9_600.0, balance=9_688.0), multi.load_mix()[:1], {},
+                           state_path=tmp_path / "o.json", month_start_override=10_050.0)
+    r4.check_guard(T("2026-10-12 10:00"))
+    assert r4.guard.month_start_balance == 10_050.0 and r4.guard.month_anchor == "override"
 
 
 # ----------------------------------------------------------------- minimum sizing stop

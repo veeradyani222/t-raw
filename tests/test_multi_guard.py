@@ -88,6 +88,8 @@ class StubMarket:
         return n
     def realized_since(self, t):
         return 0.0
+    def balance_at(self, t):
+        return self.balance
 
 
 def test_runner_closes_every_magic_and_pending_on_daily_stop(tmp_path):
