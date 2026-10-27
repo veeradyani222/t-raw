@@ -185,6 +185,46 @@ def test_month_anchor_from_deal_history_spans_the_month_boundary(tmp_path):
     assert r4.guard.month_start_balance == 10_050.0 and r4.guard.month_anchor == "override"
 
 
+def test_month_anchor_for_an_account_opened_mid_month(tmp_path):
+    from collections import namedtuple
+    Deal = namedtuple("Deal", "time profit swap commission type")
+    E = lambda s: int(T(s).timestamp())
+    deals = [Deal(E("2026-10-20 15:50"), 10_000.0, 0.0, 0.0, multi.DEAL_TYPE_BALANCE),   # account opened
+             Deal(E("2026-10-22 09:00"), -300.0, 0.0, -14.0, 0),
+             Deal(E("2026-10-23 09:00"), -151.0, 0.0, 0.0, 1)]
+    # nothing happened before October: the anchor is the balance right after the deposit
+    assert multi.balance_from_deals(deals, T("2026-10-01")) == 10_000.0
+    # from November on it is the ordinary month-close balance
+    assert multi.balance_from_deals(deals, T("2026-11-01")) == pytest.approx(9_535.0)
+    # a deposit in the same second as the opening trade still counts as the opening balance
+    same = [Deal(E("2026-10-20 15:50"), 10_000.0, 0.0, 0.0, multi.DEAL_TYPE_BALANCE),
+            Deal(E("2026-10-20 15:50"), -5.0, 0.0, 0.0, 0)]
+    assert multi.balance_from_deals(same, T("2026-10-01")) == 9_995.0
+    # no deposit on record at all: nothing better than the plain sum (0 for an empty history)
+    assert multi.balance_from_deals(deals[1:], T("2026-10-01")) == 0.0
+
+    class DealMarket(StubMarket):
+        def balance_at(self, t):
+            return multi.balance_from_deals(deals, t)
+
+    mkt = DealMarket(equity=9_535.0, balance=9_535.0)
+    r = multi.MultiRunner(mkt, multi.load_mix()[:1], {}, state_path=tmp_path / "s.json")
+    ev = r.check_guard(T("2026-10-28 10:00"))
+    assert r.guard.month_start_balance == 10_000.0 and r.guard.month_anchor == "history"
+    assert r.guard.mtd(9_535.0) == -465.0 and "month_stop" not in ev
+    assert any("-465.00 vs -500 stop" in ln for ln in r.status_lines())
+    mkt.equity = 9_499.0
+    assert "month_stop" in r.check_guard(T("2026-10-28 10:05"))
+    # a zero 'history' anchor stored by the previous version is redone on the next poll
+    r.guard.month_start_balance = 0.0
+    r.guard.blocked_month = None
+    r.save_state()
+    r2 = multi.MultiRunner(DealMarket(equity=9_535.0, balance=9_535.0), multi.load_mix()[:1], {},
+                           state_path=tmp_path / "s.json")
+    r2.check_guard(T("2026-10-28 11:00"))
+    assert r2.guard.month_start_balance == 10_000.0
+
+
 # ----------------------------------------------------------------- minimum sizing stop
 def test_min_stop_math_gold():
     # gold long at 4000 with a $2 stop; ADR20 = 50 -> sizing distance 0.15*50 = 7.5

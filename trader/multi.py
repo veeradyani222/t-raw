@@ -198,21 +198,37 @@ def size_trade(symbol: str, side: str, close: float, sl: float, tp: float | None
                 resized=size_dist > stop_dist)
 
 
+DEAL_TYPE_BALANCE = 2       # MT5 deal type of a deposit / withdrawal
+
+
 def balance_from_deals(deals, before: pd.Timestamp) -> float:
     """Account balance as it stood just before `before` (broker time): the
     sum of profit + swap + commission over every deal with time < before,
-    balance deals (deposits / withdrawals) included. `deals` are MT5 deal
-    records or anything with .time (epoch seconds or Timestamp), .profit,
-    .swap and .commission."""
-    cut = pd.Timestamp(before)
-    cut_s = int(cut.timestamp())
-    total = 0.0
-    for d in deals:
-        t = d.time
-        early = (t < cut_s) if isinstance(t, (int, float)) else (pd.Timestamp(t) < cut)
-        if early:
-            total += float(d.profit) + float(getattr(d, "swap", 0.0)) + float(getattr(d, "commission", 0.0))
-    return total
+    balance deals (deposits / withdrawals) included.
+
+    An account opened AFTER `before` has no deals before it; then the anchor
+    is the balance right after the opening deposit (every deal up to and
+    including the first balance deal), so a month-to-date loss on a fresh
+    account counts from the deposit, not from zero.
+
+    `deals` are MT5 deal records or anything with .time (epoch seconds or
+    Timestamp), .profit, .swap, .commission and (for deposits) .type."""
+    def secs(t):
+        return float(t) if isinstance(t, (int, float)) else pd.Timestamp(t).timestamp()
+
+    def value(d):
+        return float(d.profit) + float(getattr(d, "swap", 0.0)) + float(getattr(d, "commission", 0.0))
+
+    cut = pd.Timestamp(before).timestamp()
+    deals = sorted(deals, key=lambda d: secs(d.time))
+    prior = [d for d in deals if secs(d.time) < cut]
+    if any(getattr(d, "type", None) == DEAL_TYPE_BALANCE for d in prior):
+        return sum(value(d) for d in prior)
+    first_dep = next((d for d in deals if getattr(d, "type", None) == DEAL_TYPE_BALANCE), None)
+    if first_dep is None:
+        return sum(value(d) for d in prior)
+    opened = secs(first_dep.time)
+    return sum(value(d) for d in deals if secs(d.time) <= opened)
 
 
 def average_daily_range(daily: pd.DataFrame, days: int = ADR_DAYS) -> float | None:
@@ -544,6 +560,8 @@ class MultiRunner:
                 log.warning("realized_since failed (%s); anchoring day on current balance", exc)
         month = f"{now.year:04d}-{now.month:02d}"
         anchor = self.guard.month_anchor if month == self.guard.month else ""
+        if anchor == "history" and self.guard.month_start_balance <= 0:
+            anchor = ""                       # a bad anchor stored by an earlier version: redo it
         if anchor not in ("history", "override"):
             # balance at the last close of the previous month = every deal before the 1st summed
             if self.month_start_override is not None:

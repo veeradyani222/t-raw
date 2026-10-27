@@ -289,8 +289,10 @@ class MT5Market:
 
     def balance_at(self, t: pd.Timestamp) -> float:
         """Balance just before broker time t: every deal since the account was
-        opened (deposits included) summed. Used to anchor the monthly stop."""
-        return balance_from_deals(self.deals_between(pd.Timestamp("2000-01-01"), t), t)
+        opened (deposits included) summed; for an account opened after t, the
+        balance right after its first deposit. Anchors the monthly stop."""
+        deals = self.deals_between(pd.Timestamp("2000-01-01"), pd.Timestamp("2100-01-01"))
+        return balance_from_deals(deals, t)
 
     def symbol_spec(self, symbol: str) -> dict:
         si = mt5.symbol_info(symbol)
