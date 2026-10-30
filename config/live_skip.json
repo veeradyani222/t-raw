@@ -1,0 +1,15 @@
+{
+  "_comment": "Strategies the live runner (trader/multi.py) must never trade, whatever mix file is loaded. Each entry matches on module + fn, and on symbol / tf when given. The runner logs one line per skipped strategy and lists it as OFF in the startup message; nothing is dropped silently. Why each one is here: docs/2026-10-31-round3-live-readiness.md.",
+  "skip": [
+    {
+      "module": "research.search3.metals.strategies",
+      "fn": "build_ratio_z",
+      "reason": "needs a second symbol's bars (XAGUSD via harness.load from data/search); the live window only carries its own symbol"
+    },
+    {
+      "module": "research.search3.oil_gas.strategies",
+      "fn": "build_spread_reversion",
+      "reason": "needs XBRUSD bars via harness.load from data/search while trading XTIUSD; the live window only carries its own symbol"
+    }
+  ]
+}

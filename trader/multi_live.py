@@ -3,6 +3,11 @@
     python run_live.py                 # all strategies in docs/board/portfolio-lp300-66.json
     python run_live.py --preflight     # connect, print the symbol table, exit
 
+Env (.env): MULTI_MIX_PATH=<mix json> runs another mix (default the 66);
+MULTI_SKIP_UNTRADABLE=1 runs on with the strategies whose symbol fails the
+pre-flight switched off instead of refusing to start. config/live_skip.json
+names strategies that are never traded (one log line each).
+
 Start-up: demo-only + hedging + Algo-Trading checks, the symbol pre-flight
 table (refuses to run on any mismatch unless MULTI_SKIP_UNTRADABLE=1, which
 disables just the affected strategies and says so loudly), a warm-up that
@@ -31,8 +36,9 @@ from pathlib import Path
 from . import mt5_market
 from .alerts import send_alert
 from .config import CONFIG, Config
-from .multi import (DAILY_STOP, FLOOR, MIX_PATH, SCALE_HIGH, SCALE_LOW, SCALE_SIZE, STATE_PATH,
-                    WINDOW_BARS, MultiRunner, load_mix, load_symbol_map, load_symbol_specs)
+from .multi import (DAILY_STOP, FLOOR, SCALE_HIGH, SCALE_LOW, SCALE_SIZE, STATE_PATH, WINDOW_BARS,
+                    MultiRunner, conv_symbols, load_mix, load_skip_list, load_symbol_map,
+                    load_symbol_specs, mix_path, skip_reasons)
 from .mt5_market import MT5Error, MT5Market
 from .telegram_commands import fetch_commands
 
@@ -113,27 +119,58 @@ def handle_command(runner: MultiRunner, text: str) -> str:
     return HELP
 
 
+def disabled_strategies(specs, problems: dict[str, str], conv: dict[str, list[str]],
+                        skipped: dict[int, str]) -> dict[int, str]:
+    """idx -> reason for every strategy that must not trade: its symbol failed
+    the pre-flight, the pair that converts its P&L to USD does not quote, or it
+    is on the skip list. Pure; one log line per strategy."""
+    out = dict(skipped)
+    for s in specs:
+        if s.idx in out:
+            continue
+        if s.symbol in problems:
+            out[s.idx] = problems[s.symbol]
+        else:
+            for pair, users in conv.items():
+                if s.symbol in users and pair in problems:
+                    out[s.idx] = f"conversion pair {pair}: {problems[pair]}"
+        if s.idx in out:
+            log.warning("%s DISABLED (%s)", s.name, out[s.idx])
+    return out
+
+
 def startup(cfg: Config, preflight_only: bool = False) -> MultiRunner | None:
     load_symbol_specs()                       # refuses to start without the sizing table
     acct = mt5_market.connect(cfg)
-    specs = load_mix(MIX_PATH)
-    symbol_map = load_symbol_map()
-    rows, problems = mt5_market.preflight([s.symbol for s in specs], symbol_map)
+    path = mix_path()
+    specs = load_mix(path)
+    log.info("mix: %s (%d strategies)%s", path, len(specs),
+             "" if not os.environ.get("MULTI_MIX_PATH") else "  [MULTI_MIX_PATH]")
+    skipped = skip_reasons(specs, load_skip_list())
+    symbol_map = load_symbol_map(server=acct["server"])
+    conv = conv_symbols([s for s in specs if s.idx not in skipped])
+    rows, problems = mt5_market.preflight([s.symbol for s in specs if s.idx not in skipped], symbol_map,
+                                          quote_only=set(conv))
     table = mt5_market.preflight_table(rows)
     log.info("pre-flight:\n%s", table)
     print(table)
-    disabled = {s.idx: problems[s.symbol] for s in specs if s.symbol in problems}
+    disabled = disabled_strategies(specs, problems, conv, skipped)
     if problems:
         msg = "\n".join(f"  {k}: {v}" for k, v in problems.items())
+        n_pf = len([i for i in disabled if i not in skipped])
         if os.environ.get("MULTI_SKIP_UNTRADABLE") != "1":
-            raise MT5Error(f"pre-flight FAILED for {len(problems)} symbol(s) ({len(disabled)} "
+            raise MT5Error(f"pre-flight FAILED for {len(problems)} symbol(s) ({n_pf} "
                            f"strategies):\n{msg}\nFix the symbol map (config/symbols.json) or use "
                            "a broker that trades them. To run the rest anyway, set MULTI_SKIP_UNTRADABLE=1.")
-        log.warning("MULTI_SKIP_UNTRADABLE=1: %d strategies DISABLED:\n%s", len(disabled), msg)
+        log.warning("MULTI_SKIP_UNTRADABLE=1: %d strategies DISABLED by the pre-flight:\n%s", n_pf, msg)
+    if skipped:
+        log.warning("%d strategies on the skip list (config/live_skip.json):\n%s", len(skipped),
+                    "\n".join(f"  {specs[i].name}: {r}" for i, r in skipped.items()))
     if preflight_only:
         print(f"\naccount {acct['login']} on {acct['server']} ({acct['company']}), balance "
-              f"{acct['balance']:.2f} {acct['currency']}; {len(specs) - len(disabled)}/{len(specs)} "
-              f"strategies runnable")
+              f"{acct['balance']:.2f} {acct['currency']}; mix {path.name}: "
+              f"{len(specs) - len(disabled)}/{len(specs)} strategies runnable "
+              f"({len(skipped)} on the skip list)")
         return None
     runner = MultiRunner(MT5Market(), specs, symbol_map, alert=lambda t: send_alert(cfg, t),
                          disabled=disabled, state_path=STATE_PATH)
@@ -145,7 +182,7 @@ def startup(cfg: Config, preflight_only: bool = False) -> MultiRunner | None:
 
     live_n = len(specs) - len(disabled)
     head = (f"\U0001F7E2 multi-strategy bot started on {acct['server']} (account {acct['login']}, "
-            f"{acct['company']}). Equity {acct['equity']:.2f} {acct['currency']}. "
+            f"{acct['company']}). Equity {acct['equity']:.2f} {acct['currency']}. Mix {path.name}: "
             f"{live_n}/{len(specs)} strategies live, {len(disabled)} disabled. "
             f"Rails: close ALL at -{DAILY_STOP:.0f} on the server day, permanent halt at equity "
             f"{FLOOR:.0f}. Risk rules: new trades at {SCALE_SIZE:g}x size while equity is below "
@@ -157,9 +194,9 @@ def startup(cfg: Config, preflight_only: bool = False) -> MultiRunner | None:
     for chunk in _chunks(["Pre-flight (research vs broker):"] + table.split("\n")):
         send_alert(cfg, chunk)
     if disabled:
-        send_alert(cfg, f"⚠️ {len(disabled)} strategies are NOT running because their symbols "
-                        f"cannot be traded on this account:\n" +
-                        "\n".join(f"  {k}: {v}" for k, v in problems.items()))
+        send_alert(cfg, f"⚠️ {len(disabled)} strategies are NOT running (symbol failed the pre-flight, "
+                        f"conversion pair missing, or on config/live_skip.json):\n" +
+                        "\n".join(f"  {specs[i].name}: {r}" for i, r in sorted(disabled.items())))
     send_alert(cfg, "\n".join(runner.status_lines()))
     return runner
 

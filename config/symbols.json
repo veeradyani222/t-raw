@@ -1,10 +1,18 @@
 {
-  "_comment": "research symbol -> broker symbol. Names not listed map to themselves. Edit this for a broker that names things differently (e.g. FundedNext: DE40 -> GER40). The pre-flight checks every mapped symbol exists, is tradable and has the contract/point/lot-step the research assumed.",
+  "_comment": "research symbol -> broker symbol. Names not listed map to themselves. 'map' applies on every broker; 'servers' holds overrides keyed by a PREFIX of the MT5 server name (ICMarketsSC matches ICMarketsSC-Demo and -Live), merged on top of 'map' at startup. Keys starting with '_' are comments. The pre-flight checks every mapped symbol exists, is tradable and has the contract/point/lot-step the research assumed; a conversion pair (USDJPY for JPY P&L etc.) only has to quote.",
   "map": {
     "XAUUSD": "XAUUSD",
     "DE40": "DE40",
     "US500": "US500",
     "US30": "US30",
     "USTEC": "USTEC"
+  },
+  "servers": {
+    "ICMarketsSC": {
+      "_comment": "IC Markets. The round-3 research bars and contract specs for FRA40 and JPN225 were fetched from this server under those exact names (config/symbol_specs.json also carries F40 and JP225, which exist alongside with DIFFERENT specs: point 0.01 / lot min 0.1 instead of 0.1 / 1.0, contract 1 instead of 100), so they are NOT renamed here. If the pre-flight reports FRA40 or JPN225 'not found', add FRA40: F40 / JPN225: JP225 to this section and expect the pre-flight to then fail them on contract size, which is correct: the research was sized on the other contract. ESP35 is in no round-3 mix; its IC name is unverified (TODO)."
+    },
+    "_FundedNext": {
+      "DE40": "GER40"
+    }
   }
 }

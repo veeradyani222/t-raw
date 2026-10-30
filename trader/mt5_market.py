@@ -17,7 +17,7 @@ import pandas as pd
 
 from .broker_mt5 import TIMEFRAMES, MT5Error, _send_order, assert_demo
 from .config import Config
-from .multi import LivePos, conv_pair_for, research_spec
+from .multi import CONV_PAIR, LivePos, conv_pair_for, research_spec
 
 log = logging.getLogger("trader")
 
@@ -92,8 +92,7 @@ def _usd_per_unit(ccy: str) -> float | None:
     """Current USD value of 1 unit of `ccy` from the conversion pair's tick."""
     if ccy == "USD":
         return 1.0
-    pair, invert = {"JPY": ("USDJPY", True), "CHF": ("USDCHF", True), "CAD": ("USDCAD", True),
-                    "GBP": ("GBPUSD", False), "EUR": ("EURUSD", False)}.get(ccy, (None, None))
+    pair, invert = CONV_PAIR.get(ccy, (None, None))
     if pair is None:
         return None
     mt5.symbol_select(pair, True)
@@ -103,14 +102,16 @@ def _usd_per_unit(ccy: str) -> float | None:
     return 1.0 / t.bid if invert else t.bid
 
 
-def preflight(research_symbols: list[str], symbol_map: dict[str, str]) -> tuple[list[dict], dict[str, str]]:
+def preflight(research_symbols: list[str], symbol_map: dict[str, str],
+              quote_only: set[str] | frozenset[str] = frozenset()) -> tuple[list[dict], dict[str, str]]:
     """One row per research symbol; `problems` maps research symbol -> reason
     for anything that must not trade: missing, trade disabled, or a contract /
     point / lot step / profit currency that differs from what the research
-    assumed (data/search/symbol_specs.json), or a tick value that does not
-    match contract x tick size x FX rate within 5%."""
+    assumed (config/symbol_specs.json), or a tick value that does not match
+    contract x tick size x FX rate within 5%. Symbols in `quote_only` (the
+    conversion pairs, e.g. USDJPY for JPY P&L) only have to exist and quote."""
     rows, problems = [], {}
-    for rs in sorted(set(research_symbols)):
+    for rs in sorted(set(research_symbols) | set(quote_only)):
         bs = symbol_map.get(rs, rs)
         want = research_spec(rs)
         row = dict(research=rs, broker=bs, found=False, tradable=False, contract=None, point=None,
@@ -127,6 +128,13 @@ def preflight(research_symbols: list[str], symbol_map: dict[str, str]) -> tuple[
                    contract=si.trade_contract_size, point=si.point, vol_min=si.volume_min,
                    vol_step=si.volume_step, ccy=si.currency_profit, tick_value=si.trade_tick_value,
                    spread=si.spread)
+        if rs in quote_only and rs not in research_symbols:
+            tick = mt5.symbol_info_tick(bs)
+            if tick is None or not tick.bid:
+                row["problem"] = "conversion pair: no quote"
+                problems[rs] = row["problem"]
+            rows.append(row)          # a conversion pair only has to quote; tradable/specs not checked
+            continue
         issues = []
         if not row["tradable"]:
             issues.append(f"trade disabled (trade_mode {si.trade_mode})")

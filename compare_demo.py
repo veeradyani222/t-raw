@@ -42,8 +42,8 @@ from research.prop import harness as H                     # noqa: E402
 from trader import mt5_market                             # noqa: E402
 from trader.alerts import send_alert                      # noqa: E402
 from trader.config import CONFIG                          # noqa: E402
-from trader.multi import (BASE_MAGIC, MIX_PATH, WINDOW_BARS, StrategySpec, attach_conv,  # noqa: E402
-                          conv_pair_for, load_mix, load_symbol_map)
+from trader.multi import (BASE_MAGIC, WINDOW_BARS, StrategySpec, attach_conv,  # noqa: E402
+                          conv_pair_for, load_mix, load_symbol_map, mix_path)
 from trader.mt5_market import MT5Market                   # noqa: E402
 
 ROOT = Path(__file__).resolve().parent
@@ -192,7 +192,7 @@ def main(argv=None) -> int:
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     ap.add_argument("--date", help="server day YYYY-MM-DD (default: yesterday, broker time)")
     ap.add_argument("--telegram", action="store_true", help="send the summary to Telegram")
-    ap.add_argument("--mix", default=str(MIX_PATH))
+    ap.add_argument("--mix", default=str(mix_path()), help="mix json (default: MULTI_MIX_PATH or the 66)")
     a = ap.parse_args(argv)
     logging.basicConfig(level=logging.INFO, format="%(asctime)s %(levelname)s %(message)s")
     mt5_market.connect(CONFIG)

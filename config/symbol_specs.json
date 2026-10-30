@@ -493,5 +493,32 @@
   "vol_min": 1.0,
   "vol_step": 1.0,
   "vol_max": 250.0
+ },
+ "EURNOK": {
+  "digits": 5,
+  "point": 1e-05,
+  "contract": 100000.0,
+  "profit_ccy": "NOK",
+  "vol_min": 0.01,
+  "vol_step": 0.01,
+  "vol_max": 500.0
+ },
+ "USDMXN": {
+  "digits": 5,
+  "point": 1e-05,
+  "contract": 100000.0,
+  "profit_ccy": "MXN",
+  "vol_min": 0.01,
+  "vol_step": 0.01,
+  "vol_max": 500.0
+ },
+ "USDCNH": {
+  "digits": 5,
+  "point": 1e-05,
+  "contract": 100000.0,
+  "profit_ccy": "CNH",
+  "vol_min": 0.01,
+  "vol_step": 0.01,
+  "vol_max": 500.0
  }
 }

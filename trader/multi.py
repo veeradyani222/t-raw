@@ -34,6 +34,7 @@ import importlib
 import json
 import logging
 import math
+import os
 from dataclasses import asdict, dataclass, field
 from pathlib import Path
 from typing import Callable, Protocol
@@ -46,8 +47,9 @@ from research.prop import harness as H
 log = logging.getLogger("trader")
 
 ROOT = Path(__file__).resolve().parents[1]
-MIX_PATH = ROOT / "docs" / "board" / "portfolio-lp300-66.json"
+MIX_PATH = ROOT / "docs" / "board" / "portfolio-lp300-66.json"     # default; env MULTI_MIX_PATH overrides
 SYMBOL_MAP_PATH = ROOT / "config" / "symbols.json"
+SKIP_PATH = ROOT / "config" / "live_skip.json"
 STATE_PATH = ROOT / "logs" / "multi_state.json"
 
 BASE_MAGIC = 500_000
@@ -93,20 +95,128 @@ class StrategySpec:
         return self.builder()(df, **self.params)
 
 
-def load_mix(path: Path | str = MIX_PATH) -> list[StrategySpec]:
+def mix_path() -> Path:
+    """The mix file to run: env MULTI_MIX_PATH (absolute, or relative to the
+    repo root) when set, else MIX_PATH (the 66). Read at call time so .env
+    (loaded by trader.config) is honoured."""
+    env = os.environ.get("MULTI_MIX_PATH", "").strip()
+    if not env:
+        return MIX_PATH
+    p = Path(env).expanduser()
+    return p if p.is_absolute() else ROOT / p
+
+
+def load_mix(path: Path | str | None = None) -> list[StrategySpec]:
+    """Strategies of a mix file (default: mix_path()). Also applies the
+    research cost patches (apply_research_patches) so sizing matches the judge
+    that produced the mix, whichever path loads it (live, compare, tests)."""
+    apply_research_patches()
+    path = mix_path() if path is None else path
     data = json.loads(Path(path).read_text())
     return [StrategySpec(i, m["module"], m["fn"], dict(m["params"]), m["symbol"].upper(),
                          m["tf"].upper(), float(m["risk"]))
             for i, m in enumerate(data["mix"])]
 
 
-def load_symbol_map(path: Path | str = SYMBOL_MAP_PATH) -> dict[str, str]:
-    """research symbol -> broker symbol. Missing names map to themselves."""
+def load_symbol_map(path: Path | str = SYMBOL_MAP_PATH, server: str | None = None) -> dict[str, str]:
+    """research symbol -> broker symbol. Missing names map to themselves.
+
+    config/symbols.json: "map" applies to every broker; "servers" holds
+    per-server overrides keyed by a prefix of the MT5 server name
+    ("ICMarketsSC" matches ICMarketsSC-Demo and ICMarketsSC-Live). Keys
+    starting with "_" are comments."""
     p = Path(path)
     if not p.exists():
         return {}
     data = json.loads(p.read_text())
-    return {k.upper(): v for k, v in data.get("map", {}).items()}
+    out = {k.upper(): v for k, v in data.get("map", {}).items() if not k.startswith("_")}
+    if server:
+        srv = server.lower()
+        for key, section in data.get("servers", {}).items():
+            if key.startswith("_"):
+                continue
+            if srv.startswith(key.lower()):
+                out.update({k.upper(): v for k, v in section.items() if not k.startswith("_")})
+    return out
+
+
+def load_skip_list(path: Path | str = SKIP_PATH) -> list[dict]:
+    """config/live_skip.json: strategies the live runner must never trade,
+    each with module, fn, optional symbol / tf and a reason (see
+    docs/2026-10-31-round3-live-readiness.md). Missing file = nothing skipped."""
+    p = Path(path)
+    if not p.exists():
+        return []
+    data = json.loads(p.read_text())
+    return [e for e in data.get("skip", []) if not str(e.get("module", "")).startswith("_")]
+
+
+def skip_reasons(specs: list[StrategySpec], skip: list[dict]) -> dict[int, str]:
+    """idx -> reason for every spec matched by an entry of the skip list.
+    An entry matches on module + fn, and on symbol / tf when it names them.
+    One log line per skipped strategy: never a silent drop."""
+    out: dict[int, str] = {}
+    for s in specs:
+        for e in skip:
+            if e.get("module") != s.module or e.get("fn") != s.fn:
+                continue
+            if e.get("symbol") and str(e["symbol"]).upper() != s.symbol:
+                continue
+            if e.get("tf") and str(e["tf"]).upper() != s.tf:
+                continue
+            reason = "skip list: " + str(e.get("reason", "no reason given"))
+            out[s.idx] = reason
+            log.warning("%s SKIPPED (%s)", s.name, reason)
+            break
+    return out
+
+
+def conv_symbols(specs: list[StrategySpec]) -> dict[str, list[str]]:
+    """conversion pair -> research symbols that need its bars (quote-only use)."""
+    out: dict[str, list[str]] = {}
+    for sym in sorted({s.symbol for s in specs}):
+        pair = conv_pair_for(sym)
+        if pair is not None and pair[0] != sym:
+            out.setdefault(pair[0], []).append(sym)
+    return out
+
+
+# --------------------------------------------------------------------------- #
+# Research cost patches - the judge (research/search3/portfolio/core3.py)      #
+# --------------------------------------------------------------------------- #
+CRYPTO = {"BTCUSD", "ETHUSD", "LTCUSD", "XRPUSD", "SOLUSD", "ADAUSD", "BNBUSD", "DOTUSD"}
+_patched = False
+
+
+def apply_research_patches() -> None:
+    """Teach research.prop.harness the round-3 symbols exactly as the round-3
+    judge did (spread floors, commission-free index/energy/crypto sets, pip
+    sizes) so size_trade() reserves the same costs the research sized with.
+    Idempotent. Only harness tables are touched; nothing reads data/."""
+    global _patched
+    if _patched:
+        return
+    from research.search3.asia_indices import strategies as asia       # patches at import too
+    asia.patch_harness()                                               # JPN225/HK50/CHINA50/AUS200
+    from research.search3.exotics import strategies as exo
+    exo.patch_harness()                                                # exotic spread floors
+    import research.search3.europe_indices.common                      # noqa: F401  UK100/FRA40/... (import)
+    import research.search3.oil_gas.common                             # noqa: F401  energies (import)
+    import research.search3.us_indices.strategies                      # noqa: F401  US2000 (import)
+    from research.search3.commodity_fx import run as cfx
+    H.SPREAD_FLOOR.update(cfx.EXTRA_FLOOR)                             # cross floors only (no conv patch)
+    from research.search3.crypto import costs
+    sim_before = H.simulate
+    costs.apply()                                                      # crypto floors/pips, no commission
+    H.simulate = sim_before                                            # live never calls simulate; keep the judge's
+    H.SPREAD_FLOOR.update({"XPTUSD": 2.0, "XPDUSD": 3.0})
+    H.INDICES.update({"XPTUSD", "XPDUSD"})
+    _pip = H._pip
+
+    def pip(symbol):
+        return 0.1 if symbol in ("XPTUSD", "XPDUSD") else _pip(symbol)
+    H._pip = pip
+    _patched = True
 
 
 # --------------------------------------------------------------------------- #
@@ -144,10 +254,14 @@ def research_spec(symbol: str) -> dict:
 
 def size_trade(symbol: str, side: str, close: float, sl: float, tp: float | None,
                bar_spread_points: float, conv: float, risk: float,
-               spread_mult: float = 1.0, max_lots: float = 50.0) -> dict | None:
+               spread_mult: float = 1.0, max_lots: float | None = None) -> dict | None:
     """Replicates harness.simulate's entry block. Returns None when the harness
     would have skipped the signal (invalid levels or stop too wide to fund),
-    else dict(lots, entry_est, loss_per_lot, risk_usd)."""
+    else dict(lots, entry_est, loss_per_lot, risk_usd). max_lots defaults to
+    the judge's: 50 everywhere, uncapped for crypto (XRPUSD's lot minimum is
+    100, so the 50 cap would make every XRPUSD signal unfundable)."""
+    if max_lots is None:
+        max_lots = 1e9 if symbol in CRYPTO else 50.0
     spec = research_spec(symbol)
     contract = float(spec.get("contract", 100.0 if symbol == "XAUUSD" else 100000.0))
     point = float(spec.get("point", 0.01))
@@ -176,16 +290,26 @@ def size_trade(symbol: str, side: str, close: float, sl: float, tp: float | None
                 risk_usd=lots * loss_per_lot)
 
 
+# profit currency -> (pair whose close converts it to USD, invert). The round-3
+# groups add AUD (AUS200), NOK (EURNOK), MXN (USDMXN), CNH (USDCNH), HKD (HK50),
+# NZD; the research converted with the same pairs (asia/exotics patch_harness).
 CONV_PAIR = {"JPY": ("USDJPY", True), "CHF": ("USDCHF", True), "CAD": ("USDCAD", True),
-             "GBP": ("GBPUSD", False), "EUR": ("EURUSD", False)}
+             "GBP": ("GBPUSD", False), "EUR": ("EURUSD", False),
+             "AUD": ("AUDUSD", False), "NZD": ("NZDUSD", False),
+             "NOK": ("USDNOK", True), "SEK": ("USDSEK", True), "MXN": ("USDMXN", True),
+             "CNH": ("USDCNH", True), "ZAR": ("USDZAR", True), "SGD": ("USDSGD", True),
+             "PLN": ("USDPLN", True), "HKD": ("USDHKD", True)}
 
 
 def conv_pair_for(symbol: str) -> tuple[str, bool] | None:
-    """(pair, invert) whose close converts this symbol's P&L to USD; None = USD."""
+    """(pair, invert) whose close converts this symbol's P&L to USD; None = USD.
+    Raises KeyError naming the currency when no conversion pair is known."""
     spec = research_spec(symbol)
     ccy = spec.get("profit_ccy") or ("JPY" if symbol.endswith("JPY") else "USD")
     if ccy == "USD":
         return None
+    if ccy not in CONV_PAIR:
+        raise KeyError(f"{symbol}: no conversion pair for profit currency {ccy} (add it to CONV_PAIR)")
     return CONV_PAIR[ccy]
 
 
@@ -425,7 +549,8 @@ class MultiRunner:
         pair = conv_pair_for(symbol)
         pair_df = None
         if pair is not None:
-            pair_df = self.market.rates(self.broker_symbol(pair[0]), tf, self.window)
+            pair_df = df if pair[0] == symbol else \
+                self.market.rates(self.broker_symbol(pair[0]), tf, self.window)
         df = attach_conv(df, symbol, pair_df)
         df.attrs.update(symbol=symbol, tf=tf, split="live", score_from=None)
         return df

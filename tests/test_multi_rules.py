@@ -133,4 +133,12 @@ def test_tracked_specs_match_the_research_table():
     assert len(cfg) >= 23 and all(k in cfg for k in ("XAUUSD", "DE40", "EURJPY", "US500"))
     research = multi.ROOT / "data" / "search" / "symbol_specs.json"
     if research.exists():
-        assert json.loads(research.read_text()) == cfg
+        table = json.loads(research.read_text())
+        for k, v in table.items():                  # every fetched spec is tracked as-is ...
+            assert cfg[k] == v, k
+        # ... plus the exotics the round-3 research sized with its default 5-digit spec
+        # (research/search3/exotics/strategies.py patch_harness); never fetched from a broker
+        assert set(cfg) - set(table) == {"EURNOK", "USDMXN", "USDCNH"}
+        for k in ("EURNOK", "USDMXN", "USDCNH"):
+            assert cfg[k] == dict(digits=5, point=1e-05, contract=100000.0, profit_ccy=k[3:6],
+                                  vol_min=0.01, vol_step=0.01, vol_max=500.0)
