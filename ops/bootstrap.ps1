@@ -129,14 +129,18 @@ if (Test-Path $EnvFile) {
     if (-not $env:MT5_LOGIN -or -not $env:MT5_PASSWORD -or -not $env:MT5_SERVER) {
         throw "Set `$env:MT5_LOGIN, `$env:MT5_PASSWORD and `$env:MT5_SERVER before running (see the header of this script)."
     }
-    @(
+    $lines = @(
         "MT5_LOGIN=$($env:MT5_LOGIN)",
         "MT5_PASSWORD=$($env:MT5_PASSWORD)",
         "MT5_SERVER=$($env:MT5_SERVER)",
         "MT5_PATH=$Terminal",
         "TELEGRAM_BOT_TOKEN=$($env:TELEGRAM_BOT_TOKEN)",
         "TELEGRAM_CHAT_ID=$($env:TELEGRAM_CHAT_ID)"
-    ) | Set-Content -Path $EnvFile -Encoding ascii
+    )
+    # multi-strategy bot options, only when set in the shell (see ops/README.md)
+    if ($env:MULTI_MIX_PATH)        { $lines += "MULTI_MIX_PATH=$($env:MULTI_MIX_PATH)" }
+    if ($env:MULTI_SKIP_UNTRADABLE) { $lines += "MULTI_SKIP_UNTRADABLE=$($env:MULTI_SKIP_UNTRADABLE)" }
+    $lines | Set-Content -Path $EnvFile -Encoding ascii
     Write-Host "    written (login $($env:MT5_LOGIN) @ $($env:MT5_SERVER))"
 }
 

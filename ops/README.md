@@ -19,7 +19,8 @@ delete it to clear a halt). The demo-only guard is unchanged.
 cd <Desktop>\mt5-trader
 git fetch; git checkout multi-strategy-bot; git pull
 .venv\Scripts\python run_live.py --preflight      # symbol table; must say every symbol is ok
-.venv\Scripts\python run_live.py                 # or let the MT5Trader task / opsun_bot.ps1 do it
+.venv\Scripts\python run_live.py                 # or let the MT5Trader task / ops
+un_bot.ps1 do it
 ```
 
 The pre-flight refuses to run if a symbol is missing, not tradable, or has a
@@ -29,7 +30,23 @@ are quote-only ("Trade disabled")**, which takes 15 of the 66 strategies out; to
 run the other 51 anyway set `MULTI_SKIP_UNTRADABLE=1` (the startup Telegram
 message then lists exactly which strategies are off and why). On a broker that
 names symbols differently (FundedNext: `GER40` for `DE40`), edit
-`config/symbols.json`.
+`config/symbols.json` (`map` for every broker, `servers.<prefix of the MT5
+server name>` for one broker).
+
+**Bot environment variables** (`.env` in the repo root, read at start):
+
+| Variable | Meaning |
+|---|---|
+| `MT5_LOGIN` / `MT5_PASSWORD` / `MT5_SERVER` | the demo account; blank = attach to the terminal's logged-in account |
+| `MT5_PATH` | `terminal64.exe` to start/attach to; blank = auto-detect |
+| `TELEGRAM_BOT_TOKEN` / `TELEGRAM_CHAT_ID` | alerts and commands; blank = log only |
+| `MULTI_MIX_PATH` | the mix JSON to run, absolute or relative to the repo root. Default `docs/board/portfolio-lp300-66.json`. Round 3: `docs/board/portfolio-round3-2y.json`, `-3y.json` or `-5y.json` (readiness per strategy: `docs/2026-10-31-round3-live-readiness.md`). `compare_demo.py` reads the same variable. |
+| `MULTI_SKIP_UNTRADABLE` | `1` = start anyway when the pre-flight rejects a symbol (missing, trade disabled, contract/point/lot-step/currency differ from the research) and switch off just those strategies, each named in the log and in the startup Telegram message. Unset = refuse to start. |
+
+Strategies that must never trade whatever the mix (today: the two round-3
+strategies that need a second symbol's bars) are listed with reasons in
+`config/live_skip.json`; the bot logs one `SKIPPED` line per strategy and shows
+them as OFF in the startup message.
 
 **Fresh GCP Windows VM from this branch:** same one-liner as below, with the
 branch's bootstrap and `MT5_TRADER_BRANCH`:
@@ -38,8 +55,9 @@ branch's bootstrap and `MT5_TRADER_BRANCH`:
 $env:MT5_TRADER_BRANCH='multi-strategy-bot'; $env:MULTI_SKIP_UNTRADABLE='1'; $env:MT5_LOGIN='...'; $env:MT5_PASSWORD='...'; $env:MT5_SERVER='MetaQuotes-Demo'; $env:TELEGRAM_BOT_TOKEN='...'; $env:TELEGRAM_CHAT_ID='...'; iex (irm https://raw.githubusercontent.com/veeradyani222/t-raw/multi-strategy-bot/ops/bootstrap.ps1)
 ```
 
-(`MULTI_SKIP_UNTRADABLE` is written into `.env`, so the launcher picks it up on
-every restart.)
+(`MULTI_SKIP_UNTRADABLE` and `MULTI_MIX_PATH`, when set in the shell, are written
+into `.env` by the bootstrap, so the launcher picks them up on every restart; on
+an existing box add the lines to `.env` by hand and restart the bot.)
 
 **Daily check routine (5 minutes, from the phone):**
 
