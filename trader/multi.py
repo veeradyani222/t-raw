@@ -120,9 +120,19 @@ def load_mix(path: Path | str | None = None) -> list[StrategySpec]:
     apply_research_patches()
     path = mix_path() if path is None else path
     data = json.loads(Path(path).read_text())
+    cap = max_risk()
     return [StrategySpec(i, m["module"], m["fn"], dict(m["params"]), m["symbol"].upper(),
-                         m["tf"].upper(), float(m["risk"]))
+                         m["tf"].upper(), min(float(m["risk"]), cap))
             for i, m in enumerate(data["mix"])]
+
+
+def max_risk() -> float:
+    """Per-trade risk cap: env MULTI_MAX_RISK as a fraction (0.0275 = 2.75%).
+    FundedNext funded accounts forbid any single trade risking more than 3% of
+    the starting balance; a cap a little under keeps fills with slippage legal.
+    Unset = no cap."""
+    v = os.environ.get("MULTI_MAX_RISK", "").strip()
+    return float(v) if v else float("inf")
 
 
 def load_symbol_map(path: Path | str = SYMBOL_MAP_PATH, server: str | None = None) -> dict[str, str]:
