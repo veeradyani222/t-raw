@@ -77,6 +77,12 @@ def connect(cfg: Config) -> dict:
                 currency=info.currency, company=info.company)
 
 
+def current_login() -> int | None:
+    """Login of the account the terminal is on right now (None if unknown)."""
+    info = mt5.account_info()
+    return int(info.login) if info is not None else None
+
+
 def account_ok(info) -> bool:
     return bool(info.trade_allowed and info.trade_expert)
 

@@ -173,7 +173,7 @@ def startup(cfg: Config, preflight_only: bool = False) -> MultiRunner | None:
               f"({len(skipped)} on the skip list)")
         return None
     runner = MultiRunner(MT5Market(), specs, symbol_map, alert=lambda t: send_alert(cfg, t),
-                         disabled=disabled, state_path=STATE_PATH)
+                         disabled=disabled, state_path=state_path_for(acct['login']))
     log.info("warming up %d symbol/timeframe windows of %d bars", len(runner.keys), WINDOW_BARS)
     runner.warmup(sleep=time.sleep)
     for key, t in runner.last_bar.items():
@@ -201,13 +201,34 @@ def startup(cfg: Config, preflight_only: bool = False) -> MultiRunner | None:
     return runner
 
 
+def state_path_for(login) -> Path:
+    """One state file per account: the daily-stop baseline, halt flag and open
+    tickets of one account must never be applied to another (switching the
+    terminal from a demo to a prop account mid-day would otherwise measure the
+    new account's daily loss from the old account's balance)."""
+    return STATE_PATH.with_name(f"multi_state_{login}.json")
+
+
+class AccountChanged(SystemExit):
+    """The terminal is now on a different account: exit so ops/run_bot.ps1
+    restarts the bot, which re-runs the pre-flight against the new account."""
+
+
 def run_multi(cfg: Config = CONFIG) -> None:
     runner = startup(cfg)
+    start_login = mt5_market.current_login()
     _, tg_offset = fetch_commands(cfg, None)        # drain backlog without acting on it
     last_status = last_heartbeat = time.time()
     polls = 0
     try:
         while True:
+            now_login = mt5_market.current_login()
+            if start_login and now_login and now_login != start_login:
+                log.warning("account changed %s -> %s: exiting so the bot restarts on the new account",
+                            start_login, now_login)
+                send_alert(cfg, f"🔁 account changed {start_login} -> {now_login}: restarting the bot "
+                                "(fresh pre-flight and a fresh daily-stop baseline)")
+                raise AccountChanged(0)
             try:
                 events = runner.poll()
                 polls += 1
