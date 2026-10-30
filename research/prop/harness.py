@@ -55,7 +55,9 @@ import pandas as pd
 
 ROOT = Path(__file__).resolve().parents[2]
 DATA = ROOT / "data" / "search"
-OOS_START = pd.Timestamp("2024-01-01")
+# Round 2 (2026-10-23): the locked window is the last TWO years (Veer's call),
+# matching the window the live mix was sized on. Override with PROP_OOS_START.
+OOS_START = pd.Timestamp(os.environ.get("PROP_OOS_START", "2024-10-20"))
 BASELINE = 10_000.0
 FIRM_DAILY, FIRM_TOTAL = 0.04, 0.08          # FundedNext Stellar Lite
 SAFE_DAILY, SAFE_DD = 0.03, 0.06             # our buffered judging limits

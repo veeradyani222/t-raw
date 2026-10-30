@@ -205,5 +205,293 @@
   "vol_min": 0.1,
   "vol_step": 0.1,
   "vol_max": 250.0
+ },
+ "XPTUSD": {
+  "digits": 3,
+  "point": 0.001,
+  "contract": 1.0,
+  "profit_ccy": "USD",
+  "vol_min": 0.1,
+  "vol_step": 0.1,
+  "vol_max": 100.0
+ },
+ "XPDUSD": {
+  "digits": 3,
+  "point": 0.001,
+  "contract": 1.0,
+  "profit_ccy": "USD",
+  "vol_min": 0.1,
+  "vol_step": 0.1,
+  "vol_max": 100.0
+ },
+ "JPN225": {
+  "digits": 0,
+  "point": 1.0,
+  "contract": 100.0,
+  "profit_ccy": "JPY",
+  "vol_min": 1.0,
+  "vol_step": 1.0,
+  "vol_max": 170.0
+ },
+ "HK50": {
+  "digits": 2,
+  "point": 0.01,
+  "contract": 1.0,
+  "profit_ccy": "HKD",
+  "vol_min": 0.1,
+  "vol_step": 0.1,
+  "vol_max": 250.0
+ },
+ "UK100": {
+  "digits": 2,
+  "point": 0.01,
+  "contract": 1.0,
+  "profit_ccy": "GBP",
+  "vol_min": 0.1,
+  "vol_step": 0.1,
+  "vol_max": 250.0
+ },
+ "FRA40": {
+  "digits": 1,
+  "point": 0.1,
+  "contract": 1.0,
+  "profit_ccy": "EUR",
+  "vol_min": 1.0,
+  "vol_step": 1.0,
+  "vol_max": 160.0
+ },
+ "AUS200": {
+  "digits": 2,
+  "point": 0.01,
+  "contract": 1.0,
+  "profit_ccy": "AUD",
+  "vol_min": 0.1,
+  "vol_step": 0.1,
+  "vol_max": 250.0
+ },
+ "ESP35": {
+  "digits": 1,
+  "point": 0.1,
+  "contract": 1.0,
+  "profit_ccy": "EUR",
+  "vol_min": 1.0,
+  "vol_step": 1.0,
+  "vol_max": 150.0
+ },
+ "IT40": {
+  "digits": 2,
+  "point": 0.01,
+  "contract": 1.0,
+  "profit_ccy": "EUR",
+  "vol_min": 0.1,
+  "vol_step": 0.1,
+  "vol_max": 250.0
+ },
+ "CHINA50": {
+  "digits": 2,
+  "point": 0.01,
+  "contract": 1.0,
+  "profit_ccy": "USD",
+  "vol_min": 0.1,
+  "vol_step": 0.1,
+  "vol_max": 250.0
+ },
+ "EURAUD": {
+  "digits": 5,
+  "point": 1e-05,
+  "contract": 100000.0,
+  "profit_ccy": "AUD",
+  "vol_min": 0.01,
+  "vol_step": 0.01,
+  "vol_max": 500.0
+ },
+ "GBPAUD": {
+  "digits": 5,
+  "point": 1e-05,
+  "contract": 100000.0,
+  "profit_ccy": "AUD",
+  "vol_min": 0.01,
+  "vol_step": 0.01,
+  "vol_max": 35.0
+ },
+ "AUDNZD": {
+  "digits": 5,
+  "point": 1e-05,
+  "contract": 100000.0,
+  "profit_ccy": "NZD",
+  "vol_min": 0.01,
+  "vol_step": 0.01,
+  "vol_max": 500.0
+ },
+ "EURNZD": {
+  "digits": 5,
+  "point": 1e-05,
+  "contract": 100000.0,
+  "profit_ccy": "NZD",
+  "vol_min": 0.01,
+  "vol_step": 0.01,
+  "vol_max": 500.0
+ },
+ "GBPNZD": {
+  "digits": 5,
+  "point": 1e-05,
+  "contract": 100000.0,
+  "profit_ccy": "NZD",
+  "vol_min": 0.01,
+  "vol_step": 0.01,
+  "vol_max": 35.0
+ },
+ "EURCAD": {
+  "digits": 5,
+  "point": 1e-05,
+  "contract": 100000.0,
+  "profit_ccy": "CAD",
+  "vol_min": 0.01,
+  "vol_step": 0.01,
+  "vol_max": 500.0
+ },
+ "BTCUSD": {
+  "digits": 2,
+  "point": 0.01,
+  "contract": 1.0,
+  "profit_ccy": "USD",
+  "vol_min": 0.01,
+  "vol_step": 0.01,
+  "vol_max": 10.0
+ },
+ "ETHUSD": {
+  "digits": 2,
+  "point": 0.01,
+  "contract": 1.0,
+  "profit_ccy": "USD",
+  "vol_min": 0.01,
+  "vol_step": 0.01,
+  "vol_max": 10.0
+ },
+ "XRPUSD": {
+  "digits": 4,
+  "point": 0.0001,
+  "contract": 1.0,
+  "profit_ccy": "USD",
+  "vol_min": 100.0,
+  "vol_step": 0.01,
+  "vol_max": 1000.0
+ },
+ "LTCUSD": {
+  "digits": 2,
+  "point": 0.01,
+  "contract": 1.0,
+  "profit_ccy": "USD",
+  "vol_min": 0.05,
+  "vol_step": 0.01,
+  "vol_max": 10.0
+ },
+ "SOLUSD": {
+  "digits": 4,
+  "point": 0.0001,
+  "contract": 1.0,
+  "profit_ccy": "USD",
+  "vol_min": 1.0,
+  "vol_step": 1.0,
+  "vol_max": 100.0
+ },
+ "ADAUSD": {
+  "digits": 5,
+  "point": 1e-05,
+  "contract": 10.0,
+  "profit_ccy": "USD",
+  "vol_min": 100.0,
+  "vol_step": 0.01,
+  "vol_max": 1000.0
+ },
+ "BNBUSD": {
+  "digits": 3,
+  "point": 0.001,
+  "contract": 1.0,
+  "profit_ccy": "USD",
+  "vol_min": 0.01,
+  "vol_step": 0.01,
+  "vol_max": 10.0
+ },
+ "DOTUSD": {
+  "digits": 3,
+  "point": 0.001,
+  "contract": 1.0,
+  "profit_ccy": "USD",
+  "vol_min": 100.0,
+  "vol_step": 1.0,
+  "vol_max": 1000.0
+ },
+ "XTIUSD": {
+  "digits": 3,
+  "point": 0.001,
+  "contract": 100.0,
+  "profit_ccy": "USD",
+  "vol_min": 0.01,
+  "vol_step": 0.01,
+  "vol_max": 50.0
+ },
+ "XBRUSD": {
+  "digits": 3,
+  "point": 0.001,
+  "contract": 100.0,
+  "profit_ccy": "USD",
+  "vol_min": 0.01,
+  "vol_step": 0.01,
+  "vol_max": 50.0
+ },
+ "XNGUSD": {
+  "digits": 4,
+  "point": 0.0001,
+  "contract": 10000.0,
+  "profit_ccy": "USD",
+  "vol_min": 0.01,
+  "vol_step": 0.01,
+  "vol_max": 50.0
+ },
+ "JP225": {
+  "digits": 2,
+  "point": 0.01,
+  "contract": 1.0,
+  "profit_ccy": "JPY",
+  "vol_min": 1.0,
+  "vol_step": 1.0,
+  "vol_max": 250.0
+ },
+ "F40": {
+  "digits": 2,
+  "point": 0.01,
+  "contract": 1.0,
+  "profit_ccy": "EUR",
+  "vol_min": 0.1,
+  "vol_step": 0.1,
+  "vol_max": 250.0
+ },
+ "STOXX50": {
+  "digits": 2,
+  "point": 0.01,
+  "contract": 1.0,
+  "profit_ccy": "EUR",
+  "vol_min": 0.1,
+  "vol_step": 0.1,
+  "vol_max": 250.0
+ },
+ "SWI20": {
+  "digits": 2,
+  "point": 0.01,
+  "contract": 1.0,
+  "profit_ccy": "CHF",
+  "vol_min": 1.0,
+  "vol_step": 1.0,
+  "vol_max": 250.0
+ },
+ "US2000": {
+  "digits": 2,
+  "point": 0.01,
+  "contract": 1.0,
+  "profit_ccy": "USD",
+  "vol_min": 1.0,
+  "vol_step": 1.0,
+  "vol_max": 250.0
  }
 }
