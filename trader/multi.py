@@ -53,6 +53,13 @@ SKIP_PATH = ROOT / "config" / "live_skip.json"
 STATE_PATH = ROOT / "logs" / "multi_state.json"
 
 BASE_MAGIC = 500_000
+
+
+def base_magic() -> int:
+    """Magic base: env MULTI_BASE_MAGIC (default 500000). Give each mix its own
+    range so a new mix never adopts positions another mix left open."""
+    v = os.environ.get("MULTI_BASE_MAGIC", "").strip()
+    return int(v) if v else BASE_MAGIC
 WINDOW_BARS = 6000          # warmup: bos_lookback 2000 on M30, SMA1000 on H1, D1 200-bar filters
 DAILY_STOP = 300.0          # $ floating loss on the server day -> close all, block the day
 FLOOR = 9_300.0             # equity at/below this -> permanent halt (buffer above the $9,200 rail)
@@ -78,7 +85,7 @@ class StrategySpec:
 
     @property
     def magic(self) -> int:
-        return BASE_MAGIC + self.idx
+        return base_magic() + self.idx
 
     @property
     def name(self) -> str:
