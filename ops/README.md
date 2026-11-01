@@ -47,6 +47,7 @@ server name>` for one broker).
 | `MULTI_DAILY_LIMIT_PCT` | the firm's daily loss limit in % (default 4). The bot closes everything at 75% of it. |
 | `MULTI_MAX_LOSS_PCT` | the firm's static max loss in % (default 8). Halt floor = size - 87.5% of it; half size below size - 37.5%, full above size - 12.5%. $5K Lite: 5000/4/8. $6K 2-Step: 6000/5/10. |
 | `MULTI_ALLOW_REAL_LOGINS` | comma-separated logins the bot may trade although MT5 reports them non-demo. Prop-firm challenge accounts (FundedNext) report 'real'. Empty = demo only. |
+| `MULTI_MAX_OPEN_RISK_PCT` | cap on the summed risk of all open trades (stop distance x size, scaled to where each stop sits now), % of the account size. FundedNext funded accounts allow 3% at any time across all trades; set it after passing the challenge. Empty = no cap. |
 | `MULTI_SKIP_UNTRADABLE` | `1` = start anyway when the pre-flight rejects a symbol (missing, trade disabled, contract/point/lot-step/currency differ from the research) and switch off just those strategies, each named in the log and in the startup Telegram message. Unset = refuse to start. |
 
 Strategies that must never trade whatever the mix (today: the two round-3

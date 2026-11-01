@@ -43,3 +43,20 @@ def test_real_account_refused_unless_listed(monkeypatch):
     assert_demo(_acct(12118056, mt5.ACCOUNT_TRADE_MODE_REAL))
     with pytest.raises(MT5Error):
         assert_demo(_acct(555, mt5.ACCOUNT_TRADE_MODE_REAL))
+
+
+def test_open_risk_follows_the_stop():
+    st = multi.StratState(ticket=1, side="long", entry=100.0, sl=90.0, sl0=90.0, lots=1.0, risk_usd=50.0)
+    assert multi.open_risk(st) == 50.0
+    st.sl = 95.0
+    assert multi.open_risk(st) == 25.0
+    st.sl = 101.0                                     # trailed past the entry: nothing at risk
+    assert multi.open_risk(st) == 0.0
+
+
+def test_open_risk_cap_from_env(monkeypatch):
+    monkeypatch.setenv("MULTI_ACCOUNT_SIZE", "5000")
+    monkeypatch.delenv("MULTI_MAX_OPEN_RISK_PCT", raising=False)
+    assert multi.max_open_risk() is None
+    monkeypatch.setenv("MULTI_MAX_OPEN_RISK_PCT", "3")
+    assert multi.max_open_risk() == 150.0

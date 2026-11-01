@@ -351,6 +351,26 @@ def broker_lots(symbol: str, research_lots: float, broker: dict) -> float | None
     return None if lots < float(broker.get("vol_min") or step) - 1e-12 else lots
 
 
+def max_open_risk() -> float | None:
+    """$ cap on the risk of ALL open trades together: env MULTI_MAX_OPEN_RISK_PCT, % of
+    the account size. FundedNext funded accounts allow 3% at any time across all trades
+    (stop distance x size, vs the initial balance). Unset = no cap (challenge phases)."""
+    v = os.environ.get("MULTI_MAX_OPEN_RISK_PCT", "").strip()
+    return account_rules()["size"] * float(v) / 100 if v else None
+
+
+def open_risk(st) -> float:
+    """$ still at risk on one open trade: its sizing risk scaled to where the stop sits
+    now; 0 once the stop is at or past the entry."""
+    if not getattr(st, "open", False):
+        return 0.0
+    d0 = abs(st.entry - st.sl0)
+    if d0 <= 0:
+        return float(st.risk_usd)
+    losing_side = st.sl < st.entry if st.side == "long" else st.sl > st.entry
+    return float(st.risk_usd) * abs(st.entry - st.sl) / d0 if losing_side else 0.0
+
+
 # profit currency -> (pair whose close converts it to USD, invert). The round-3
 # groups add AUD (AUS200), NOK (EURNOK), MXN (USDMXN), CNH (USDCNH), HKD (HK50),
 # NZD; the research converted with the same pairs (asia/exotics patch_harness).
@@ -873,6 +893,14 @@ class MultiRunner:
             return
         if lots != sz["lots"]:
             sz = dict(sz, risk_usd=sz["risk_usd"] * lots / sz["lots"] * self._contract_ratio(spec.symbol))
+        cap = max_open_risk()
+        if cap is not None:
+            now_risk = sum(open_risk(x) for x in self.states.values())
+            if now_risk + sz["risk_usd"] > cap + 1e-9:
+                why = f"total open risk ${now_risk:.0f} + ${sz['risk_usd']:.0f} would exceed ${cap:.0f}"
+                log.info("%s | %s signal at %s skipped: %s", spec.name, entry.side, bar_t, why)
+                self._emit("skipped", magic=spec.magic, reason="open risk cap", strategy=spec.name, time=bar_t)
+                return
         pos = self.market.open(self.broker_symbol(spec.symbol), entry.side, lots,
                                float(entry.sl), float(entry.tp) if entry.tp is not None else 0.0,
                                spec.magic, f"ms{spec.idx}")
