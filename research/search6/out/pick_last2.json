@@ -1,0 +1,310 @@
+{
+ "rule": {
+  "great_pm": 40.0,
+  "min_trades": 30,
+  "size": 0.0025
+ },
+ "picks": [
+  "r6:yt37_ger40_lc1_lc2_untapped_zone|DE40|M30",
+  "pool:weekday_MW_Th|ETHUSD|H1",
+  "pool:bos_trail3_htfD50_H1|XAUUSD|H1",
+  "pool:htf_bo50_n24|XAUUSD|H1",
+  "pool:bos_trail3_htfD50_M30|XAUUSD|M30",
+  "pool:ch_24-24_s1.5_tp2.5_long|XAUUSD|H1",
+  "pool:ab_mql_range_mid_mr0.3|XAUUSD|M30",
+  "pool:pb_atr1.0_range_be1.0|XAUUSD|H1",
+  "pool:bos_hv_be1_M30|XAUUSD|M30",
+  "r6:yt150_gold_london_orb_2_5r|XAUUSD|M30",
+  "pool:first_hour_mult_break_de40|DE40|M30",
+  "pool:bb_breakout_M30_dev2.5|XAUUSD|M30",
+  "pool:crabel_k0.5_None|DE40|M30",
+  "pool:aroon_x+trend|XAUUSD|H1",
+  "pool:spike_follow|BTCUSD|H1",
+  "r6:yt119_connors_rsi2_10_90|US500|D1",
+  "pool:eia_fade_m30|XTIUSD|M30",
+  "pool:exo_eurnok_rsi2_h4|EURNOK|H4",
+  "pool:inside_bar_h4|XTIUSD|H4",
+  "r6:yt113_gold_swing_resistance_break_h1|XAUUSD|H1",
+  "pool:squeeze_h4_a25_kc2|ETHUSD|H4",
+  "r6:yt184_orb_15min_ustec|USTEC|M15",
+  "pool:sh_long_21-3_s3.0|XAUUSD|H1",
+  "pool:pdm_t10_h24|ETHUSD|H1",
+  "pool:rsi_rev|AUDCAD|H4",
+  "r6:yt7_ema50_pullback_discount_support_bounce|EURUSD|H1",
+  "pool:wd_MW_Th_a15|BTCUSD|D1",
+  "r6:yt105_ny_first5m_fvg_scalp|XAUUSD|M30",
+  "pool:d1_reversal_gbpusd|GBPUSD|D1",
+  "pool:pa_pin_ETHUSD_H4|ETHUSD|H4",
+  "pool:rsi_rev|US30|H1",
+  "pool:bb_breakout_H1_period250_dev2.75|XAUUSD|H1",
+  "pool:thursday_effect_h1|XBRUSD|H1",
+  "pool:rsi2_mr_aus200_h4|AUS200|H4",
+  "pool:round_big_bounce|USTEC|M30",
+  "pool:mon_long_h0_hold23|EURJPY|H1",
+  "pool:wo_d1.0_t0.2_r2|XAUUSD|H4",
+  "pool:asia0-9_te14_tp1.0|XAUUSD|H1",
+  "pool:prev_week_high_long_de40|DE40|M30",
+  "pool:inside_far_tp2|XAUUSD|H1",
+  "r6:yt109_gold_sd_zone_engulf_m15|XAUUSD|M30",
+  "pool:down_streak_k2_trend|US500|D1",
+  "pool:inside_h4_trail|XRPUSD|H4",
+  "pool:stoch_rev+trend|GBPUSD|H4",
+  "pool:trend_pullback_h4_10_30_100|USDCAD|H4",
+  "pool:nr_7_mid_r2|XAGUSD|H1",
+  "pool:monday_long_downweek|EURJPY|H1",
+  "pool:de_orb2.0_trNone_tp2.0_ex18|DE40|H1",
+  "pool:macd_zero|USTEC|H1",
+  "pool:zscore|US500|H4",
+  "pool:rsi2c_d1_ex10_usdjpy|USDJPY|D1",
+  "pool:us_open_fade_short_fra40|FRA40|M30",
+  "pool:exo_usdsek_weekly_fade|USDSEK|D1",
+  "pool:daily_mr_china50_d1|CHINA50|D1",
+  "pool:prev_week_break_long|USTEC|H1",
+  "pool:inside_day_break_usdchf|USDCHF|H4",
+  "pool:pwh_sweep_h4_wc|GBPJPY|H4",
+  "pool:bb_rev+trend|GBPUSD|H4",
+  "pool:ibs_lo0.2_hi0.8|US30|D1",
+  "pool:bb_reentry_r_sl0.8|EURNZD|H4",
+  "pool:tsmom_d1_lb40_a2|BTCUSD|D1",
+  "pool:gas_ma15_140_h1|XNGUSD|H1",
+  "r6:yt24_ema20_sma100_pullback_d1|AUDJPY|D1",
+  "pool:tsmom50|DE40|H4",
+  "pool:rsi2c_d1_ex10_gbpjpy|GBPJPY|D1"
+ ],
+ "results": {
+  "live23": {
+   "5k": {
+    "y1": {
+     "profit": 1495,
+     "per_month": 124,
+     "green_months": "8/13",
+     "worst_month": -685,
+     "stop_days": 15,
+     "lowest_balance": 4601,
+     "worst_day": -138,
+     "passed": 14,
+     "failed": 9,
+     "unfinished": 1
+    },
+    "last2": {
+     "profit": 16946,
+     "per_month": 696,
+     "green_months": "22/25",
+     "worst_month": -71,
+     "stop_days": 21,
+     "lowest_balance": 4807,
+     "worst_day": -138,
+     "passed": 47,
+     "failed": 0,
+     "unfinished": 4
+    },
+    "sepoct": {
+     "profit": 301,
+     "per_month": 153,
+     "green_months": "1/2",
+     "worst_month": -71,
+     "stop_days": 2,
+     "lowest_balance": 4967,
+     "worst_day": -138,
+     "passed": 1,
+     "failed": 0,
+     "unfinished": 2
+    }
+   },
+   "10k": {
+    "y1": {
+     "profit": 1273,
+     "per_month": 106,
+     "green_months": "7/13",
+     "worst_month": -1740,
+     "stop_days": 17,
+     "lowest_balance": 8535,
+     "worst_day": -325,
+     "passed": 13,
+     "failed": 10,
+     "unfinished": 1
+    },
+    "last2": {
+     "profit": 42516,
+     "per_month": 1747,
+     "green_months": "24/25",
+     "worst_month": -144,
+     "stop_days": 11,
+     "lowest_balance": 9829,
+     "worst_day": -325,
+     "passed": 46,
+     "failed": 0,
+     "unfinished": 5
+    },
+    "sepoct": {
+     "profit": 374,
+     "per_month": 190,
+     "green_months": "1/2",
+     "worst_month": -144,
+     "stop_days": 1,
+     "lowest_balance": 9878,
+     "worst_day": -325,
+     "passed": 0,
+     "failed": 0,
+     "unfinished": 3
+    }
+   }
+  },
+  "great (all, sized on last2)": {
+   "5k": {
+    "y1": {
+     "profit": 851,
+     "per_month": 71,
+     "green_months": "7/13",
+     "worst_month": -622,
+     "stop_days": 24,
+     "lowest_balance": 4366,
+     "worst_day": -138,
+     "passed": 15,
+     "failed": 9,
+     "unfinished": 0
+    },
+    "last2": {
+     "profit": 8016,
+     "per_month": 329,
+     "green_months": "24/25",
+     "worst_month": -66,
+     "stop_days": 8,
+     "lowest_balance": 4803,
+     "worst_day": -138,
+     "passed": 47,
+     "failed": 1,
+     "unfinished": 3
+    },
+    "sepoct": {
+     "profit": 290,
+     "per_month": 147,
+     "green_months": "1/2",
+     "worst_month": -66,
+     "stop_days": 0,
+     "lowest_balance": 4831,
+     "worst_day": -106,
+     "passed": 1,
+     "failed": 0,
+     "unfinished": 2
+    }
+   },
+   "10k": {
+    "y1": {
+     "profit": 1878,
+     "per_month": 156,
+     "green_months": "8/13",
+     "worst_month": -1388,
+     "stop_days": 23,
+     "lowest_balance": 8409,
+     "worst_day": -325,
+     "passed": 13,
+     "failed": 11,
+     "unfinished": 0
+    },
+    "last2": {
+     "profit": 25332,
+     "per_month": 1041,
+     "green_months": "23/25",
+     "worst_month": -673,
+     "stop_days": 15,
+     "lowest_balance": 9711,
+     "worst_day": -325,
+     "passed": 45,
+     "failed": 5,
+     "unfinished": 1
+    },
+    "sepoct": {
+     "profit": -85,
+     "per_month": -43,
+     "green_months": "1/2",
+     "worst_month": -673,
+     "stop_days": 1,
+     "lowest_balance": 8971,
+     "worst_day": -325,
+     "passed": 0,
+     "failed": 1,
+     "unfinished": 2
+    }
+   }
+  },
+  "live23 + new greats @0.5%": {
+   "5k": {
+    "y1": {
+     "profit": -1692,
+     "per_month": -141,
+     "green_months": "5/13",
+     "worst_month": -1290,
+     "stop_days": 134,
+     "lowest_balance": 1825,
+     "worst_day": -138,
+     "passed": 9,
+     "failed": 15,
+     "unfinished": 0
+    },
+    "last2": {
+     "profit": 10911,
+     "per_month": 448,
+     "green_months": "17/25",
+     "worst_month": -1146,
+     "stop_days": 210,
+     "lowest_balance": 4615,
+     "worst_day": -138,
+     "passed": 33,
+     "failed": 18,
+     "unfinished": 0
+    },
+    "sepoct": {
+     "profit": -1022,
+     "per_month": -518,
+     "green_months": "0/2",
+     "worst_month": -726,
+     "stop_days": 22,
+     "lowest_balance": 3740,
+     "worst_day": -138,
+     "passed": 0,
+     "failed": 3,
+     "unfinished": 0
+    }
+   },
+   "10k": {
+    "y1": {
+     "profit": -4061,
+     "per_month": -338,
+     "green_months": "5/13",
+     "worst_month": -3080,
+     "stop_days": 126,
+     "lowest_balance": 4217,
+     "worst_day": -325,
+     "passed": 8,
+     "failed": 16,
+     "unfinished": 0
+    },
+    "last2": {
+     "profit": 24072,
+     "per_month": 989,
+     "green_months": "15/25",
+     "worst_month": -2850,
+     "stop_days": 212,
+     "lowest_balance": 9061,
+     "worst_day": -325,
+     "passed": 27,
+     "failed": 24,
+     "unfinished": 0
+    },
+    "sepoct": {
+     "profit": -2034,
+     "per_month": -1032,
+     "green_months": "0/2",
+     "worst_month": -1568,
+     "stop_days": 21,
+     "lowest_balance": 7313,
+     "worst_day": -325,
+     "passed": 0,
+     "failed": 3,
+     "unfinished": 0
+    }
+   }
+  }
+ }
+}
