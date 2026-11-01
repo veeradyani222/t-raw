@@ -1,0 +1,308 @@
+{
+ "mix": [
+  {
+   "name": "yt37_ger40_lc1_lc2_untapped_zone",
+   "symbol": "DE40",
+   "tf": "M30",
+   "module": "research.search6.engine",
+   "fn": "build_spec",
+   "params": {
+    "spec": {
+     "side": "both",
+     "entry": {
+      "type": "order_block",
+      "k": 3
+     },
+     "session": {
+      "h0": 9,
+      "h1": 18
+     },
+     "days": [
+      0,
+      1,
+      2,
+      3,
+      4
+     ],
+     "stop": {
+      "type": "candle",
+      "buf_atr": 0.1
+     },
+     "target": {
+      "type": "rr",
+      "r": 5
+     },
+     "max_hold": 200
+    }
+   },
+   "group": "europe_indices",
+   "risk": 0.0025
+  },
+  {
+   "name": "weekday_MW_Th",
+   "symbol": "ETHUSD",
+   "tf": "H1",
+   "module": "research.search3.crypto.strategies",
+   "params": {},
+   "group": "crypto",
+   "fn": "build_weekday",
+   "risk": 0.0025
+  },
+  {
+   "name": "bos_trail3_htfD50_H1",
+   "symbol": "XAUUSD",
+   "tf": "H1",
+   "module": "research.search.gold_fix.strategies",
+   "fn": "build_bos",
+   "params": {
+    "tp_mode": "none",
+    "trail_atr": 3.0,
+    "htf": [
+     "1D",
+     50
+    ]
+   },
+   "risk": 0.0025,
+   "group": "live"
+  },
+  {
+   "name": "htf_bo50_n24",
+   "symbol": "XAUUSD",
+   "tf": "H1",
+   "module": "research.search.trend.strategies",
+   "fn": "build_htf_breakout",
+   "params": {
+    "d_n": 50,
+    "n_entry": 24
+   },
+   "risk": 0.0025,
+   "group": "live"
+  },
+  {
+   "name": "bos_trail3_htfD50_M30",
+   "symbol": "XAUUSD",
+   "tf": "M30",
+   "module": "research.search.gold_fix.strategies",
+   "fn": "build_bos",
+   "params": {
+    "tp_mode": "none",
+    "trail_atr": 3.0,
+    "htf": [
+     "1D",
+     50
+    ]
+   },
+   "risk": 0.0025,
+   "group": "live"
+  },
+  {
+   "name": "ch_24-24_s1.5_tp2.5_long",
+   "symbol": "XAUUSD",
+   "tf": "H1",
+   "module": "research.search3.metals.strategies",
+   "params": {
+    "n_long": 24,
+    "n_short": 24,
+    "stop_atr": 1.5,
+    "tp_r": 2.5,
+    "side": "long"
+   },
+   "group": "metals",
+   "fn": "build_channel_pt",
+   "risk": 0.0025
+  },
+  {
+   "name": "ab_mql_range_mid_mr0.3",
+   "symbol": "XAUUSD",
+   "tf": "M30",
+   "module": "research.search3.metals.strategies",
+   "params": {
+    "a0": 3,
+    "a1": 8,
+    "last_entry": 14,
+    "exit_hour": 21,
+    "tp": "range",
+    "stop": "mid",
+    "min_rng": 0.3,
+    "max_rng": 1.6,
+    "be_r": null
+   },
+   "group": "metals",
+   "fn": "build_asia_break",
+   "risk": 0.0025
+  },
+  {
+   "name": "pb_atr1.0_range_be1.0",
+   "symbol": "XAUUSD",
+   "tf": "H1",
+   "module": "research.search3.metals.strategies",
+   "params": {
+    "stop": "atr:1.0",
+    "tp": "range",
+    "be_r": 1
+   },
+   "group": "metals",
+   "fn": "build_pd_break",
+   "risk": 0.0025
+  },
+  {
+   "name": "bos_hv_be1_M30",
+   "symbol": "XAUUSD",
+   "tf": "M30",
+   "module": "research.search.gold_fix.strategies",
+   "fn": "build_bos",
+   "params": {
+    "tp_min_r": 2.0,
+    "atrp_min": 0.6,
+    "be_r": 1.0
+   },
+   "risk": 0.0025,
+   "group": "live"
+  },
+  {
+   "name": "yt150_gold_london_orb_2_5r",
+   "symbol": "XAUUSD",
+   "tf": "M30",
+   "module": "research.search6.engine",
+   "fn": "build_spec",
+   "params": {
+    "spec": {
+     "side": "both",
+     "entry": {
+      "type": "session_break",
+      "h0": 3,
+      "h1": 8
+     },
+     "session": {
+      "h0": 8,
+      "h1": 12
+     },
+     "days": [
+      0,
+      1,
+      2,
+      3,
+      4
+     ],
+     "stop": {
+      "type": "swing",
+      "n": 20,
+      "buf_atr": 0
+     },
+     "target": {
+      "type": "rr",
+      "r": 2.5
+     },
+     "max_hold": 52
+    }
+   },
+   "group": "metals",
+   "risk": 0.0025
+  },
+  {
+   "name": "first_hour_mult_break_de40",
+   "symbol": "DE40",
+   "tf": "M30",
+   "module": "research.search3.europe_indices.strategies",
+   "params": {
+    "mult": 0.5,
+    "sl": "opp",
+    "tp_r": null
+   },
+   "group": "europe_indices",
+   "fn": "build_fh_mult",
+   "risk": 0.0025
+  },
+  {
+   "name": "bb_breakout_M30_dev2.5",
+   "symbol": "XAUUSD",
+   "tf": "M30",
+   "module": "research.search.public_eas.strategies",
+   "fn": "build_bb_breakout",
+   "params": {
+    "dev": 2.5
+   },
+   "risk": 0.0025,
+   "group": "live"
+  },
+  {
+   "name": "crabel_k0.5_None",
+   "symbol": "DE40",
+   "tf": "M30",
+   "module": "research.search.breakout.strategies",
+   "fn": "build_crabel",
+   "params": {
+    "ss": 10.0,
+    "te": 14.0,
+    "exit_h": 18,
+    "k": 0.5,
+    "filt": null
+   },
+   "risk": 0.0025,
+   "group": "live"
+  },
+  {
+   "name": "aroon_x+trend",
+   "symbol": "XAUUSD",
+   "tf": "H1",
+   "module": "research.search.indicator_screen.strategies",
+   "fn": "build_rule",
+   "params": {
+    "rule": "aroon_x",
+    "trend": true
+   },
+   "risk": 0.0025,
+   "group": "live"
+  },
+  {
+   "name": "spike_follow",
+   "symbol": "BTCUSD",
+   "tf": "H1",
+   "module": "research.search3.crypto.strategies",
+   "params": {
+    "mode": "follow",
+    "rr": 2,
+    "hold": 12
+   },
+   "group": "crypto",
+   "fn": "build_vol_spike",
+   "risk": 0.0025
+  },
+  {
+   "name": "yt119_connors_rsi2_10_90",
+   "symbol": "US500",
+   "tf": "D1",
+   "module": "research.search6.engine",
+   "fn": "build_spec",
+   "params": {
+    "spec": {
+     "side": "both",
+     "trend": {
+      "type": "sma",
+      "n": 200
+     },
+     "entry": {
+      "type": "rsi",
+      "n": 2,
+      "lo": 10,
+      "hi": 90,
+      "mode": "level"
+     },
+     "stop": {
+      "type": "candle",
+      "buf_atr": 0.1
+     },
+     "target": {
+      "type": "ema_cross_back",
+      "fast": 1,
+      "slow": 5
+     },
+     "max_hold": 10
+    }
+   },
+   "group": "us_indices",
+   "risk": 0.0025
+  }
+ ],
+ "note": "Veer's rule 2026-11-01: top 16 by Oct 2024..Oct 2026 $/month, equal risk 0.25% ($10K fraction, x0.5 on $5K) = largest size whose exact $5K replay on that window keeps lowest >= $4750 and <= 12 stop days/yr. ONE test = Oct 2023..Oct 2024 (research/search6/out/top_n.json)."
+}

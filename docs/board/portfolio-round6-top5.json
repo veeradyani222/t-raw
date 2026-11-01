@@ -1,0 +1,100 @@
+{
+ "mix": [
+  {
+   "name": "yt37_ger40_lc1_lc2_untapped_zone",
+   "symbol": "DE40",
+   "tf": "M30",
+   "module": "research.search6.engine",
+   "fn": "build_spec",
+   "params": {
+    "spec": {
+     "side": "both",
+     "entry": {
+      "type": "order_block",
+      "k": 3
+     },
+     "session": {
+      "h0": 9,
+      "h1": 18
+     },
+     "days": [
+      0,
+      1,
+      2,
+      3,
+      4
+     ],
+     "stop": {
+      "type": "candle",
+      "buf_atr": 0.1
+     },
+     "target": {
+      "type": "rr",
+      "r": 5
+     },
+     "max_hold": 200
+    }
+   },
+   "group": "europe_indices",
+   "risk": 0.005
+  },
+  {
+   "name": "weekday_MW_Th",
+   "symbol": "ETHUSD",
+   "tf": "H1",
+   "module": "research.search3.crypto.strategies",
+   "params": {},
+   "group": "crypto",
+   "fn": "build_weekday",
+   "risk": 0.005
+  },
+  {
+   "name": "bos_trail3_htfD50_H1",
+   "symbol": "XAUUSD",
+   "tf": "H1",
+   "module": "research.search.gold_fix.strategies",
+   "fn": "build_bos",
+   "params": {
+    "tp_mode": "none",
+    "trail_atr": 3.0,
+    "htf": [
+     "1D",
+     50
+    ]
+   },
+   "risk": 0.005,
+   "group": "live"
+  },
+  {
+   "name": "htf_bo50_n24",
+   "symbol": "XAUUSD",
+   "tf": "H1",
+   "module": "research.search.trend.strategies",
+   "fn": "build_htf_breakout",
+   "params": {
+    "d_n": 50,
+    "n_entry": 24
+   },
+   "risk": 0.005,
+   "group": "live"
+  },
+  {
+   "name": "bos_trail3_htfD50_M30",
+   "symbol": "XAUUSD",
+   "tf": "M30",
+   "module": "research.search.gold_fix.strategies",
+   "fn": "build_bos",
+   "params": {
+    "tp_mode": "none",
+    "trail_atr": 3.0,
+    "htf": [
+     "1D",
+     50
+    ]
+   },
+   "risk": 0.005,
+   "group": "live"
+  }
+ ],
+ "note": "Veer's rule 2026-11-01: top 5 by Oct 2024..Oct 2026 $/month, equal risk 0.50% ($10K fraction, x0.5 on $5K) = largest size whose exact $5K replay on that window keeps lowest >= $4750 and <= 12 stop days/yr. ONE test = Oct 2023..Oct 2024 (research/search6/out/top_n.json)."
+}

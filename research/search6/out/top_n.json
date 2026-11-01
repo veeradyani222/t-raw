@@ -1,0 +1,367 @@
+{
+ "5": {
+  "risk": 0.005,
+  "names": [
+   "yt37_ger40_lc1_lc2_untapped_zone DE40 M30",
+   "weekday_MW_Th ETHUSD H1",
+   "bos_trail3_htfD50_H1 XAUUSD H1",
+   "htf_bo50_n24 XAUUSD H1",
+   "bos_trail3_htfD50_M30 XAUUSD M30"
+  ],
+  "k5": {
+   "y1": {
+    "profit": 1281,
+    "per_month": 107,
+    "green_months": "9/13",
+    "worst_month": -466,
+    "stop_days": 4,
+    "lowest_balance": 4023,
+    "worst_day": -154,
+    "passed": 14,
+    "failed": 7,
+    "unfinished": 3
+   },
+   "last2": {
+    "profit": 5820,
+    "per_month": 239,
+    "green_months": "23/25",
+    "worst_month": -78,
+    "stop_days": 3,
+    "lowest_balance": 4878,
+    "worst_day": -138,
+    "passed": 47,
+    "failed": 0,
+    "unfinished": 4
+   },
+   "sepoct": {
+    "profit": 123,
+    "per_month": 62,
+    "green_months": "1/2",
+    "worst_month": -53,
+    "stop_days": 0,
+    "lowest_balance": 4851,
+    "worst_day": -107,
+    "passed": 0,
+    "failed": 0,
+    "unfinished": 3
+   }
+  },
+  "k10": {
+   "y1": {
+    "profit": 2727,
+    "per_month": 227,
+    "green_months": "9/13",
+    "worst_month": -989,
+    "stop_days": 3,
+    "lowest_balance": 8095,
+    "worst_day": -325,
+    "passed": 14,
+    "failed": 7,
+    "unfinished": 3
+   },
+   "last2": {
+    "profit": 14030,
+    "per_month": 576,
+    "green_months": "23/25",
+    "worst_month": -316,
+    "stop_days": 4,
+    "lowest_balance": 9739,
+    "worst_day": -325,
+    "passed": 47,
+    "failed": 1,
+    "unfinished": 3
+   },
+   "sepoct": {
+    "profit": 261,
+    "per_month": 133,
+    "green_months": "1/2",
+    "worst_month": -316,
+    "stop_days": 0,
+    "lowest_balance": 9422,
+    "worst_day": -221,
+    "passed": 0,
+    "failed": 0,
+    "unfinished": 3
+   }
+  }
+ },
+ "8": {
+  "risk": 0.005,
+  "names": [
+   "yt37_ger40_lc1_lc2_untapped_zone DE40 M30",
+   "weekday_MW_Th ETHUSD H1",
+   "bos_trail3_htfD50_H1 XAUUSD H1",
+   "htf_bo50_n24 XAUUSD H1",
+   "bos_trail3_htfD50_M30 XAUUSD M30",
+   "ch_24-24_s1.5_tp2.5_long XAUUSD H1",
+   "ab_mql_range_mid_mr0.3 XAUUSD M30",
+   "pb_atr1.0_range_be1.0 XAUUSD H1"
+  ],
+  "k5": {
+   "y1": {
+    "profit": 394,
+    "per_month": 33,
+    "green_months": "6/13",
+    "worst_month": -635,
+    "stop_days": 20,
+    "lowest_balance": 3802,
+    "worst_day": -138,
+    "passed": 11,
+    "failed": 9,
+    "unfinished": 4
+   },
+   "last2": {
+    "profit": 7664,
+    "per_month": 315,
+    "green_months": "21/25",
+    "worst_month": -156,
+    "stop_days": 14,
+    "lowest_balance": 4819,
+    "worst_day": -138,
+    "passed": 46,
+    "failed": 1,
+    "unfinished": 4
+   },
+   "sepoct": {
+    "profit": 44,
+    "per_month": 22,
+    "green_months": "1/2",
+    "worst_month": -156,
+    "stop_days": 1,
+    "lowest_balance": 4672,
+    "worst_day": -127,
+    "passed": 0,
+    "failed": 1,
+    "unfinished": 2
+   }
+  },
+  "k10": {
+   "y1": {
+    "profit": 3081,
+    "per_month": 256,
+    "green_months": "7/13",
+    "worst_month": -1421,
+    "stop_days": 8,
+    "lowest_balance": 8266,
+    "worst_day": -368,
+    "passed": 15,
+    "failed": 7,
+    "unfinished": 2
+   },
+   "last2": {
+    "profit": 19127,
+    "per_month": 786,
+    "green_months": "21/25",
+    "worst_month": -716,
+    "stop_days": 13,
+    "lowest_balance": 9599,
+    "worst_day": -325,
+    "passed": 44,
+    "failed": 7,
+    "unfinished": 0
+   },
+   "sepoct": {
+    "profit": 56,
+    "per_month": 28,
+    "green_months": "1/2",
+    "worst_month": -716,
+    "stop_days": 1,
+    "lowest_balance": 8783,
+    "worst_day": -311,
+    "passed": 0,
+    "failed": 2,
+    "unfinished": 1
+   }
+  }
+ },
+ "12": {
+  "risk": 0.0025,
+  "names": [
+   "yt37_ger40_lc1_lc2_untapped_zone DE40 M30",
+   "weekday_MW_Th ETHUSD H1",
+   "bos_trail3_htfD50_H1 XAUUSD H1",
+   "htf_bo50_n24 XAUUSD H1",
+   "bos_trail3_htfD50_M30 XAUUSD M30",
+   "ch_24-24_s1.5_tp2.5_long XAUUSD H1",
+   "ab_mql_range_mid_mr0.3 XAUUSD M30",
+   "pb_atr1.0_range_be1.0 XAUUSD H1",
+   "bos_hv_be1_M30 XAUUSD M30",
+   "yt150_gold_london_orb_2_5r XAUUSD M30",
+   "first_hour_mult_break_de40 DE40 M30",
+   "bb_breakout_M30_dev2.5 XAUUSD M30"
+  ],
+  "k5": {
+   "y1": {
+    "profit": 1113,
+    "per_month": 93,
+    "green_months": "8/13",
+    "worst_month": -305,
+    "stop_days": 0,
+    "lowest_balance": 4555,
+    "worst_day": -124,
+    "passed": 16,
+    "failed": 6,
+    "unfinished": 2
+   },
+   "last2": {
+    "profit": 2618,
+    "per_month": 108,
+    "green_months": "20/25",
+    "worst_month": -75,
+    "stop_days": 0,
+    "lowest_balance": 4881,
+    "worst_day": -94,
+    "passed": 38,
+    "failed": 0,
+    "unfinished": 13
+   },
+   "sepoct": {
+    "profit": 153,
+    "per_month": 78,
+    "green_months": "1/2",
+    "worst_month": -40,
+    "stop_days": 0,
+    "lowest_balance": 4912,
+    "worst_day": -51,
+    "passed": 0,
+    "failed": 0,
+    "unfinished": 3
+   }
+  },
+  "k10": {
+   "y1": {
+    "profit": 2372,
+    "per_month": 197,
+    "green_months": "8/13",
+    "worst_month": -686,
+    "stop_days": 0,
+    "lowest_balance": 8957,
+    "worst_day": -277,
+    "passed": 16,
+    "failed": 6,
+    "unfinished": 2
+   },
+   "last2": {
+    "profit": 10121,
+    "per_month": 416,
+    "green_months": "21/25",
+    "worst_month": -253,
+    "stop_days": 0,
+    "lowest_balance": 9846,
+    "worst_day": -217,
+    "passed": 46,
+    "failed": 0,
+    "unfinished": 5
+   },
+   "sepoct": {
+    "profit": 47,
+    "per_month": 24,
+    "green_months": "1/2",
+    "worst_month": -253,
+    "stop_days": 0,
+    "lowest_balance": 9501,
+    "worst_day": -176,
+    "passed": 0,
+    "failed": 0,
+    "unfinished": 3
+   }
+  }
+ },
+ "16": {
+  "risk": 0.0025,
+  "names": [
+   "yt37_ger40_lc1_lc2_untapped_zone DE40 M30",
+   "weekday_MW_Th ETHUSD H1",
+   "bos_trail3_htfD50_H1 XAUUSD H1",
+   "htf_bo50_n24 XAUUSD H1",
+   "bos_trail3_htfD50_M30 XAUUSD M30",
+   "ch_24-24_s1.5_tp2.5_long XAUUSD H1",
+   "ab_mql_range_mid_mr0.3 XAUUSD M30",
+   "pb_atr1.0_range_be1.0 XAUUSD H1",
+   "bos_hv_be1_M30 XAUUSD M30",
+   "yt150_gold_london_orb_2_5r XAUUSD M30",
+   "first_hour_mult_break_de40 DE40 M30",
+   "bb_breakout_M30_dev2.5 XAUUSD M30",
+   "crabel_k0.5_None DE40 M30",
+   "aroon_x+trend XAUUSD H1",
+   "spike_follow BTCUSD H1",
+   "yt119_connors_rsi2_10_90 US500 D1"
+  ],
+  "k5": {
+   "y1": {
+    "profit": 1855,
+    "per_month": 154,
+    "green_months": "8/13",
+    "worst_month": -288,
+    "stop_days": 1,
+    "lowest_balance": 4606,
+    "worst_day": -138,
+    "passed": 18,
+    "failed": 4,
+    "unfinished": 2
+   },
+   "last2": {
+    "profit": 3508,
+    "per_month": 144,
+    "green_months": "22/25",
+    "worst_month": -93,
+    "stop_days": 0,
+    "lowest_balance": 4867,
+    "worst_day": -98,
+    "passed": 47,
+    "failed": 0,
+    "unfinished": 4
+   },
+   "sepoct": {
+    "profit": 169,
+    "per_month": 86,
+    "green_months": "1/2",
+    "worst_month": -93,
+    "stop_days": 0,
+    "lowest_balance": 4861,
+    "worst_day": -74,
+    "passed": 0,
+    "failed": 0,
+    "unfinished": 3
+   }
+  },
+  "k10": {
+   "y1": {
+    "profit": 3984,
+    "per_month": 331,
+    "green_months": "8/13",
+    "worst_month": -702,
+    "stop_days": 1,
+    "lowest_balance": 9022,
+    "worst_day": -325,
+    "passed": 16,
+    "failed": 6,
+    "unfinished": 2
+   },
+   "last2": {
+    "profit": 12429,
+    "per_month": 511,
+    "green_months": "22/25",
+    "worst_month": -428,
+    "stop_days": 0,
+    "lowest_balance": 9818,
+    "worst_day": -246,
+    "passed": 47,
+    "failed": 1,
+    "unfinished": 3
+   },
+   "sepoct": {
+    "profit": 18,
+    "per_month": 9,
+    "green_months": "1/2",
+    "worst_month": -428,
+    "stop_days": 0,
+    "lowest_balance": 9291,
+    "worst_day": -193,
+    "passed": 0,
+    "failed": 0,
+    "unfinished": 3
+   }
+  }
+ }
+}
