@@ -11,8 +11,14 @@
     "ICMarketsSC": {
       "_comment": "IC Markets. The round-3 research bars and contract specs for FRA40 and JPN225 were fetched from this server under those exact names (config/symbol_specs.json also carries F40 and JP225, which exist alongside with DIFFERENT specs: point 0.01 / lot min 0.1 instead of 0.1 / 1.0, contract 1 instead of 100), so they are NOT renamed here. If the pre-flight reports FRA40 or JPN225 'not found', add FRA40: F40 / JPN225: JP225 to this section and expect the pre-flight to then fail them on contract size, which is correct: the research was sized on the other contract. ESP35 is in no round-3 mix; its IC name is unverified (TODO)."
     },
-    "_FundedNext": {
-      "DE40": "GER40"
+    "FundedNext": {
+      "_comment": "FundedNext-Server, read 2026-11-01 from account 12118056. Indices there are 10 units per lot (research: 1; JP225 research 100), which the runner converts at order time. No SOLUSD.",
+      "XTIUSD": "USOUSD",
+      "XBRUSD": "UKOUSD",
+      "DE40": "GER30",
+      "US500": "SPX500",
+      "USTEC": "NDX100",
+      "JPN225": "JP225"
     }
   }
 }

@@ -338,6 +338,19 @@ def size_trade(symbol: str, side: str, close: float, sl: float, tp: float | None
                 risk_usd=lots * loss_per_lot)
 
 
+def broker_lots(symbol: str, research_lots: float, broker: dict) -> float | None:
+    """Research-sized lots expressed in the broker's contract, rounded DOWN to the
+    broker's lot step (never more exposure than the research sized). None when that
+    is below the broker's minimum lot. `broker` is MT5Market.symbol_spec(...)."""
+    if not broker or not broker.get("contract"):
+        return research_lots
+    r = research_spec(symbol)
+    units = research_lots * float(r.get("contract", broker["contract"]))
+    step = float(broker.get("vol_step") or 0.01)
+    lots = round(math.floor(units / float(broker["contract"]) / step + 1e-9) * step, 2)
+    return None if lots < float(broker.get("vol_min") or step) - 1e-12 else lots
+
+
 # profit currency -> (pair whose close converts it to USD, invert). The round-3
 # groups add AUD (AUS200), NOK (EURNOK), MXN (USDMXN), CNH (USDCNH), HKD (HK50),
 # NZD; the research converted with the same pairs (asia/exotics patch_harness).
@@ -587,6 +600,20 @@ class MultiRunner:
         tmp.replace(self.state_path)
 
     # ---------------------------------------------------------------- bars
+    def _broker_spec(self, symbol: str) -> dict:
+        cache = self.__dict__.setdefault("_bspec", {})
+        if symbol not in cache:
+            try:
+                cache[symbol] = self.market.symbol_spec(self.broker_symbol(symbol)) or {}
+            except Exception:                       # noqa: BLE001 — no spec: trade research lots as before
+                cache[symbol] = {}
+        return cache[symbol]
+
+    def _contract_ratio(self, symbol: str) -> float:
+        b = self._broker_spec(symbol).get("contract")
+        r = research_spec(symbol).get("contract")
+        return float(b) / float(r) if b and r else 1.0
+
     def fetch_window(self, symbol: str, tf: str) -> pd.DataFrame:
         """`window` closed bars of the BROKER symbol with the research
         conversion column attached, exactly as harness.load would."""
@@ -600,6 +627,9 @@ class MultiRunner:
             pair_df = df if pair[0] == symbol else \
                 self.market.rates(self.broker_symbol(pair[0]), tf, self.window)
         df = attach_conv(df, symbol, pair_df)
+        bp, rp = self._broker_spec(symbol).get("point"), research_spec(symbol).get("point")
+        if bp and rp and "spread" in df and abs(float(bp) - float(rp)) > 1e-12:
+            df["spread"] = df["spread"] * float(bp) / float(rp)     # broker points -> research points
         df.attrs.update(symbol=symbol, tf=tf, split="live", score_from=None)
         return df
 
@@ -835,10 +865,18 @@ class MultiRunner:
                      spec.name, entry.side, bar_t, entry.sl, spec.risk * 100)
             self._emit("skipped", magic=spec.magic, reason="unfundable", strategy=spec.name, time=bar_t)
             return
-        pos = self.market.open(self.broker_symbol(spec.symbol), entry.side, sz["lots"],
+        lots = broker_lots(spec.symbol, sz["lots"], self._broker_spec(spec.symbol))
+        if lots is None:
+            log.info("%s | %s signal at %s skipped: %.2f research lots is below the broker's minimum lot",
+                     spec.name, entry.side, bar_t, sz["lots"])
+            self._emit("skipped", magic=spec.magic, reason="below broker min lot", strategy=spec.name, time=bar_t)
+            return
+        if lots != sz["lots"]:
+            sz = dict(sz, risk_usd=sz["risk_usd"] * lots / sz["lots"] * self._contract_ratio(spec.symbol))
+        pos = self.market.open(self.broker_symbol(spec.symbol), entry.side, lots,
                                float(entry.sl), float(entry.tp) if entry.tp is not None else 0.0,
                                spec.magic, f"ms{spec.idx}")
-        st.ticket, st.side, st.entry, st.lots = pos.ticket, entry.side, pos.entry, sz["lots"]
+        st.ticket, st.side, st.entry, st.lots = pos.ticket, entry.side, pos.entry, lots
         st.sl = st.sl0 = float(entry.sl)
         st.tp = float(entry.tp) if entry.tp is not None else None
         st.entry_bar = str(bar_t)

@@ -148,9 +148,12 @@ def preflight(research_symbols: list[str], symbol_map: dict[str, str],
                   ("point", float(want.get("point", si.point)), si.point),
                   ("vol_min", float(want.get("vol_min", si.volume_min)), si.volume_min),
                   ("vol_step", float(want.get("vol_step", si.volume_step)), si.volume_step)]
+        notes = []
         for name, w, have in checks:
             if abs(w - have) > 1e-9 * max(1.0, abs(w)):
-                issues.append(f"{name} {have} != research {w}")
+                # not a blocker: the runner converts lots (contract / lot step) and the
+                # spread column (point) between the research and the broker spec
+                notes.append(f"{name} {have:g} vs research {w:g} (converted)")
         wccy = want.get("profit_ccy") or ("JPY" if rs.endswith("JPY") else "USD")
         if si.currency_profit != wccy:
             issues.append(f"profit currency {si.currency_profit} != research {wccy}")
@@ -171,6 +174,7 @@ def preflight(research_symbols: list[str], symbol_map: dict[str, str],
             elif abs(calc - exp) > 0.05 * exp:
                 issues.append(f"P&L per lot per {move:g} move: broker {calc:.4g} != research {exp:.4g}")
         row["problem"] = "; ".join(issues)
+        row["note"] = "; ".join(notes)
         if issues:
             problems[rs] = row["problem"]
         rows.append(row)

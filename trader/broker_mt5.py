@@ -71,8 +71,21 @@ def connect(cfg: Config) -> None:
     preflight(cfg, info)
 
 
+def allowed_real_logins() -> set[int]:
+    """Logins the owner has cleared for non-demo trading (MULTI_ALLOW_REAL_LOGINS,
+    comma separated). Prop-firm challenge accounts report trade_mode 'real'."""
+    import os
+    raw = os.environ.get("MULTI_ALLOW_REAL_LOGINS", "")
+    return {int(x) for x in raw.replace(" ", "").split(",") if x.strip().isdigit()}
+
+
 def assert_demo(info) -> None:
-    """The demo-only guard, shared by the single- and multi-strategy runners."""
+    """The demo-only guard, shared by the single- and multi-strategy runners.
+    A non-demo account passes only when its login is in MULTI_ALLOW_REAL_LOGINS."""
+    if info.trade_mode != mt5.ACCOUNT_TRADE_MODE_DEMO and int(info.login) in allowed_real_logins():
+        log.warning("account %s is NOT demo (trade_mode %s): trading it because MULTI_ALLOW_REAL_LOGINS lists it",
+                    info.login, info.trade_mode)
+        return
     if not info.trade_mode == mt5.ACCOUNT_TRADE_MODE_DEMO:
         raise MT5Error(
             f"account {info.login} is NOT a demo account — refusing to trade. "
