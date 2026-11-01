@@ -61,6 +61,7 @@ if (-not $terminal) {
     $lines += "[Experts]"
     $lines += "AllowLiveTrading=1"   # the Algo Trading button
     $lines += "AllowDllImport=0"
+    $lines += "Api=1"                # Python integration: builds >= 6296 ship it OFF -> every mt5.initialize gets (-10005, IPC timeout)
     $lines += "Enabled=1"
     $lines += "Account=0"
     $lines += "Profile=0"
