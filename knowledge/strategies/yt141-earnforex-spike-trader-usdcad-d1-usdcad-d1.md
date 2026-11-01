@@ -1,6 +1,6 @@
 # yt141_earnforex_spike_trader_usdcad_d1 on USDCAD D1
 
-Source: round-6 YouTube (video https://www.earnforex.com/metatrader-expert-advisors/Spike-Trader/)
+Source: round-6 written (video https://www.earnforex.com/metatrader-expert-advisors/Spike-Trader/)
 Data from: 2015-03-26. Dev years 8, green 5.0. Rule: relaxed.
 
 | period | $/month at 1% of $10K |

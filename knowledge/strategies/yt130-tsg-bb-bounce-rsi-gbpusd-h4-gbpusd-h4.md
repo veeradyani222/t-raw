@@ -1,6 +1,6 @@
 # yt130_tsg_bb_bounce_rsi_gbpusd_h4 on GBPUSD H4
 
-Source: round-6 YouTube (video https://tradingstrategyguides.com/bollinger-bands-bounce-trading-strategy/)
+Source: round-6 written (video https://tradingstrategyguides.com/bollinger-bands-bounce-trading-strategy/)
 Data from: 2015-03-19. Dev years 8, green 5.0. Rule: relaxed.
 
 | period | $/month at 1% of $10K |

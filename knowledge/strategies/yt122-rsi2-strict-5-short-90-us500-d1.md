@@ -1,6 +1,6 @@
 # yt122_rsi2_strict_5_short_90 on US500 D1
 
-Source: round-6 YouTube (video https://www.luxalgo.com/library/concept/rsi-2/)
+Source: round-6 written (video https://www.luxalgo.com/library/concept/rsi-2/)
 Data from: 2015-10-08. Dev years 8, green 5.0. Rule: relaxed.
 
 | period | $/month at 1% of $10K |

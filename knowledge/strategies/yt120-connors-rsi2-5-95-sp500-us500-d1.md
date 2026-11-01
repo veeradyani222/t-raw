@@ -1,6 +1,6 @@
 # yt120_connors_rsi2_5_95_sp500 on US500 D1
 
-Source: round-6 YouTube (video https://backtrex.com/en/backtests/connors-rsi-2-sp-500)
+Source: round-6 written (video https://backtrex.com/en/backtests/connors-rsi-2-sp-500)
 Data from: 2015-10-12. Dev years 8, green 5.0. Rule: relaxed.
 
 | period | $/month at 1% of $10K |

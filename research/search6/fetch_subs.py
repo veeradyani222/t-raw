@@ -8,7 +8,8 @@ from research.search6.collect import OUT, CAP
 
 def main():
     vids = json.load(open(os.path.join(OUT, "videos.json")))
-    have = {f.split(".")[0] for f in os.listdir(CAP)}
+    TXT = os.path.join(OUT, "transcripts")
+    have = {f.split(".")[0] for f in os.listdir(CAP)} | ({f[:-4] for f in os.listdir(TXT)} if os.path.isdir(TXT) else set())
     todo = [v for v in vids if v["id"] not in have]
     if "--reverse" in sys.argv:
         todo = todo[::-1]

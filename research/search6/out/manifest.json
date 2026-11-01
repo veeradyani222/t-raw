@@ -53,7 +53,8 @@
   "id": "0l4LCBEDi_M",
   "title": "Backtesting AUDNZD with only swing entries to simulate how EASY it is passing PROP FIRM challenges",
   "markets": [
-   "AUDNZD"
+   "AUDNZD",
+   "US500"
   ],
   "views": 606,
   "words": 4485,
@@ -133,7 +134,6 @@
   "id": "2xoM1GqtwnI",
   "title": "How To Trade GBPUSD: My London Session Strategy Explained",
   "markets": [
-   "EURGBP",
    "GBPUSD"
   ],
   "views": 42817,
@@ -175,6 +175,7 @@
   "id": "5MP3Z3Y0q58",
   "title": "How to Trade USDJPY: Best Methods Revealed! ",
   "markets": [
+   "ETHUSD",
    "USDJPY"
   ],
   "views": 69436,
@@ -215,8 +216,7 @@
   "id": "698yJiFSazw",
   "title": "Backtesting EURUSD (56% Win-Rate , 1:3RR)",
   "markets": [
-   "EURUSD",
-   "USDJPY"
+   "EURUSD"
   ],
   "views": 2491,
   "words": 5527,
@@ -236,6 +236,7 @@
   "id": "6O9PVnCATDU",
   "title": "EURJPY and EURGBP Analysis Today : False Breakout Trading Strategy",
   "markets": [
+   "EURGBP",
    "EURJPY"
   ],
   "views": 692,
@@ -256,6 +257,7 @@
   "id": "6Q5qQp060vw",
   "title": "I changed my Strategy for USDJPY and GBPUSD (New Settings Revealed)",
   "markets": [
+   "GBPUSD",
    "USDJPY"
   ],
   "views": 9200,
@@ -349,7 +351,8 @@
   "id": "8_2-ojIvLt0",
   "title": "This 5 Minute Setup is Great for Scalping the EUR/CHF and the USD/JPY",
   "markets": [
-   "EURCHF"
+   "EURCHF",
+   "USDJPY"
   ],
   "views": 12,
   "words": 1754,
@@ -379,7 +382,8 @@
   "id": "9EHfkMTRvAY",
   "title": "How to Trade Dow Jones Index US30. Profitable Trend Following Trading Strategy Explained (SMC ICT)",
   "markets": [
-   "US30"
+   "US30",
+   "US500"
   ],
   "views": 2636,
   "words": 1126,
@@ -399,6 +403,7 @@
   "id": "9oRxj3RQa4o",
   "title": "How I Find High Probability Forex Trades (Real USDCAD Setup)",
   "markets": [
+   "US500",
    "USDCAD"
   ],
   "views": 12872,
@@ -409,7 +414,7 @@
   "id": "AY7fWmE1CBk",
   "title": "This Gold Trading Strategy Makes $1,000 a Day (Proven Results)",
   "markets": [
-   "XAGUSD",
+   "US500",
    "XAUUSD"
   ],
   "views": 1803188,
@@ -430,7 +435,8 @@
   "id": "BAnZwJ5AT34",
   "title": "EURUSD is so EASY once you use the SILVERBULLET Strategy to dominate (92% winrate)",
   "markets": [
-   "EURCHF"
+   "EURUSD",
+   "XAGUSD"
   ],
   "views": 4936,
   "words": 2195,
@@ -480,7 +486,8 @@
   "id": "CqjQfhdy62s",
   "title": "I Risked $200 to Make $900 on AUDJPY (1:5RR Trade Breakdown)",
   "markets": [
-   "AUDJPY"
+   "AUDJPY",
+   "US30"
   ],
   "views": 5706,
   "words": 3284,
@@ -520,7 +527,8 @@
   "id": "Dt-SW8ja-RQ",
   "title": "AUDUSD and AUDNZD Analysis Today : Trend Trading Strategy",
   "markets": [
-   "AUDNZD"
+   "AUDNZD",
+   "AUDUSD"
   ],
   "views": 730,
   "words": 1099,
@@ -540,8 +548,15 @@
   "id": "E3McKlAp3qk",
   "title": "The ONLY Day Trading Strategy I'll use ALL 2026 (Backtested 1000 Times)",
   "markets": [
+   "AUDNZD",
    "BTCUSD",
+   "CHFJPY",
+   "DE40",
+   "EURCHF",
    "EURUSD",
+   "GBPJPY",
+   "GBPUSD",
+   "USTEC",
    "XAUUSD"
   ],
   "views": 141478,
@@ -592,7 +607,8 @@
   "id": "Gx-0o4p7VxY",
   "title": "How I Made $18,500 Day Trading AUD/USD | Full Breakdown",
   "markets": [
-   "AUDUSD"
+   "AUDUSD",
+   "US30"
   ],
   "views": 42669,
   "words": 1633,
@@ -612,7 +628,8 @@
   "id": "HhG0MYEeSZc",
   "title": "5 Wins And 0 Losses Using The Best Forex Strategy In 2022 BackTesting NZD/USD",
   "markets": [
-   "NZDUSD"
+   "NZDUSD",
+   "US500"
   ],
   "views": 1735,
   "words": 1958,
@@ -655,7 +672,8 @@
   "id": "JYAgK9xoo1s",
   "title": "How I Caught a Huge Risk to Reward Ratio on EUR/CHF: Trade Breakdown",
   "markets": [
-   "EURCHF"
+   "EURCHF",
+   "US30"
   ],
   "views": 5288,
   "words": 1090,
@@ -715,7 +733,7 @@
   "id": "LJF3frcDgRM",
   "title": "Intro to Swing Trading Stocks: Strategies and Indicators",
   "markets": [
-   "XAUUSD"
+   "US500"
   ],
   "views": 633978,
   "words": 1169,
@@ -725,7 +743,7 @@
   "id": "LL-AOhvNuZo",
   "title": "This Asia Session Strategy is Boring but It Makes Money",
   "markets": [
-   "AUDJPY"
+   "US500"
   ],
   "views": 50968,
   "words": 2475,
@@ -775,6 +793,7 @@
   "id": "MKJz4yURCEs",
   "title": "How to Trade Gold - Ride Massive Trends Using this Method",
   "markets": [
+   "ETHUSD",
    "XAUUSD"
   ],
   "views": 639296,
@@ -805,7 +824,8 @@
   "id": "Nw7lcbry3u4",
   "title": "High volatility on the DAX: Real performance of 2 strategies (GAP + Trend-following)",
   "markets": [
-   "DE40"
+   "DE40",
+   "US500"
   ],
   "views": 576,
   "words": 877,
@@ -828,10 +848,12 @@
    "BTCUSD",
    "ETHUSD",
    "EURGBP",
+   "EURJPY",
    "EURUSD",
    "GBPJPY",
    "GBPUSD",
-   "USDJPY"
+   "USDJPY",
+   "XAUUSD"
   ],
   "views": 1943271,
   "words": 2905,
@@ -921,7 +943,6 @@
   "id": "OqzgQP126_g",
   "title": "The Only EURUSD Strategy With Near 100% WIN RATE",
   "markets": [
-   "EURGBP",
    "EURUSD"
   ],
   "views": 59517,
@@ -972,7 +993,8 @@
   "id": "PXwP0gTM8v0",
   "title": " $150+ in 30 Minutes Swing Trading GBPUSD Using Demand Zones",
   "markets": [
-   "GBPUSD"
+   "GBPUSD",
+   "US500"
   ],
   "views": 1321,
   "words": 1901,
@@ -1002,8 +1024,7 @@
   "id": "QMos6hY7ZFw",
   "title": "SWING TRADING: GBP/USD - ALWAYS RIGHT?!",
   "markets": [
-   "GBPUSD",
-   "USDCHF"
+   "GBPUSD"
   ],
   "views": 12592,
   "words": 2283,
@@ -1033,6 +1054,7 @@
   "id": "QX1g_NqSfzs",
   "title": "The ULTIMATE Guide to Trading US Indices | NASDAQ, DOW, S&P500",
   "markets": [
+   "US30",
    "US500",
    "USTEC"
   ],
@@ -1074,7 +1096,7 @@
   "id": "RN-8Wt_RH68",
   "title": "Turn Losing Trades Into Wins with This Hedging Strategy",
   "markets": [
-   "USDCHF"
+   "US500"
   ],
   "views": 16780,
   "words": 927,
@@ -1084,7 +1106,7 @@
   "id": "S6l906N5tXY",
   "title": "Revealing the ICT Asian Range Strategy That Makes $10K+/Week",
   "markets": [
-   "AUDJPY"
+   "US500"
   ],
   "views": 227380,
   "words": 2749,
@@ -1324,6 +1346,7 @@
   "id": "WhhJbvvOQNo",
   "title": "This USDJPY Algo Trading Strategy Was Backtested Over 45,000+ OOS Trades (20+ years)",
   "markets": [
+   "US500",
    "USDJPY"
   ],
   "views": 1052,
@@ -1334,7 +1357,8 @@
   "id": "WhwpitJDvxs",
   "title": "Look For More Downside on the AUDJPY Forex Pair + DASH",
   "markets": [
-   "AUDJPY"
+   "AUDJPY",
+   "US30"
   ],
   "views": 910,
   "words": 1529,
@@ -1385,7 +1409,7 @@
   "id": "Xxzge9rc3JM",
   "title": "$600 USDJPY Swing Trade Breakdown (Beginner Friendly) | Break & Retest",
   "markets": [
-   "AUDJPY",
+   "US30",
    "USDJPY"
   ],
   "views": 3920,
@@ -1496,7 +1520,7 @@
   "id": "ZW86FFyx6NA",
   "title": "Backtesting futures with Doyle Exchange's Trading Strategy for 100 trades",
   "markets": [
-   "NZDUSD"
+   "US500"
   ],
   "views": 14900,
   "words": 5221,
@@ -1556,7 +1580,7 @@
   "id": "aHeWIR8kM9o",
   "title": "RSI Divergence Trading Strategy: Backtesting, Win Rate & XAU/USD",
   "markets": [
-   "NZDUSD"
+   "XAUUSD"
   ],
   "views": 833,
   "words": 1182,
@@ -1596,7 +1620,8 @@
   "id": "bHyLOlCp69A",
   "title": "Swing Trading the EURJPY and GBPUSD",
   "markets": [
-   "EURJPY"
+   "EURJPY",
+   "GBPUSD"
   ],
   "views": 1131,
   "words": 1503,
@@ -1618,7 +1643,7 @@
   "id": "bKnVcCnuPxY",
   "title": "Best Forex Strategy (3 tips to Win) + Litecoin-Bitcoin, NZDCHF, & EURCHF",
   "markets": [
-   "CHFJPY",
+   "BTCUSD",
    "EURCHF"
   ],
   "views": 2858,
@@ -1629,7 +1654,8 @@
   "id": "bshygQJgzO4",
   "title": "My GBPUSD Prop Firm Passing Strategy (Full Breakdown)",
   "markets": [
-   "GBPUSD"
+   "GBPUSD",
+   "US30"
   ],
   "views": 10563,
   "words": 1779,
@@ -1669,7 +1695,8 @@
   "id": "cq-tBNL1WtY",
   "title": "How To Day Trade Forex 5min CADCHF CHFJPY GBPJPY",
   "markets": [
-   "CHFJPY"
+   "CHFJPY",
+   "GBPJPY"
   ],
   "views": 197,
   "words": 1576,
@@ -1729,7 +1756,8 @@
   "id": "dLDnnm2ECQo",
   "title": "How To Trade GOLD & GBPJPY  | Best Forex Strategy",
   "markets": [
-   "GBPJPY"
+   "GBPJPY",
+   "XAUUSD"
   ],
   "views": 61749,
   "words": 3113,
@@ -1769,6 +1797,7 @@
   "id": "e-QmGJU1XYc",
   "title": "The Only Trading Strategy You'll Ever Need",
   "markets": [
+   "BTCUSD",
    "EURUSD"
   ],
   "views": 2358960,
@@ -1850,7 +1879,8 @@
   "id": "fGaGHEMqGeo",
   "title": "Forex Analysis: Trading Setups on AUDUSD, AUDJPY, and AUDCAD!",
   "markets": [
-   "AUDJPY"
+   "AUDJPY",
+   "AUDUSD"
   ],
   "views": 5418,
   "words": 2027,
@@ -1860,9 +1890,7 @@
   "id": "g06bBiPHe_U",
   "title": "How I\ufffdm Now Day Trading EURUSD (1 New Strategy)",
   "markets": [
-   "EURGBP",
-   "EURUSD",
-   "USDJPY"
+   "EURUSD"
   ],
   "views": 11718,
   "words": 4000,
@@ -1872,7 +1900,8 @@
   "id": "gBKlR_MYdtg",
   "title": "How I Caught This AUDUSD Winning Trade AFTER the News! (OTE Flip Method)",
   "markets": [
-   "AUDUSD"
+   "AUDUSD",
+   "ETHUSD"
   ],
   "views": 46,
   "words": 1842,
@@ -1882,7 +1911,9 @@
   "id": "gGQbhvzvY8g",
   "title": "How to Trade Gaps on US30/US100/US500 Indexes. Best Trading Strategy (NASDAQ, DOW JONES, S&P500)",
   "markets": [
-   "US30"
+   "US30",
+   "US500",
+   "USTEC"
   ],
   "views": 1540,
   "words": 757,
@@ -1933,6 +1964,7 @@
   "title": "The Only 1-Minute Scalping Strategy",
   "markets": [
    "AUDUSD",
+   "GBPUSD",
    "USDCAD"
   ],
   "views": 1212045,
@@ -1954,7 +1986,7 @@
   "title": "How to Swing Trade US Indices (US30, US100, US500)",
   "markets": [
    "US30",
-   "USDCAD"
+   "US500"
   ],
   "views": 1536,
   "words": 807,
@@ -1995,9 +2027,8 @@
   "id": "hs_sm_qGK78",
   "title": "Quick Forex - GBPUSD 2% Profit - 82% Win Rate Method",
   "markets": [
-   "CHFJPY",
-   "GBPUSD",
-   "USDCAD"
+   "ETHUSD",
+   "GBPUSD"
   ],
   "views": 141,
   "words": 916,
@@ -2047,6 +2078,7 @@
   "id": "j7egXHJ-H1c",
   "title": "USDCHF TRADE BREAKDOWN ANALYSIS - INVALIDATION STRATEGY",
   "markets": [
+   "US30",
    "USDCHF"
   ],
   "views": 2432,
@@ -2087,8 +2119,7 @@
   "id": "k-X0164r66U",
   "title": "The 2 Swing Trading Strategies That Made me Millions",
   "markets": [
-   "EURUSD",
-   "USTEC"
+   "US500"
   ],
   "views": 212984,
   "words": 2523,
@@ -2120,8 +2151,7 @@
   "id": "lI9ORz0M5fA",
   "title": "I BACKTESTED EURUSD WITH A 80% WIN RATE - COPY THIS SIMPLE TRADING STRATEGY! - Episode 1",
   "markets": [
-   "EURUSD",
-   "GBPUSD"
+   "EURUSD"
   ],
   "views": 21064,
   "words": 6326,
@@ -2171,7 +2201,8 @@
   "id": "mH1zrQgR8XQ",
   "title": "How to BUY Gold & Silver AFTER Pullback. Profitable Trading Strategy For XAUUSD / XAGUSD Explained",
   "markets": [
-   "XAGUSD"
+   "XAGUSD",
+   "XAUUSD"
   ],
   "views": 1628,
   "words": 689,
@@ -2324,7 +2355,8 @@
   "id": "q3oPTaoMtT4",
   "title": "Live Trading GOLD & GER40 (DAX) PRE LONDON OPEN | EASY SCALPING STRATEGY.",
   "markets": [
-   "DE40"
+   "DE40",
+   "XAUUSD"
   ],
   "views": 1831,
   "words": 775,
@@ -2364,8 +2396,6 @@
   "id": "rFRLmWdLVp0",
   "title": "Backtest GBPUSD With Me | SMC Trading Strategy (High Win-Rate)",
   "markets": [
-   "EURUSD",
-   "GBPJPY",
    "GBPUSD"
   ],
   "views": 2366,
@@ -2376,7 +2406,8 @@
   "id": "s3ebvxpkyEk",
   "title": "EURGBP +4R Trade Breakdown | PLUS $200,000 in Funding (My Forex Funds) - JeaFx",
   "markets": [
-   "EURGBP"
+   "EURGBP",
+   "US30"
   ],
   "views": 9570,
   "words": 1953,
@@ -2396,7 +2427,8 @@
   "id": "se7QHm2roWk",
   "title": "5 Hidden SECRETS Behind ThissDAX Trading Strategy EXPOSED (Full Breakdown)",
   "markets": [
-   "DE40"
+   "DE40",
+   "US30"
   ],
   "views": 818,
   "words": 4376,
@@ -2406,7 +2438,8 @@
   "id": "tDJPYZq5EiE",
   "title": "How To Trade GOLD & GBPJPY | Best Forex Strategy",
   "markets": [
-   "GBPJPY"
+   "GBPJPY",
+   "XAUUSD"
   ],
   "views": 102318,
   "words": 4715,
@@ -2466,7 +2499,7 @@
   "id": "ueFIldPjd4U",
   "title": "How to trade the EUR/USD: Tips & Trading Strategies",
   "markets": [
-   "EURJPY"
+   "EURUSD"
   ],
   "views": 367774,
   "words": 1091,
@@ -2576,7 +2609,8 @@
   "id": "y9gtLWdtNA4",
   "title": "The Simplest GBPJPY Strategy That Makes Me Millions",
   "markets": [
-   "GBPJPY"
+   "GBPJPY",
+   "US500"
   ],
   "views": 8846,
   "words": 2879,
@@ -2596,6 +2630,7 @@
   "id": "yW-Dg1tmGGI",
   "title": "USD/CHF Trade Breakdown | My Go-To Trading Framework (ICT Concepts)",
   "markets": [
+   "US30",
    "USDCHF"
   ],
   "views": 7,
@@ -2626,7 +2661,8 @@
   "id": "zD3haCFXas4",
   "title": "HOW SIMPLE TRADES PAY YOU = Easy Forex Day Trade AUD/USD",
   "markets": [
-   "AUDUSD"
+   "AUDUSD",
+   "US500"
   ],
   "views": 1990,
   "words": 1351,
