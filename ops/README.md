@@ -43,6 +43,9 @@ server name>` for one broker).
 | `MULTI_MIX_PATH` | the mix JSON to run, absolute or relative to the repo root. Default `docs/board/portfolio-lp300-66.json`. Round 3: `docs/board/portfolio-round3-2y.json`, `-3y.json` or `-5y.json` (readiness per strategy: `docs/2026-10-31-round3-live-readiness.md`). `compare_demo.py` reads the same variable. |
 | `MULTI_BASE_MAGIC` | magic number base (default 500000). Use a new range when switching mixes on an account that still holds the old mix's trades, e.g. 510000 for round 3; the old trades keep their broker stops and are left alone. |
 | `MULTI_MAX_RISK` | per-trade risk cap as a fraction of the $10k baseline, e.g. `0.0275`. FundedNext funded accounts forbid any single trade risking more than 3%; on the round-3 2y mix this trims only the two 3% strategies. Unset = no cap. |
+| `MULTI_ACCOUNT_SIZE` | starting balance in USD (default 10000). Trade risk is this x each strategy's risk fraction. |
+| `MULTI_DAILY_LIMIT_PCT` | the firm's daily loss limit in % (default 4). The bot closes everything at 75% of it. |
+| `MULTI_MAX_LOSS_PCT` | the firm's static max loss in % (default 8). Halt floor = size - 87.5% of it; half size below size - 37.5%, full above size - 12.5%. $5K Lite: 5000/4/8. $6K 2-Step: 6000/5/10. |
 | `MULTI_SKIP_UNTRADABLE` | `1` = start anyway when the pre-flight rejects a symbol (missing, trade disabled, contract/point/lot-step/currency differ from the research) and switch off just those strategies, each named in the log and in the startup Telegram message. Unset = refuse to start. |
 
 Strategies that must never trade whatever the mix (today: the two round-3

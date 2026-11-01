@@ -36,7 +36,7 @@ from pathlib import Path
 from . import mt5_market
 from .alerts import send_alert
 from .config import CONFIG, Config
-from .multi import (DAILY_STOP, FLOOR, SCALE_HIGH, SCALE_LOW, SCALE_SIZE, STATE_PATH, WINDOW_BARS,
+from .multi import (DAILY_STOP, FLOOR, SCALE_HIGH, SCALE_LOW, SCALE_SIZE, STATE_PATH, WINDOW_BARS, account_rules,
                     MultiRunner, conv_symbols, load_mix, load_skip_list, load_symbol_map,
                     load_symbol_specs, mix_path, second_symbol, skip_reasons)
 from .mt5_market import MT5Error, MT5Market
@@ -190,9 +190,10 @@ def startup(cfg: Config, preflight_only: bool = False) -> MultiRunner | None:
     head = (f"\U0001F7E2 multi-strategy bot started on {acct['server']} (account {acct['login']}, "
             f"{acct['company']}). Equity {acct['equity']:.2f} {acct['currency']}. Mix {path.name}: "
             f"{live_n}/{len(specs)} strategies live, {len(disabled)} disabled. "
-            f"Rails: close ALL at -{DAILY_STOP:.0f} on the server day, permanent halt at equity "
-            f"{FLOOR:.0f}. Risk rules: new trades at {SCALE_SIZE:g}x size while equity is below "
-            f"{SCALE_LOW:.0f} (full size above {SCALE_HIGH:.0f}). Window {WINDOW_BARS} bars, "
+            f"Account size {account_rules()['size']:.0f} (firm limits -{account_rules()['daily_limit']:.0f}/day, "
+            f"-{account_rules()['max_loss']:.0f} max). Rails: close ALL at -{runner.guard.daily_stop:.0f} on the server day, "
+            f"permanent halt at equity {runner.guard.floor:.0f}. Risk rules: new trades at {runner.guard.scale_size:g}x size "
+            f"while equity is below {runner.guard.scale_low:.0f} (full size above {runner.guard.scale_high:.0f}). Window {WINDOW_BARS} bars, "
             f"poll {POLL_SECONDS}s.")
     send_alert(cfg, head, reply_markup=_keyboard())
     for chunk in _chunks(strategy_lines(runner)):

@@ -66,6 +66,24 @@ FLOOR = 9_300.0             # equity at/below this -> permanent halt (buffer abo
 SCALE_LOW = 9_700.0         # equity below this -> new trades at SCALE_SIZE of their risk ...
 SCALE_HIGH = 9_900.0        # ... until equity is back above this
 SCALE_SIZE = 0.5
+
+
+def account_rules() -> dict:
+    """Account size and the prop firm's loss limits, from env (read at call time so .env
+    is honoured); every $ rail derives from them. Defaults are the $10K Stellar Lite,
+    which reproduce the constants above exactly.
+      MULTI_ACCOUNT_SIZE     starting balance in USD (default 10000)
+      MULTI_DAILY_LIMIT_PCT  firm's daily loss limit, % of size (default 4)
+      MULTI_MAX_LOSS_PCT     firm's static max loss, % of size (default 8)
+    Rails: daily stop = 75% of the daily limit; halt floor = size - 87.5% of max loss;
+    half size below size - 37.5% of max loss, full again above size - 12.5%.
+    Trade risk is a fraction of the account size (the research sized on $10K)."""
+    size = float(os.environ.get("MULTI_ACCOUNT_SIZE") or 10_000)
+    daily = size * float(os.environ.get("MULTI_DAILY_LIMIT_PCT") or 4) / 100
+    max_loss = size * float(os.environ.get("MULTI_MAX_LOSS_PCT") or 8) / 100
+    return dict(size=size, daily_limit=daily, max_loss=max_loss, daily_stop=0.75 * daily,
+                floor=size - 0.875 * max_loss, scale_low=size - 0.375 * max_loss,
+                scale_high=size - 0.125 * max_loss)
 SPECS_PATHS = (ROOT / "config" / "symbol_specs.json", ROOT / "data" / "search" / "symbol_specs.json")
 TF_MINUTES = {"M1": 1, "M5": 5, "M15": 15, "M30": 30, "H1": 60, "H4": 240, "D1": 1440}
 
@@ -311,7 +329,7 @@ def size_trade(symbol: str, side: str, close: float, sl: float, tp: float | None
     loss_per_lot = (abs(entry - sl) + slip) * contract * conv + comm
     if loss_per_lot <= 0:
         return None
-    risk_usd = risk * H.BASELINE
+    risk_usd = risk * account_rules()["size"]
     lots = math.floor(risk_usd / loss_per_lot / vstep) * vstep
     lots = min(round(lots, 2), max_lots)
     if lots < vmin:
@@ -402,16 +420,16 @@ class Market(Protocol):
 # --------------------------------------------------------------------------- #
 @dataclass
 class AccountGuard:
-    daily_stop: float = DAILY_STOP
-    floor: float = FLOOR
+    daily_stop: float = field(default_factory=lambda: account_rules()["daily_stop"])
+    floor: float = field(default_factory=lambda: account_rules()["floor"])
     day: str | None = None               # server day 'YYYY-MM-DD'
     day_start_balance: float = 0.0
     blocked_day: str | None = None       # no new entries on this server day
     blown: bool = False                  # permanent halt
     last_equity: float = 0.0
     # drawdown scaling
-    scale_low: float = SCALE_LOW
-    scale_high: float = SCALE_HIGH
+    scale_low: float = field(default_factory=lambda: account_rules()["scale_low"])
+    scale_high: float = field(default_factory=lambda: account_rules()["scale_high"])
     scale_size: float = SCALE_SIZE
     scaled: bool = False                 # new trades at scale_size of their risk
 
@@ -463,8 +481,8 @@ class AccountGuard:
     @classmethod
     def from_dict(cls, d: dict) -> "AccountGuard":
         g = cls()
-        for k, v in d.items():
-            if hasattr(g, k):
+        for k, v in d.items():      # limits come from the current settings, never the saved state
+            if hasattr(g, k) and k not in ("daily_stop", "floor", "scale_low", "scale_high", "scale_size"):
                 setattr(g, k, v)
         return g
 
