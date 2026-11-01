@@ -49,6 +49,10 @@ ACCTS = {
     "5k": dict(scale=0.5, halt=125.0, slip=12.5, floor=400.0, target=400.0, start_bal=5000.0, label="$5K (x0.5, stop -$125)"),
     "10k": dict(scale=1.0, halt=300.0, slip=25.0, floor=800.0, target=800.0, start_bal=10000.0, label="$10K (x1.0, stop -$300)"),
 }
+BIG_ACCTS = {   # same firm rules scaled: daily limit 4%, bot close-all at 62.5% of it, floor 8%, pass +8%
+    "25k": dict(scale=2.5, halt=625.0, slip=62.5, floor=2000.0, target=2000.0, start_bal=25000.0, label="$25K (x2.5, stop -$625)"),
+    "50k": dict(scale=5.0, halt=1250.0, slip=125.0, floor=4000.0, target=4000.0, start_bal=50000.0, label="$50K (x5.0, stop -$1,250)"),
+}
 RISK_CAP = 0.0275          # per-trade cap in the live runner (fraction of the account)
 NOT_OFFERED = {"SOLUSD"}   # FundedNext does not list it
 
@@ -246,14 +250,26 @@ def period_report(day_pnl, day_low, acct, start, end):
 
 
 # ------------------------------------------------------------------ exact replay of a mix (final numbers)
+def _init_block(scale):
+    """Worker init: the harness blocks a strategy's new entries once its own day is down 3% of the $10K
+    BASELINE. That is a $10K rule; scale it with the account so a $25K sim is not throttled at $300."""
+    from research.prop import harness as H_
+    base = H_.simulate
+
+    def simulate(df, signals, **kw):
+        kw.setdefault("daily_block", H_.SAFE_DAILY * scale)
+        return base(df, signals, **kw)
+    H_.simulate = simulate
+
+
 def mix_sims(entries, acct, start, end, workers=2):
     """entries: dicts with the strategy fields + risk ($10K fraction). Exact sims at the account's scale."""
     jobs = []
     for m in entries:
-        r = min(m["risk"] * acct["scale"], RISK_CAP)
+        r = min(m["risk"] * acct["scale"], RISK_CAP * acct["scale"])   # the 2.75% cap is a share of the ACCOUNT
         jobs.append((m, r, pd.Timestamp(start), pd.Timestamp(end)))
     t0 = time.time()
-    with Pool(workers, maxtasksperchild=40) as pp:
+    with Pool(workers, maxtasksperchild=40, initializer=_init_block, initargs=(acct["scale"],)) as pp:
         res = list(pp.imap(C3.run, jobs, chunksize=2))
     print(f"  exact sims {acct['label']}: {len(jobs)} in {time.time() - t0:.0f}s", flush=True)
     return res

@@ -1,0 +1,318 @@
+{
+ "live 23": {
+  "n": 22,
+  "5k": {
+   "y1": {
+    "profit": 1532,
+    "per_month": 127,
+    "green_months": "8/13",
+    "worst_month": -692,
+    "stop_days": 15,
+    "lowest_balance": 4601,
+    "worst_day": -138,
+    "passed": 13,
+    "failed": 11,
+    "unfinished": 0
+   },
+   "last2": {
+    "profit": 16533,
+    "per_month": 679,
+    "green_months": "22/25",
+    "worst_month": -46,
+    "stop_days": 19,
+    "lowest_balance": 4807,
+    "worst_day": -138,
+    "passed": 47,
+    "failed": 0,
+    "unfinished": 4
+   },
+   "sepoct": {
+    "profit": 317,
+    "per_month": 161,
+    "green_months": "1/2",
+    "worst_month": -46,
+    "stop_days": 2,
+    "lowest_balance": 4971,
+    "worst_day": -138,
+    "passed": 1,
+    "failed": 0,
+    "unfinished": 2
+   }
+  },
+  "10k": {
+   "y1": {
+    "profit": 1406,
+    "per_month": 117,
+    "green_months": "7/13",
+    "worst_month": -1700,
+    "stop_days": 16,
+    "lowest_balance": 8655,
+    "worst_day": -325,
+    "passed": 13,
+    "failed": 11,
+    "unfinished": 0
+   },
+   "last2": {
+    "profit": 40933,
+    "per_month": 1681,
+    "green_months": "24/25",
+    "worst_month": -94,
+    "stop_days": 10,
+    "lowest_balance": 9829,
+    "worst_day": -325,
+    "passed": 46,
+    "failed": 0,
+    "unfinished": 5
+   },
+   "sepoct": {
+    "profit": 410,
+    "per_month": 208,
+    "green_months": "1/2",
+    "worst_month": -94,
+    "stop_days": 1,
+    "lowest_balance": 9886,
+    "worst_day": -325,
+    "passed": 0,
+    "failed": 0,
+    "unfinished": 3
+   }
+  }
+ },
+ "the 66": {
+  "n": 66,
+  "5k": {
+   "y1": {
+    "profit": 449,
+    "per_month": 37,
+    "green_months": "6/13",
+    "worst_month": -703,
+    "stop_days": 31,
+    "lowest_balance": 4261,
+    "worst_day": -138,
+    "passed": 13,
+    "failed": 11,
+    "unfinished": 0
+   },
+   "last2": {
+    "profit": 7136,
+    "per_month": 293,
+    "green_months": "20/25",
+    "worst_month": -616,
+    "stop_days": 30,
+    "lowest_balance": 4786,
+    "worst_day": -138,
+    "passed": 43,
+    "failed": 5,
+    "unfinished": 3
+   },
+   "sepoct": {
+    "profit": -75,
+    "per_month": -38,
+    "green_months": "1/2",
+    "worst_month": -89,
+    "stop_days": 1,
+    "lowest_balance": 4670,
+    "worst_day": -138,
+    "passed": 0,
+    "failed": 0,
+    "unfinished": 3
+   }
+  },
+  "10k": {
+   "y1": {
+    "profit": 1155,
+    "per_month": 96,
+    "green_months": "6/13",
+    "worst_month": -1568,
+    "stop_days": 26,
+    "lowest_balance": 8693,
+    "worst_day": -325,
+    "passed": 10,
+    "failed": 14,
+    "unfinished": 0
+   },
+   "last2": {
+    "profit": 24978,
+    "per_month": 1026,
+    "green_months": "21/25",
+    "worst_month": -1203,
+    "stop_days": 20,
+    "lowest_balance": 9495,
+    "worst_day": -325,
+    "passed": 44,
+    "failed": 7,
+    "unfinished": 0
+   },
+   "sepoct": {
+    "profit": -379,
+    "per_month": -192,
+    "green_months": "0/2",
+    "worst_month": -239,
+    "stop_days": 2,
+    "lowest_balance": 8814,
+    "worst_day": -325,
+    "passed": 0,
+    "failed": 2,
+    "unfinished": 1
+   }
+  }
+ },
+ "the 74": {
+  "n": 73,
+  "5k": {
+   "y1": {
+    "profit": 348,
+    "per_month": 29,
+    "green_months": "6/13",
+    "worst_month": -576,
+    "stop_days": 27,
+    "lowest_balance": 4678,
+    "worst_day": -138,
+    "passed": 12,
+    "failed": 12,
+    "unfinished": 0
+   },
+   "last2": {
+    "profit": 17056,
+    "per_month": 701,
+    "green_months": "23/25",
+    "worst_month": -346,
+    "stop_days": 35,
+    "lowest_balance": 4727,
+    "worst_day": -138,
+    "passed": 49,
+    "failed": 0,
+    "unfinished": 2
+   },
+   "sepoct": {
+    "profit": 107,
+    "per_month": 54,
+    "green_months": "1/2",
+    "worst_month": -346,
+    "stop_days": 4,
+    "lowest_balance": 4967,
+    "worst_day": -138,
+    "passed": 2,
+    "failed": 0,
+    "unfinished": 1
+   }
+  },
+  "10k": {
+   "y1": {
+    "profit": 1444,
+    "per_month": 120,
+    "green_months": "6/13",
+    "worst_month": -1175,
+    "stop_days": 20,
+    "lowest_balance": 9222,
+    "worst_day": -325,
+    "passed": 16,
+    "failed": 8,
+    "unfinished": 0
+   },
+   "last2": {
+    "profit": 45393,
+    "per_month": 1865,
+    "green_months": "24/25",
+    "worst_month": -287,
+    "stop_days": 18,
+    "lowest_balance": 9288,
+    "worst_day": -325,
+    "passed": 48,
+    "failed": 1,
+    "unfinished": 2
+   },
+   "sepoct": {
+    "profit": -21,
+    "per_month": -10,
+    "green_months": "1/2",
+    "worst_month": -287,
+    "stop_days": 4,
+    "lowest_balance": 9432,
+    "worst_day": -325,
+    "passed": 1,
+    "failed": 0,
+    "unfinished": 2
+   }
+  }
+ },
+ "the 51": {
+  "n": 49,
+  "5k": {
+   "y1": {
+    "profit": 1138,
+    "per_month": 95,
+    "green_months": "7/13",
+    "worst_month": -743,
+    "stop_days": 16,
+    "lowest_balance": 4671,
+    "worst_day": -138,
+    "passed": 14,
+    "failed": 10,
+    "unfinished": 0
+   },
+   "last2": {
+    "profit": 15220,
+    "per_month": 625,
+    "green_months": "23/25",
+    "worst_month": -49,
+    "stop_days": 19,
+    "lowest_balance": 4769,
+    "worst_day": -138,
+    "passed": 48,
+    "failed": 0,
+    "unfinished": 3
+   },
+   "sepoct": {
+    "profit": 258,
+    "per_month": 131,
+    "green_months": "1/2",
+    "worst_month": -49,
+    "stop_days": 2,
+    "lowest_balance": 4961,
+    "worst_day": -138,
+    "passed": 1,
+    "failed": 0,
+    "unfinished": 2
+   }
+  },
+  "10k": {
+   "y1": {
+    "profit": 201,
+    "per_month": 17,
+    "green_months": "6/13",
+    "worst_month": -1914,
+    "stop_days": 23,
+    "lowest_balance": 8069,
+    "worst_day": -325,
+    "passed": 16,
+    "failed": 8,
+    "unfinished": 0
+   },
+   "last2": {
+    "profit": 41130,
+    "per_month": 1690,
+    "green_months": "24/25",
+    "worst_month": -372,
+    "stop_days": 11,
+    "lowest_balance": 9427,
+    "worst_day": -325,
+    "passed": 48,
+    "failed": 0,
+    "unfinished": 3
+   },
+   "sepoct": {
+    "profit": 379,
+    "per_month": 192,
+    "green_months": "1/2",
+    "worst_month": -372,
+    "stop_days": 2,
+    "lowest_balance": 9858,
+    "worst_day": -325,
+    "passed": 1,
+    "failed": 1,
+    "unfinished": 1
+   }
+  }
+ }
+}
