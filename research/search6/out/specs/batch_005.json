@@ -1,0 +1,38 @@
+[
+ {
+  "video_id": "h-Z7CEqBO3s", "name": "m1_sr_breakout_scalp", "market": "AUDUSD", "tf": "M5", "side": "both",
+  "trend": null,
+  "entry": {"type": "donchian", "n": 20},
+  "session": null, "days": null,
+  "stop": {"type": "swing", "n": 10, "buf_atr": 0.1},
+  "target": {"type": "rr", "r": 3},
+  "max_hold": 200,
+  "claimed": "Three confirmations lift win chance from 50% to 75-80%; no tested sample",
+  "assumed": ["tf M5 because engine has no M1 (speaker enters on M1, direction from M5)", "donchian n=20 stands in for support/resistance break", "stop swing n=10 buf 0.1 ATR ('nice tight stop')", "rr 3 (speaker says 1:3 to 1:5)", "no trend filter"],
+  "notes": "5m support/resistance direction plus 1m structure break is discretionary; trend-line breaks not representable. Market (AUDUSD vs USDCAD) not stated; low fidelity."
+ },
+ {
+  "video_id": "bKnVcCnuPxY", "name": "bear_flag_break_atr_manage", "market": "EURCHF", "tf": "D1", "side": "short",
+  "trend": null,
+  "entry": {"type": "donchian", "n": 20},
+  "session": null, "days": null,
+  "stop": {"type": "atr", "mult": 1.5},
+  "target": {"type": "atr", "mult": 1},
+  "max_hold": 200,
+  "claimed": "No win rate claimed; says trade management matters more than entry",
+  "assumed": ["donchian n=20 down-break stands in for daily close below bear flag", "single full-size exit at 1 ATR target instead of half off plus runner", "short only (bear flag example)"],
+  "notes": "Flag pattern, volume >=75% of average filter, early exit on close back inside flag, half-off then break-even and trailing second half are not representable."
+ },
+ {
+  "video_id": "wJoaPCOITws", "name": "smc_sweep_bos_rr2", "market": "AUDUSD", "tf": "M15", "side": "both",
+  "trend": null,
+  "entry": {"type": "sweep", "n": 20},
+  "session": null, "days": null,
+  "stop": {"type": "swing", "n": 10, "buf_atr": 0.1},
+  "target": {"type": "rr", "r": 2},
+  "max_hold": 200,
+  "claimed": "None; walkthrough, trade would have given about 2R",
+  "assumed": ["sweep n=20", "swing stop n=10 buf 0.1 ATR (stop behind low that broke structure)", "tf M15 (range and limit order on M15)", "no HTF bias filter"],
+  "notes": "Break of structure after liquidity sweep, HTF daily/4H bias, demand/supply mitigation and limit entry at range are discretionary; loose approximation only."
+ }
+]

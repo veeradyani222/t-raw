@@ -1,0 +1,16 @@
+[
+ {"video_id": "33Kp0kjF_Jg", "name": "tma_rsi_reversal_scalp", "market": "AUDNZD", "tf": "M5", "side": "both", "trend": null,
+  "entry": [{"type": "bb", "n": 20, "k": 2, "mode": "fade"}, {"type": "rsi", "n": 14, "lo": 25, "hi": 75, "mode": "cross_back"}],
+  "session": null, "days": null,
+  "stop": {"type": "swing", "n": 10, "buf_atr": 0.1}, "target": {"type": "bb_mid"}, "max_hold": 200,
+  "claimed": "70% win rate (title); no sample given",
+  "assumed": ["tf M5 (speaker: 3 minute or higher)", "Bollinger 20/2 stands in for TMA 35 band", "RSI period 14", "swing n=10 and buf 0.1", "max_hold 200"],
+  "notes": "ENGINE-GAP: triangular MA band (TMA 35, dev 60, ATR mult 4) not available. Speaker suggests Asia session and avoiding trends; alt target 1:1 RR."},
+ {"video_id": "33Kp0kjF_Jg", "name": "tma_rsi_reversal_scalp", "market": "EURCHF", "tf": "M5", "side": "both", "trend": null,
+  "entry": [{"type": "bb", "n": 20, "k": 2, "mode": "fade"}, {"type": "rsi", "n": 14, "lo": 25, "hi": 75, "mode": "cross_back"}],
+  "session": null, "days": null,
+  "stop": {"type": "swing", "n": 10, "buf_atr": 0.1}, "target": {"type": "bb_mid"}, "max_hold": 200,
+  "claimed": "70% win rate (title); no sample given",
+  "assumed": ["tf M5 (speaker: 3 minute or higher)", "Bollinger 20/2 stands in for TMA 35 band", "RSI period 14", "swing n=10 and buf 0.1", "max_hold 200"],
+  "notes": "ENGINE-GAP: triangular MA band (TMA 35, dev 60, ATR mult 4) not available. Speaker suggests Asia session and avoiding trends; alt target 1:1 RR."}
+]

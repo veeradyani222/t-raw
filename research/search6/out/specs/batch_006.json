@@ -1,0 +1,74 @@
+[
+ {
+  "video_id": "zjPKnnnHJ5c", "name": "chfjpy_liquidity_grab_engulf", "market": "CHFJPY", "tf": "H4", "side": "both",
+  "trend": null,
+  "entry": {"type": "sweep", "n": 20},
+  "session": null, "days": null,
+  "stop": {"type": "swing", "n": 10, "buf_atr": 0.1},
+  "target": {"type": "rr", "r": 2},
+  "max_hold": 200,
+  "claimed": "Two trades held weeks, both hit TP; no stats given",
+  "assumed": ["sweep lookback n=20", "swing stop n=10 buf 0.1", "target rr 2 (speaker gave no number)", "side both"],
+  "notes": "Speaker: double bottom/top plus liquidity grab, then bullish engulfing confirmation; engulfing confirmation not same-bar so omitted. Fixed SL/TP not stated."
+ },
+ {
+  "video_id": "6Ogsc_e6AxM", "name": "ger40_lc1_lc2_untapped_zone", "market": "DE40", "tf": "M30", "side": "both",
+  "trend": null,
+  "entry": {"type": "order_block", "k": 3},
+  "session": {"h0": 9, "h1": 18}, "days": [0,1,2,3,4],
+  "stop": {"type": "candle", "buf_atr": 0.1},
+  "target": {"type": "rr", "r": 5},
+  "max_hold": 200,
+  "claimed": "80% win 2025, 60% 2024, 50% 2023 backtest; live 38% strike rate, +15%",
+  "assumed": ["session 08:00-17:00 treated as Frankfurt time = server 9-18", "target rr 5 (he caps at 1:10, uses 1:5 to 1:10)", "candle buffer 0.1 ATR", "order block k=3"],
+  "notes": "ENGINE-GAP: untapped supply/demand zone preceded by Tokyo/London/NY session high-low liquidity, LC1 (reject, close out of zone) vs LC2 (close inside, pending at candle extreme); skip NFP/CPI. Order_block is a rough proxy."
+ },
+ {
+  "video_id": "FtxdAGKWXiw", "name": "dax_ma8_20_pullback_break", "market": "DE40", "tf": "M5", "side": "both",
+  "trend": {"type": "sma", "n": 20},
+  "entry": {"type": "ema_pullback", "n": 8, "tol_atr": 0.3},
+  "session": {"h0": 9, "h1": 12}, "days": null,
+  "stop": {"type": "candle", "buf_atr": 0.1},
+  "target": {"type": "rr", "r": 1},
+  "max_hold": 200,
+  "claimed": "Takes one trade a day, about 15 points; no stats",
+  "assumed": ["speaker chart is M1, engine min is M5", "8 and 20 are SMA per speaker, pullback MA treated as MA 8", "session 1-2 hours after London open assumed", "stop at candle extreme", "target rr 1 (he exits on break of previous low/high, no fixed value)"],
+  "notes": "Entry on break of the pullback candle after rejection from 8 SMA, price below/above 20 SMA defines trend. Exit on new low/high of prior swing not representable exactly."
+ },
+ {
+  "video_id": "Nw7lcbry3u4", "name": "dax_prev_day_break_adx_intraday", "market": "DE40", "tf": "M5", "side": "both",
+  "trend": {"type": "adx", "n": 14, "min": 25},
+  "entry": {"type": "prev_day_break"},
+  "session": null, "days": null,
+  "stop": {"type": "atr", "mult": 1.5},
+  "target": {"type": "time", "bars": 100},
+  "max_hold": 200,
+  "claimed": "Unger Academy portfolio strategy, built 2017, worked well in recent years; no numbers",
+  "assumed": ["ADX period 14 and min 25 (speaker only says ADX filter)", "stop atr 1.5", "exit at end of day approximated by 100 bars"],
+  "notes": "ENGINE-GAP: second strategy on M30: after gap up (open above prior-day high) short on break of previous bar low; gap down long on break of previous bar high. Session 08:00-22:00."
+ },
+ {
+  "video_id": "BAnZwJ5AT34", "name": "london_killzone_asian_sweep_fvg", "market": "EURCHF", "tf": "M5", "side": "both",
+  "trend": null,
+  "entry": {"type": "fvg"},
+  "session": {"h0": 9, "h1": 13}, "days": [0,1,2,3,4],
+  "stop": {"type": "swing", "n": 10, "buf_atr": 0.1},
+  "target": {"type": "rr", "r": 3},
+  "max_hold": 200,
+  "claimed": "92% win rate in title; no sample given",
+  "assumed": ["London killzone 07:00-11:00 UK = server 9-13", "swing stop n=10", "target rr 3 (he says 1:3 or about 1:5 to mid Asian range)", "speaker demos EURUSD, market taken from file MARKETS line"],
+  "notes": "ENGINE-GAP: needs Asian-range sweep, then market structure shift on swept fractal, then FVG overlapping the MSS; limit entry in FVG. fvg block is a proxy only."
+ },
+ {
+  "video_id": "7jujVkCs7_g", "name": "early_bird_trendline_break", "market": "EURGBP", "tf": "D1", "side": "both",
+  "trend": {"type": "ema_stack", "fast": 12, "slow": 25},
+  "entry": {"type": "donchian", "n": 20},
+  "session": null, "days": null,
+  "stop": {"type": "swing", "n": 10, "buf_atr": 0.1},
+  "target": {"type": "rr", "r": 2},
+  "max_hold": 200,
+  "claimed": "100-trade test: 57% win rate, +142%, max drawdown 10%",
+  "assumed": ["Trader XO EMAs taken as 12/25 (speaker gave no lengths)", "donchian n=20 as proxy for break of last higher high/lower low", "swing n=10 buf 0.1"],
+  "notes": "ENGINE-GAP: OBV+EMA(13/200) colour filter, Trader XO bar/triangle signal, break of trendline from last higher high via buy stop above breakout candle."
+ }
+]
