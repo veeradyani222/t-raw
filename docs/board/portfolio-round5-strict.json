@@ -1,0 +1,400 @@
+{
+ "mix": [
+  {
+   "name": "mon_long_h0_hold23",
+   "symbol": "EURJPY",
+   "tf": "H1",
+   "family": "jpy_session",
+   "module": "research.search.jpy_session.strategies",
+   "fn": "build_session",
+   "params": {
+    "hour": 0,
+    "hold": 23,
+    "side": "long",
+    "weekdays": [
+     0
+    ]
+   },
+   "risk": 0.0075,
+   "src": "live66",
+   "group": "live",
+   "in_live24": false
+  },
+  {
+   "name": "bos_hv_be1_M30",
+   "symbol": "XAUUSD",
+   "tf": "M30",
+   "family": "gold_fix",
+   "module": "research.search.gold_fix.strategies",
+   "fn": "build_bos",
+   "params": {
+    "tp_min_r": 2.0,
+    "atrp_min": 0.6,
+    "be_r": 1.0
+   },
+   "risk": 0.0075,
+   "src": "live66",
+   "group": "live",
+   "in_live24": false
+  },
+  {
+   "name": "tsmom_d1_lb40_a2",
+   "symbol": "BTCUSD",
+   "tf": "D1",
+   "family": "r3_crypto",
+   "module": "research.search3.crypto.strategies",
+   "fn": "build_tsmom",
+   "params": {
+    "lb": 40,
+    "atr_mult": 2
+   },
+   "risk": 0.0075,
+   "src": "new",
+   "group": "crypto",
+   "in_live24": false
+  },
+  {
+   "name": "pa_bos_BTCUSD_D1",
+   "symbol": "BTCUSD",
+   "tf": "D1",
+   "family": "pa_bos",
+   "module": "research.search4.price_action.strategies",
+   "fn": "build_bos",
+   "params": {
+    "k": 5,
+    "exit": "trail"
+   },
+   "risk": 0.0075,
+   "src": "round4",
+   "group": "crypto",
+   "in_live24": false
+  },
+  {
+   "name": "pa_inside_ETHUSD_D1",
+   "symbol": "ETHUSD",
+   "tf": "D1",
+   "family": "pa_inside",
+   "module": "research.search4.price_action.strategies",
+   "fn": "build_inside",
+   "params": {
+    "r": 1.5,
+    "trend": 100
+   },
+   "risk": 0.0075,
+   "src": "round4",
+   "group": "crypto",
+   "in_live24": false
+  },
+  {
+   "name": "pa_engulf_USDCAD_D1",
+   "symbol": "USDCAD",
+   "tf": "D1",
+   "family": "pa_engulf",
+   "module": "research.search4.price_action.strategies",
+   "fn": "build_engulf",
+   "params": {
+    "n": 30,
+    "r": 3.0
+   },
+   "risk": 0.0075,
+   "src": "round4",
+   "group": "commodity_fx",
+   "in_live24": false
+  },
+  {
+   "name": "pa_hikkake_ETHUSD_D1",
+   "symbol": "ETHUSD",
+   "tf": "D1",
+   "family": "pa_hikkake",
+   "module": "research.search4.price_action.strategies",
+   "fn": "build_hikkake",
+   "params": {
+    "r": 3.0
+   },
+   "risk": 0.0075,
+   "src": "round4",
+   "group": "crypto",
+   "in_live24": false
+  },
+  {
+   "name": "pa_double_USDCAD_H1",
+   "symbol": "USDCAD",
+   "tf": "H1",
+   "family": "pa_double",
+   "module": "research.search4.price_action.strategies",
+   "fn": "build_double",
+   "params": {
+    "k": 5
+   },
+   "risk": 0.0075,
+   "src": "round4",
+   "group": "commodity_fx",
+   "in_live24": false
+  },
+  {
+   "name": "pa_pin_DE40_D1",
+   "symbol": "DE40",
+   "tf": "D1",
+   "family": "pa_pin",
+   "module": "research.search4.price_action.strategies",
+   "fn": "build_pin",
+   "params": {
+    "n": 10,
+    "r": 1.5
+   },
+   "risk": 0.0075,
+   "src": "round4",
+   "group": "europe_indices",
+   "in_live24": false
+  },
+  {
+   "name": "pa_pin_ETHUSD_H4",
+   "symbol": "ETHUSD",
+   "tf": "H4",
+   "family": "pa_pin",
+   "module": "research.search4.price_action.strategies",
+   "fn": "build_pin",
+   "params": {
+    "n": 30,
+    "r": 3.0
+   },
+   "risk": 0.0075,
+   "src": "round4",
+   "group": "crypto",
+   "in_live24": false
+  }
+ ],
+ "results": {
+  "5k": {
+   "dev_fast": {
+    "profit": 6312,
+    "per_month": 60,
+    "green_months": "60/106",
+    "worst_month": -989,
+    "stop_days": 66,
+    "lowest_balance": 4899,
+    "worst_day": -138,
+    "passed": 187,
+    "failed": 36,
+    "unfinished": 5,
+    "years": 8.8
+   },
+   "unseen": {
+    "y1": {
+     "profit": 1359,
+     "per_month": 113,
+     "green_months": "8/13",
+     "worst_month": -305,
+     "stop_days": 3,
+     "lowest_balance": 4944,
+     "worst_day": -138,
+     "passed": 14,
+     "failed": 7,
+     "unfinished": 3
+    },
+    "last2": {
+     "profit": 2379,
+     "per_month": 98,
+     "green_months": "17/25",
+     "worst_month": -244,
+     "stop_days": 5,
+     "lowest_balance": 4940,
+     "worst_day": -138,
+     "passed": 42,
+     "failed": 6,
+     "unfinished": 3
+    },
+    "sepoct": {
+     "profit": -463,
+     "per_month": -235,
+     "green_months": "0/2",
+     "worst_month": -244,
+     "stop_days": 0,
+     "lowest_balance": 4452,
+     "worst_day": -105,
+     "passed": 0,
+     "failed": 1,
+     "unfinished": 2
+    },
+    "unseen3": {
+     "profit": 3738,
+     "per_month": 103,
+     "green_months": "24/37",
+     "worst_month": -305,
+     "stop_days": 8,
+     "lowest_balance": 4944,
+     "worst_day": -138,
+     "passed": 61,
+     "failed": 13,
+     "unfinished": 3
+    }
+   },
+   "regime_switch": {
+    "y1": {
+     "profit": 1252,
+     "per_month": 104,
+     "green_months": "8/13",
+     "worst_month": -243,
+     "stop_days": 3,
+     "lowest_balance": 4944,
+     "worst_day": -138,
+     "passed": 14,
+     "failed": 2,
+     "unfinished": 8
+    },
+    "last2": {
+     "profit": 2048,
+     "per_month": 84,
+     "green_months": "17/25",
+     "worst_month": -225,
+     "stop_days": 5,
+     "lowest_balance": 4970,
+     "worst_day": -138,
+     "passed": 33,
+     "failed": 1,
+     "unfinished": 17
+    },
+    "sepoct": {
+     "profit": -335,
+     "per_month": -170,
+     "green_months": "0/2",
+     "worst_month": -225,
+     "stop_days": 0,
+     "lowest_balance": 4623,
+     "worst_day": -82,
+     "passed": 0,
+     "failed": 0,
+     "unfinished": 3
+    },
+    "unseen3": {
+     "profit": 3301,
+     "per_month": 91,
+     "green_months": "24/37",
+     "worst_month": -243,
+     "stop_days": 8,
+     "lowest_balance": 4944,
+     "worst_day": -138,
+     "passed": 58,
+     "failed": 3,
+     "unfinished": 16
+    }
+   }
+  },
+  "10k": {
+   "dev_fast": {
+    "profit": 17301,
+    "per_month": 164,
+    "green_months": "64/106",
+    "worst_month": -1050,
+    "stop_days": 29,
+    "lowest_balance": 9798,
+    "worst_day": -325,
+    "passed": 193,
+    "failed": 33,
+    "unfinished": 2,
+    "years": 8.8
+   },
+   "unseen": {
+    "y1": {
+     "profit": 2228,
+     "per_month": 185,
+     "green_months": "8/13",
+     "worst_month": -702,
+     "stop_days": 2,
+     "lowest_balance": 9849,
+     "worst_day": -325,
+     "passed": 14,
+     "failed": 10,
+     "unfinished": 0
+    },
+    "last2": {
+     "profit": 6212,
+     "per_month": 255,
+     "green_months": "18/25",
+     "worst_month": -623,
+     "stop_days": 3,
+     "lowest_balance": 9845,
+     "worst_day": -325,
+     "passed": 43,
+     "failed": 8,
+     "unfinished": 0
+    },
+    "sepoct": {
+     "profit": -1176,
+     "per_month": -597,
+     "green_months": "0/2",
+     "worst_month": -623,
+     "stop_days": 0,
+     "lowest_balance": 8663,
+     "worst_day": -251,
+     "passed": 0,
+     "failed": 3,
+     "unfinished": 0
+    },
+    "unseen3": {
+     "profit": 8440,
+     "per_month": 232,
+     "green_months": "25/37",
+     "worst_month": -702,
+     "stop_days": 5,
+     "lowest_balance": 9849,
+     "worst_day": -325,
+     "passed": 59,
+     "failed": 18,
+     "unfinished": 0
+    }
+   },
+   "regime_switch": {
+    "y1": {
+     "profit": 1968,
+     "per_month": 164,
+     "green_months": "8/13",
+     "worst_month": -600,
+     "stop_days": 2,
+     "lowest_balance": 9849,
+     "worst_day": -325,
+     "passed": 14,
+     "failed": 5,
+     "unfinished": 5
+    },
+    "last2": {
+     "profit": 5400,
+     "per_month": 222,
+     "green_months": "17/25",
+     "worst_month": -561,
+     "stop_days": 3,
+     "lowest_balance": 9923,
+     "worst_day": -325,
+     "passed": 29,
+     "failed": 10,
+     "unfinished": 12
+    },
+    "sepoct": {
+     "profit": -789,
+     "per_month": -400,
+     "green_months": "0/2",
+     "worst_month": -477,
+     "stop_days": 0,
+     "lowest_balance": 9130,
+     "worst_day": -165,
+     "passed": 0,
+     "failed": 1,
+     "unfinished": 2
+    },
+    "unseen3": {
+     "profit": 7368,
+     "per_month": 203,
+     "green_months": "24/37",
+     "worst_month": -600,
+     "stop_days": 5,
+     "lowest_balance": 9849,
+     "worst_day": -325,
+     "passed": 50,
+     "failed": 13,
+     "unfinished": 14
+    }
+   }
+  }
+ },
+ "note": "Round 5 (2026-11-01) 'strict': picks and sizes decided on 2015..2023-10-20 only (research/search5/build_mix.py); risk = $10K fraction (x0.5 on the $5K account, capped 2.75%). Unseen periods replayed exactly with the live close-all stop. last2 (Oct 2024..Oct 2026) is the window the round-3 pool and the 66 were searched on: a fit period for those strategies."
+}

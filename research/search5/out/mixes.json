@@ -1,0 +1,4241 @@
+{
+ "mixes": {
+  "live23": {
+   "n": 23,
+   "strategies": [
+    {
+     "name": "bos_trail3_htfD50_H1",
+     "symbol": "XAUUSD",
+     "tf": "H1",
+     "risk": 0.01
+    },
+    {
+     "name": "bb_fade",
+     "symbol": "EURUSD",
+     "tf": "H1",
+     "risk": 0.0125
+    },
+    {
+     "name": "monday_long_downweek",
+     "symbol": "EURJPY",
+     "tf": "H1",
+     "risk": 0.0075
+    },
+    {
+     "name": "zscore",
+     "symbol": "US500",
+     "tf": "H4",
+     "risk": 0.0075
+    },
+    {
+     "name": "connors_rsi2_D1_",
+     "symbol": "EURCHF",
+     "tf": "D1",
+     "risk": 0.0275
+    },
+    {
+     "name": "wd_MW_Th_a15",
+     "symbol": "BTCUSD",
+     "tf": "D1",
+     "risk": 0.01
+    },
+    {
+     "name": "brent_wti_spread_z",
+     "symbol": "XTIUSD",
+     "tf": "H4",
+     "risk": 0.005
+    },
+    {
+     "name": "donchian160_h4",
+     "symbol": "XTIUSD",
+     "tf": "H4",
+     "risk": 0.01
+    },
+    {
+     "name": "eia_fade_m30",
+     "symbol": "XTIUSD",
+     "tf": "M30",
+     "risk": 0.0075
+    },
+    {
+     "name": "inside_bar_h4",
+     "symbol": "XTIUSD",
+     "tf": "H4",
+     "risk": 0.005
+    },
+    {
+     "name": "rsi2_mr_aus200_h4",
+     "symbol": "AUS200",
+     "tf": "H4",
+     "risk": 0.0075
+    },
+    {
+     "name": "rsi2_mr_jpn225_h1",
+     "symbol": "JPN225",
+     "tf": "H1",
+     "risk": 0.0125
+    },
+    {
+     "name": "prev_week_high_long_de40",
+     "symbol": "DE40",
+     "tf": "M30",
+     "risk": 0.005
+    },
+    {
+     "name": "us_open_fade_short_fra40",
+     "symbol": "FRA40",
+     "tf": "M30",
+     "risk": 0.015
+    },
+    {
+     "name": "rsi2_thresh10_sma5",
+     "symbol": "US500",
+     "tf": "D1",
+     "risk": 0.0125
+    },
+    {
+     "name": "weekday_fri_to_mon",
+     "symbol": "USTEC",
+     "tf": "D1",
+     "risk": 0.025
+    },
+    {
+     "name": "round_big_bounce",
+     "symbol": "USTEC",
+     "tf": "M30",
+     "risk": 0.0075
+    },
+    {
+     "name": "nr_7_mid_r2",
+     "symbol": "XAGUSD",
+     "tf": "H1",
+     "risk": 0.0125
+    },
+    {
+     "name": "sh_long_21-3_s3.0",
+     "symbol": "XAUUSD",
+     "tf": "H1",
+     "risk": 0.01
+    },
+    {
+     "name": "ab_mql_range_mid_mr0.3",
+     "symbol": "XAUUSD",
+     "tf": "M30",
+     "risk": 0.005
+    },
+    {
+     "name": "monday_gap_fade_gbpusd",
+     "symbol": "GBPUSD",
+     "tf": "H1",
+     "risk": 0.025
+    },
+    {
+     "name": "inside_day_break_usdchf",
+     "symbol": "USDCHF",
+     "tf": "H4",
+     "risk": 0.01
+    },
+    {
+     "name": "friday_week_fade_eurusd",
+     "symbol": "EURUSD",
+     "tf": "H1",
+     "risk": 0.02
+    }
+   ],
+   "accounts": {
+    "5k": {
+     "dev_fast": {
+      "profit": -22434,
+      "per_month": -212,
+      "green_months": "33/106",
+      "worst_month": -1095,
+      "stop_days": 229,
+      "lowest_balance": -17897,
+      "worst_day": -138,
+      "passed": 27,
+      "failed": 199,
+      "unfinished": 2,
+      "years": 8.8
+     },
+     "unseen": {
+      "y1": {
+       "profit": 1495,
+       "per_month": 124,
+       "green_months": "8/13",
+       "worst_month": -685,
+       "stop_days": 15,
+       "lowest_balance": 4601,
+       "worst_day": -138,
+       "passed": 14,
+       "failed": 9,
+       "unfinished": 1
+      },
+      "last2": {
+       "profit": 16946,
+       "per_month": 696,
+       "green_months": "22/25",
+       "worst_month": -71,
+       "stop_days": 21,
+       "lowest_balance": 4807,
+       "worst_day": -138,
+       "passed": 47,
+       "failed": 0,
+       "unfinished": 4
+      },
+      "sepoct": {
+       "profit": 301,
+       "per_month": 153,
+       "green_months": "1/2",
+       "worst_month": -71,
+       "stop_days": 2,
+       "lowest_balance": 4967,
+       "worst_day": -138,
+       "passed": 1,
+       "failed": 0,
+       "unfinished": 2
+      },
+      "unseen3": {
+       "profit": 18441,
+       "per_month": 507,
+       "green_months": "29/37",
+       "worst_month": -685,
+       "stop_days": 36,
+       "lowest_balance": 4601,
+       "worst_day": -138,
+       "passed": 63,
+       "failed": 10,
+       "unfinished": 4
+      }
+     },
+     "regime_switch": {
+      "y1": {
+       "profit": 1119,
+       "per_month": 93,
+       "green_months": "8/13",
+       "worst_month": -343,
+       "stop_days": 10,
+       "lowest_balance": 4601,
+       "worst_day": -138,
+       "passed": 7,
+       "failed": 8,
+       "unfinished": 9
+      },
+      "last2": {
+       "profit": 16946,
+       "per_month": 696,
+       "green_months": "22/25",
+       "worst_month": -71,
+       "stop_days": 21,
+       "lowest_balance": 4807,
+       "worst_day": -138,
+       "passed": 47,
+       "failed": 0,
+       "unfinished": 4
+      },
+      "sepoct": {
+       "profit": 301,
+       "per_month": 153,
+       "green_months": "1/2",
+       "worst_month": -71,
+       "stop_days": 2,
+       "lowest_balance": 4967,
+       "worst_day": -138,
+       "passed": 1,
+       "failed": 0,
+       "unfinished": 2
+      },
+      "unseen3": {
+       "profit": 18066,
+       "per_month": 497,
+       "green_months": "29/37",
+       "worst_month": -343,
+       "stop_days": 31,
+       "lowest_balance": 4601,
+       "worst_day": -138,
+       "passed": 64,
+       "failed": 9,
+       "unfinished": 4
+      }
+     },
+     "switch_share": 0.1111111111111111,
+     "per_strategy": {
+      "research.search.gold_fix.strategies|build_bos|{\"htf\": [\"1D\", 50], \"tp_mode\": \"none\", \"trail_atr\": 3.0}|XAUUSD|H1": {
+       "y1": 348,
+       "last2": 2022,
+       "sepoct": -159,
+       "unseen3": 2371
+      },
+      "research.search.mean_reversion.strategies|build_bb_fade|{\"k\": 2.5, \"max_hold\": 24, \"n\": 50, \"sides\": \"long\", \"stop_atr\": 2.0, \"trend\": 200}|EURUSD|H1": {
+       "y1": 25,
+       "last2": 594,
+       "sepoct": 0,
+       "unseen3": 620
+      },
+      "research.search.jpy_session.strategies|build_monday_long|{\"prior_dir\": \"down\", \"prior_n\": 120}|EURJPY|H1": {
+       "y1": 380,
+       "last2": 543,
+       "sepoct": -98,
+       "unseen3": 923
+      },
+      "research.search.mean_reversion.strategies|build_zscore|{\"max_hold\": 12, \"n\": 20, \"sides\": \"long\", \"stop_atr\": 3.0, \"trend\": 0, \"z_in\": 2.0, \"z_out\": 0.5}|US500|H4": {
+       "y1": 109,
+       "last2": 479,
+       "sepoct": -39,
+       "unseen3": 589
+      },
+      "research.search.public_eas.strategies|build_connors_rsi2|{}|EURCHF|D1": {
+       "y1": -95,
+       "last2": 428,
+       "sepoct": 32,
+       "unseen3": 333
+      },
+      "research.search3.crypto.strategies|build_weekday|{\"atr_mult\": 1.5}|BTCUSD|D1": {
+       "y1": 383,
+       "last2": 777,
+       "sepoct": 50,
+       "unseen3": 1161
+      },
+      "research.search3.oil_gas.strategies|build_spread_reversion|{\"lookback\": 100, \"max_hold\": 120, \"mode\": \"diff\", \"other\": \"XBRUSD\", \"sl_atr\": 2, \"z_in\": 2.5, \"z_out\": 0}|XTIUSD|H4": {
+       "y1": 50,
+       "last2": 804,
+       "sepoct": 7,
+       "unseen3": 854
+      },
+      "research.search3.oil_gas.strategies|build_donchian|{\"n\": 160, \"side\": \"both\", \"sl_atr\": 2, \"trail_atr\": 3}|XTIUSD|H4": {
+       "y1": -190,
+       "last2": 1555,
+       "sepoct": 87,
+       "unseen3": 1365
+      },
+      "research.search3.oil_gas.strategies|build_report_momentum|{\"atr_n\": 20, \"direction\": \"fade\", \"exit_hour\": 21, \"min_move_atr\": 0.3, \"report_hour\": 17, \"report_wd\": 2, \"sl_atr\": 1, \"tp_r\": null}|XTIUSD|M30": {
+       "y1": -20,
+       "last2": 969,
+       "sepoct": -5,
+       "unseen3": 950
+      },
+      "research.search3.oil_gas.strategies|build_inside_bar|{\"atr_n\": 14, \"max_hold\": 10, \"sl_atr\": 1.5, \"sl_mode\": \"atr\", \"tp_r\": 2.5}|XTIUSD|H4": {
+       "y1": -191,
+       "last2": 644,
+       "sepoct": -1,
+       "unseen3": 453
+      },
+      "research.search3.asia_indices.strategies|build_rsi_mr|{\"hi\": 85, \"lo\": 15, \"max_hold\": 8, \"n\": 2, \"sl_atr\": 1.5, \"trend_n\": 200}|AUS200|H4": {
+       "y1": 0,
+       "last2": 556,
+       "sepoct": 79,
+       "unseen3": 556
+      },
+      "research.search3.asia_indices.strategies|build_rsi_mr|{\"hi\": 75, \"lo\": 25, \"max_hold\": 8, \"n\": 2, \"sl_atr\": 2, \"trend_n\": 0}|JPN225|H1": {
+       "y1": 0,
+       "last2": 0,
+       "sepoct": 0,
+       "unseen3": 0
+      },
+      "research.search3.europe_indices.strategies|build_prev_week|{\"sides\": \"long\", \"sl_atr\": 1.5, \"trail_atr\": 3}|DE40|M30": {
+       "y1": 493,
+       "last2": 385,
+       "sepoct": 18,
+       "unseen3": 877
+      },
+      "research.search3.europe_indices.strategies|build_us_open_fade|{\"k\": 1, \"sides\": \"short\"}|FRA40|M30": {
+       "y1": -45,
+       "last2": 908,
+       "sepoct": -6,
+       "unseen3": 863
+      },
+      "research.search3.us_indices.strategies|build_rsi2|{\"exit_sma\": 5, \"thresh\": 10}|US500|D1": {
+       "y1": 179,
+       "last2": 676,
+       "sepoct": 29,
+       "unseen3": 855
+      },
+      "research.search3.us_indices.strategies|build_weekday|{\"enter_dow\": 4, \"hold\": 1, \"trend\": \"with\"}|USTEC|D1": {
+       "y1": 216,
+       "last2": 1284,
+       "sepoct": 148,
+       "unseen3": 1499
+      },
+      "research.search3.us_indices.strategies|build_round|{\"mode\": \"bounce\", \"step\": \"big\", \"tp_r\": null}|USTEC|M30": {
+       "y1": -39,
+       "last2": 646,
+       "sepoct": -9,
+       "unseen3": 607
+      },
+      "research.search3.metals.strategies|build_nr_break|{\"inside\": false, \"nr\": 7, \"stop\": \"mid\", \"tp\": \"r:2\"}|XAGUSD|H1": {
+       "y1": -320,
+       "last2": 1090,
+       "sepoct": -89,
+       "unseen3": 770
+      },
+      "research.search3.metals.strategies|build_session_hold|{\"dows\": null, \"h_in\": 21, \"h_out\": 3, \"side\": \"long\", \"stop_atr\": 3}|XAUUSD|H1": {
+       "y1": 310,
+       "last2": 708,
+       "sepoct": 34,
+       "unseen3": 1018
+      },
+      "research.search3.metals.strategies|build_asia_break|{\"a0\": 3, \"a1\": 8, \"be_r\": null, \"exit_hour\": 21, \"last_entry\": 14, \"max_rng\": 1.6, \"min_rng\": 0.3, \"stop\": \"mid\", \"tp\": \"range\"}|XAUUSD|M30": {
+       "y1": 214,
+       "last2": 568,
+       "sepoct": 78,
+       "unseen3": 782
+      },
+      "research.search3.majors.strategies|build_monday_gap_fade|{\"max_hold\": 36, \"min_gap\": 0.2, \"sl_mult\": 1}|GBPUSD|H1": {
+       "y1": 55,
+       "last2": 1278,
+       "sepoct": 67,
+       "unseen3": 1333
+      },
+      "research.search3.majors.strategies|build_inside_nr_break|{\"kind\": \"inside\", \"max_hold\": 18, \"rr\": 2, \"sl_mode\": \"opp\"}|USDCHF|H4": {
+       "y1": 277,
+       "last2": 555,
+       "sepoct": -180,
+       "unseen3": 832
+      },
+      "research.search3.majors.strategies|build_friday_week_fade|{\"hour\": 14, \"thr\": 1.8, \"tp_frac\": 0.5}|EURUSD|H1": {
+       "y1": -230,
+       "last2": 661,
+       "sepoct": 116,
+       "unseen3": 432
+      }
+     },
+     "halts": 36
+    },
+    "10k": {
+     "dev_fast": {
+      "profit": -42179,
+      "per_month": -399,
+      "green_months": "34/106",
+      "worst_month": -2389,
+      "stop_days": 142,
+      "lowest_balance": -33216,
+      "worst_day": -325,
+      "passed": 29,
+      "failed": 197,
+      "unfinished": 2,
+      "years": 8.8
+     },
+     "unseen": {
+      "y1": {
+       "profit": 1273,
+       "per_month": 106,
+       "green_months": "7/13",
+       "worst_month": -1740,
+       "stop_days": 17,
+       "lowest_balance": 8535,
+       "worst_day": -325,
+       "passed": 13,
+       "failed": 10,
+       "unfinished": 1
+      },
+      "last2": {
+       "profit": 42516,
+       "per_month": 1747,
+       "green_months": "24/25",
+       "worst_month": -144,
+       "stop_days": 11,
+       "lowest_balance": 9829,
+       "worst_day": -325,
+       "passed": 46,
+       "failed": 0,
+       "unfinished": 5
+      },
+      "sepoct": {
+       "profit": 374,
+       "per_month": 190,
+       "green_months": "1/2",
+       "worst_month": -144,
+       "stop_days": 1,
+       "lowest_balance": 9878,
+       "worst_day": -325,
+       "passed": 0,
+       "failed": 0,
+       "unfinished": 3
+      },
+      "unseen3": {
+       "profit": 43789,
+       "per_month": 1204,
+       "green_months": "30/37",
+       "worst_month": -1740,
+       "stop_days": 28,
+       "lowest_balance": 8535,
+       "worst_day": -325,
+       "passed": 62,
+       "failed": 11,
+       "unfinished": 4
+      }
+     },
+     "regime_switch": {
+      "y1": {
+       "profit": 639,
+       "per_month": 53,
+       "green_months": "7/13",
+       "worst_month": -1187,
+       "stop_days": 13,
+       "lowest_balance": 9169,
+       "worst_day": -325,
+       "passed": 8,
+       "failed": 10,
+       "unfinished": 6
+      },
+      "last2": {
+       "profit": 42365,
+       "per_month": 1740,
+       "green_months": "24/25",
+       "worst_month": -295,
+       "stop_days": 11,
+       "lowest_balance": 9829,
+       "worst_day": -325,
+       "passed": 46,
+       "failed": 0,
+       "unfinished": 5
+      },
+      "sepoct": {
+       "profit": 223,
+       "per_month": 113,
+       "green_months": "1/2",
+       "worst_month": -295,
+       "stop_days": 1,
+       "lowest_balance": 9878,
+       "worst_day": -325,
+       "passed": 0,
+       "failed": 0,
+       "unfinished": 3
+      },
+      "unseen3": {
+       "profit": 43004,
+       "per_month": 1183,
+       "green_months": "30/37",
+       "worst_month": -1187,
+       "stop_days": 24,
+       "lowest_balance": 9169,
+       "worst_day": -325,
+       "passed": 62,
+       "failed": 11,
+       "unfinished": 4
+      }
+     },
+     "switch_share": 0.12556458897922312,
+     "per_strategy": {
+      "research.search.gold_fix.strategies|build_bos|{\"htf\": [\"1D\", 50], \"tp_mode\": \"none\", \"trail_atr\": 3.0}|XAUUSD|H1": {
+       "y1": 860,
+       "last2": 5849,
+       "sepoct": -455,
+       "unseen3": 6710
+      },
+      "research.search.mean_reversion.strategies|build_bb_fade|{\"k\": 2.5, \"max_hold\": 24, \"n\": 50, \"sides\": \"long\", \"stop_atr\": 2.0, \"trend\": 200}|EURUSD|H1": {
+       "y1": 53,
+       "last2": 1197,
+       "sepoct": 0,
+       "unseen3": 1250
+      },
+      "research.search.jpy_session.strategies|build_monday_long|{\"prior_dir\": \"down\", \"prior_n\": 120}|EURJPY|H1": {
+       "y1": 793,
+       "last2": 1111,
+       "sepoct": -214,
+       "unseen3": 1903
+      },
+      "research.search.mean_reversion.strategies|build_zscore|{\"max_hold\": 12, \"n\": 20, \"sides\": \"long\", \"stop_atr\": 3.0, \"trend\": 0, \"z_in\": 2.0, \"z_out\": 0.5}|US500|H4": {
+       "y1": 221,
+       "last2": 980,
+       "sepoct": -72,
+       "unseen3": 1201
+      },
+      "research.search.public_eas.strategies|build_connors_rsi2|{}|EURCHF|D1": {
+       "y1": -193,
+       "last2": 876,
+       "sepoct": 67,
+       "unseen3": 683
+      },
+      "research.search3.crypto.strategies|build_weekday|{\"atr_mult\": 1.5}|BTCUSD|D1": {
+       "y1": 816,
+       "last2": 2101,
+       "sepoct": 159,
+       "unseen3": 2917
+      },
+      "research.search3.oil_gas.strategies|build_spread_reversion|{\"lookback\": 100, \"max_hold\": 120, \"mode\": \"diff\", \"other\": \"XBRUSD\", \"sl_atr\": 2, \"z_in\": 2.5, \"z_out\": 0}|XTIUSD|H4": {
+       "y1": 99,
+       "last2": 1657,
+       "sepoct": 11,
+       "unseen3": 1756
+      },
+      "research.search3.oil_gas.strategies|build_donchian|{\"n\": 160, \"side\": \"both\", \"sl_atr\": 2, \"trail_atr\": 3}|XTIUSD|H4": {
+       "y1": -384,
+       "last2": 3128,
+       "sepoct": 184,
+       "unseen3": 2743
+      },
+      "research.search3.oil_gas.strategies|build_report_momentum|{\"atr_n\": 20, \"direction\": \"fade\", \"exit_hour\": 21, \"min_move_atr\": 0.3, \"report_hour\": 17, \"report_wd\": 2, \"sl_atr\": 1, \"tp_r\": null}|XTIUSD|M30": {
+       "y1": -39,
+       "last2": 1944,
+       "sepoct": -11,
+       "unseen3": 1905
+      },
+      "research.search3.oil_gas.strategies|build_inside_bar|{\"atr_n\": 14, \"max_hold\": 10, \"sl_atr\": 1.5, \"sl_mode\": \"atr\", \"tp_r\": 2.5}|XTIUSD|H4": {
+       "y1": -391,
+       "last2": 1266,
+       "sepoct": -4,
+       "unseen3": 875
+      },
+      "research.search3.asia_indices.strategies|build_rsi_mr|{\"hi\": 85, \"lo\": 15, \"max_hold\": 8, \"n\": 2, \"sl_atr\": 1.5, \"trend_n\": 200}|AUS200|H4": {
+       "y1": 0,
+       "last2": 1156,
+       "sepoct": 154,
+       "unseen3": 1156
+      },
+      "research.search3.asia_indices.strategies|build_rsi_mr|{\"hi\": 75, \"lo\": 25, \"max_hold\": 8, \"n\": 2, \"sl_atr\": 2, \"trend_n\": 0}|JPN225|H1": {
+       "y1": -2429,
+       "last2": 2061,
+       "sepoct": 0,
+       "unseen3": -368
+      },
+      "research.search3.europe_indices.strategies|build_prev_week|{\"sides\": \"long\", \"sl_atr\": 1.5, \"trail_atr\": 3}|DE40|M30": {
+       "y1": 1022,
+       "last2": 876,
+       "sepoct": 29,
+       "unseen3": 1898
+      },
+      "research.search3.europe_indices.strategies|build_us_open_fade|{\"k\": 1, \"sides\": \"short\"}|FRA40|M30": {
+       "y1": -92,
+       "last2": 1878,
+       "sepoct": -13,
+       "unseen3": 1786
+      },
+      "research.search3.us_indices.strategies|build_rsi2|{\"exit_sma\": 5, \"thresh\": 10}|US500|D1": {
+       "y1": 378,
+       "last2": 1455,
+       "sepoct": 59,
+       "unseen3": 1834
+      },
+      "research.search3.us_indices.strategies|build_weekday|{\"enter_dow\": 4, \"hold\": 1, \"trend\": \"with\"}|USTEC|D1": {
+       "y1": 435,
+       "last2": 3066,
+       "sepoct": 268,
+       "unseen3": 3502
+      },
+      "research.search3.us_indices.strategies|build_round|{\"mode\": \"bounce\", \"step\": \"big\", \"tp_r\": null}|USTEC|M30": {
+       "y1": -24,
+       "last2": 1399,
+       "sepoct": -71,
+       "unseen3": 1375
+      },
+      "research.search3.metals.strategies|build_nr_break|{\"inside\": false, \"nr\": 7, \"stop\": \"mid\", \"tp\": \"r:2\"}|XAGUSD|H1": {
+       "y1": -629,
+       "last2": 2650,
+       "sepoct": -187,
+       "unseen3": 2020
+      },
+      "research.search3.metals.strategies|build_session_hold|{\"dows\": null, \"h_in\": 21, \"h_out\": 3, \"side\": \"long\", \"stop_atr\": 3}|XAUUSD|H1": {
+       "y1": 648,
+       "last2": 2350,
+       "sepoct": -58,
+       "unseen3": 2998
+      },
+      "research.search3.metals.strategies|build_asia_break|{\"a0\": 3, \"a1\": 8, \"be_r\": null, \"exit_hour\": 21, \"last_entry\": 14, \"max_rng\": 1.6, \"min_rng\": 0.3, \"stop\": \"mid\", \"tp\": \"range\"}|XAUUSD|M30": {
+       "y1": 415,
+       "last2": 1847,
+       "sepoct": 141,
+       "unseen3": 2262
+      },
+      "research.search3.majors.strategies|build_monday_gap_fade|{\"max_hold\": 36, \"min_gap\": 0.2, \"sl_mult\": 1}|GBPUSD|H1": {
+       "y1": 110,
+       "last2": 2577,
+       "sepoct": 135,
+       "unseen3": 2687
+      },
+      "research.search3.majors.strategies|build_inside_nr_break|{\"kind\": \"inside\", \"max_hold\": 18, \"rr\": 2, \"sl_mode\": \"opp\"}|USDCHF|H4": {
+       "y1": 591,
+       "last2": 1183,
+       "sepoct": -365,
+       "unseen3": 1774
+      },
+      "research.search3.majors.strategies|build_friday_week_fade|{\"hour\": 14, \"thr\": 1.8, \"tp_frac\": 0.5}|EURUSD|H1": {
+       "y1": -465,
+       "last2": 1322,
+       "sepoct": 236,
+       "unseen3": 857
+      }
+     },
+     "halts": 28
+    }
+   }
+  },
+  "live23+adds": {
+   "n": 52,
+   "strategies": [
+    {
+     "name": "bos_trail3_htfD50_H1",
+     "symbol": "XAUUSD",
+     "tf": "H1",
+     "risk": 0.01
+    },
+    {
+     "name": "bb_fade",
+     "symbol": "EURUSD",
+     "tf": "H1",
+     "risk": 0.0125
+    },
+    {
+     "name": "monday_long_downweek",
+     "symbol": "EURJPY",
+     "tf": "H1",
+     "risk": 0.0075
+    },
+    {
+     "name": "zscore",
+     "symbol": "US500",
+     "tf": "H4",
+     "risk": 0.0075
+    },
+    {
+     "name": "connors_rsi2_D1_",
+     "symbol": "EURCHF",
+     "tf": "D1",
+     "risk": 0.0275
+    },
+    {
+     "name": "wd_MW_Th_a15",
+     "symbol": "BTCUSD",
+     "tf": "D1",
+     "risk": 0.01
+    },
+    {
+     "name": "brent_wti_spread_z",
+     "symbol": "XTIUSD",
+     "tf": "H4",
+     "risk": 0.005
+    },
+    {
+     "name": "donchian160_h4",
+     "symbol": "XTIUSD",
+     "tf": "H4",
+     "risk": 0.01
+    },
+    {
+     "name": "eia_fade_m30",
+     "symbol": "XTIUSD",
+     "tf": "M30",
+     "risk": 0.0075
+    },
+    {
+     "name": "inside_bar_h4",
+     "symbol": "XTIUSD",
+     "tf": "H4",
+     "risk": 0.005
+    },
+    {
+     "name": "rsi2_mr_aus200_h4",
+     "symbol": "AUS200",
+     "tf": "H4",
+     "risk": 0.0075
+    },
+    {
+     "name": "rsi2_mr_jpn225_h1",
+     "symbol": "JPN225",
+     "tf": "H1",
+     "risk": 0.0125
+    },
+    {
+     "name": "prev_week_high_long_de40",
+     "symbol": "DE40",
+     "tf": "M30",
+     "risk": 0.005
+    },
+    {
+     "name": "us_open_fade_short_fra40",
+     "symbol": "FRA40",
+     "tf": "M30",
+     "risk": 0.015
+    },
+    {
+     "name": "rsi2_thresh10_sma5",
+     "symbol": "US500",
+     "tf": "D1",
+     "risk": 0.0125
+    },
+    {
+     "name": "weekday_fri_to_mon",
+     "symbol": "USTEC",
+     "tf": "D1",
+     "risk": 0.025
+    },
+    {
+     "name": "round_big_bounce",
+     "symbol": "USTEC",
+     "tf": "M30",
+     "risk": 0.0075
+    },
+    {
+     "name": "nr_7_mid_r2",
+     "symbol": "XAGUSD",
+     "tf": "H1",
+     "risk": 0.0125
+    },
+    {
+     "name": "sh_long_21-3_s3.0",
+     "symbol": "XAUUSD",
+     "tf": "H1",
+     "risk": 0.01
+    },
+    {
+     "name": "ab_mql_range_mid_mr0.3",
+     "symbol": "XAUUSD",
+     "tf": "M30",
+     "risk": 0.005
+    },
+    {
+     "name": "monday_gap_fade_gbpusd",
+     "symbol": "GBPUSD",
+     "tf": "H1",
+     "risk": 0.025
+    },
+    {
+     "name": "inside_day_break_usdchf",
+     "symbol": "USDCHF",
+     "tf": "H4",
+     "risk": 0.01
+    },
+    {
+     "name": "friday_week_fade_eurusd",
+     "symbol": "EURUSD",
+     "tf": "H1",
+     "risk": 0.02
+    },
+    {
+     "name": "tom_k0_h20_hold72_sl3",
+     "symbol": "DE40",
+     "tf": "H1",
+     "risk": 0.005
+    },
+    {
+     "name": "bb_breakout_H1_period250_dev2.75",
+     "symbol": "XAUUSD",
+     "tf": "H1",
+     "risk": 0.005
+    },
+    {
+     "name": "pweek_sl1_trail8",
+     "symbol": "DE40",
+     "tf": "H1",
+     "risk": 0.005
+    },
+    {
+     "name": "htf_bo50_n24",
+     "symbol": "XAUUSD",
+     "tf": "H1",
+     "risk": 0.005
+    },
+    {
+     "name": "dip_combo",
+     "symbol": "US500",
+     "tf": "D1",
+     "risk": 0.005
+    },
+    {
+     "name": "crabel_k0.5_None",
+     "symbol": "DE40",
+     "tf": "M30",
+     "risk": 0.005
+    },
+    {
+     "name": "inside_far_tp2",
+     "symbol": "XAUUSD",
+     "tf": "H1",
+     "risk": 0.005
+    },
+    {
+     "name": "de_orb2.0_trNone_tp2.0_ex18",
+     "symbol": "DE40",
+     "tf": "H1",
+     "risk": 0.005
+    },
+    {
+     "name": "mon_long_h0_hold23",
+     "symbol": "EURJPY",
+     "tf": "H1",
+     "risk": 0.005
+    },
+    {
+     "name": "bos_hv_be1_M30",
+     "symbol": "XAUUSD",
+     "tf": "M30",
+     "risk": 0.005
+    },
+    {
+     "name": "vwap",
+     "symbol": "DE40",
+     "tf": "H1",
+     "risk": 0.005
+    },
+    {
+     "name": "rsi_rev+trend",
+     "symbol": "XAUUSD",
+     "tf": "H1",
+     "risk": 0.005
+    },
+    {
+     "name": "squeeze_h4_a25_kc2",
+     "symbol": "ETHUSD",
+     "tf": "H4",
+     "risk": 0.005
+    },
+    {
+     "name": "spike_follow",
+     "symbol": "BTCUSD",
+     "tf": "H1",
+     "risk": 0.005
+    },
+    {
+     "name": "tsmom_d1_lb40_a2",
+     "symbol": "BTCUSD",
+     "tf": "D1",
+     "risk": 0.005
+    },
+    {
+     "name": "tsmom20_highvol",
+     "symbol": "XBRUSD",
+     "tf": "D1",
+     "risk": 0.005
+    },
+    {
+     "name": "or_fail_fra40",
+     "symbol": "FRA40",
+     "tf": "M30",
+     "risk": 0.005
+    },
+    {
+     "name": "down_streak_k2_trend",
+     "symbol": "US500",
+     "tf": "D1",
+     "risk": 0.005
+    },
+    {
+     "name": "ibs_lo0.2_hi0.8",
+     "symbol": "US30",
+     "tf": "D1",
+     "risk": 0.005
+    },
+    {
+     "name": "zmean_n100_adx25",
+     "symbol": "NZDUSD",
+     "tf": "H4",
+     "risk": 0.005
+    },
+    {
+     "name": "pa_inside_ETHUSD_D1",
+     "symbol": "ETHUSD",
+     "tf": "D1",
+     "risk": 0.005
+    },
+    {
+     "name": "pa_engulf_UK100_H4",
+     "symbol": "UK100",
+     "tf": "H4",
+     "risk": 0.005
+    },
+    {
+     "name": "pa_double_USDCAD_H1",
+     "symbol": "USDCAD",
+     "tf": "H1",
+     "risk": 0.005
+    },
+    {
+     "name": "pa_pin_DE40_D1",
+     "symbol": "DE40",
+     "tf": "D1",
+     "risk": 0.005
+    },
+    {
+     "name": "pa_bos_GBPJPY_D1",
+     "symbol": "GBPJPY",
+     "tf": "D1",
+     "risk": 0.005
+    },
+    {
+     "name": "pa_inside_EURJPY_D1",
+     "symbol": "EURJPY",
+     "tf": "D1",
+     "risk": 0.005
+    },
+    {
+     "name": "pa_pin_ETHUSD_H4",
+     "symbol": "ETHUSD",
+     "tf": "H4",
+     "risk": 0.005
+    },
+    {
+     "name": "pa_bos_GBPAUD_D1",
+     "symbol": "GBPAUD",
+     "tf": "D1",
+     "risk": 0.005
+    },
+    {
+     "name": "pa_double_USDJPY_H1",
+     "symbol": "USDJPY",
+     "tf": "H1",
+     "risk": 0.005
+    }
+   ],
+   "accounts": {
+    "5k": {
+     "dev_fast": {
+      "profit": -54913,
+      "per_month": -520,
+      "green_months": "18/106",
+      "worst_month": -2086,
+      "stop_days": 765,
+      "lowest_balance": -49968,
+      "worst_day": -138,
+      "passed": 38,
+      "failed": 190,
+      "unfinished": 0,
+      "years": 8.8
+     },
+     "unseen": {
+      "y1": {
+       "profit": 1243,
+       "per_month": 103,
+       "green_months": "7/13",
+       "worst_month": -817,
+       "stop_days": 51,
+       "lowest_balance": 4486,
+       "worst_day": -138,
+       "passed": 16,
+       "failed": 8,
+       "unfinished": 0
+      },
+      "last2": {
+       "profit": 14841,
+       "per_month": 610,
+       "green_months": "20/25",
+       "worst_month": -359,
+       "stop_days": 70,
+       "lowest_balance": 4899,
+       "worst_day": -138,
+       "passed": 42,
+       "failed": 9,
+       "unfinished": 0
+      },
+      "sepoct": {
+       "profit": -319,
+       "per_month": -162,
+       "green_months": "0/2",
+       "worst_month": -248,
+       "stop_days": 6,
+       "lowest_balance": 4331,
+       "worst_day": -138,
+       "passed": 0,
+       "failed": 1,
+       "unfinished": 2
+      },
+      "unseen3": {
+       "profit": 16084,
+       "per_month": 442,
+       "green_months": "26/37",
+       "worst_month": -755,
+       "stop_days": 121,
+       "lowest_balance": 4486,
+       "worst_day": -138,
+       "passed": 59,
+       "failed": 18,
+       "unfinished": 0
+      }
+     },
+     "regime_switch": {
+      "y1": {
+       "profit": 1482,
+       "per_month": 123,
+       "green_months": "7/13",
+       "worst_month": -479,
+       "stop_days": 34,
+       "lowest_balance": 4486,
+       "worst_day": -138,
+       "passed": 16,
+       "failed": 7,
+       "unfinished": 1
+      },
+      "last2": {
+       "profit": 14393,
+       "per_month": 591,
+       "green_months": "20/25",
+       "worst_month": -394,
+       "stop_days": 57,
+       "lowest_balance": 4950,
+       "worst_day": -138,
+       "passed": 43,
+       "failed": 5,
+       "unfinished": 3
+      },
+      "sepoct": {
+       "profit": -159,
+       "per_month": -81,
+       "green_months": "0/2",
+       "worst_month": -124,
+       "stop_days": 0,
+       "lowest_balance": 4665,
+       "worst_day": -69,
+       "passed": 0,
+       "failed": 0,
+       "unfinished": 3
+      },
+      "unseen3": {
+       "profit": 15875,
+       "per_month": 437,
+       "green_months": "26/37",
+       "worst_month": -452,
+       "stop_days": 91,
+       "lowest_balance": 4486,
+       "worst_day": -138,
+       "passed": 59,
+       "failed": 16,
+       "unfinished": 2
+      }
+     },
+     "switch_share": 0.2240289069557362,
+     "per_strategy": {
+      "research.search.gold_fix.strategies|build_bos|{\"htf\": [\"1D\", 50], \"tp_mode\": \"none\", \"trail_atr\": 3.0}|XAUUSD|H1": {
+       "y1": 348,
+       "last2": 2022,
+       "sepoct": -159,
+       "unseen3": 2371
+      },
+      "research.search.mean_reversion.strategies|build_bb_fade|{\"k\": 2.5, \"max_hold\": 24, \"n\": 50, \"sides\": \"long\", \"stop_atr\": 2.0, \"trend\": 200}|EURUSD|H1": {
+       "y1": 25,
+       "last2": 594,
+       "sepoct": 0,
+       "unseen3": 620
+      },
+      "research.search.jpy_session.strategies|build_monday_long|{\"prior_dir\": \"down\", \"prior_n\": 120}|EURJPY|H1": {
+       "y1": 380,
+       "last2": 543,
+       "sepoct": -98,
+       "unseen3": 923
+      },
+      "research.search.mean_reversion.strategies|build_zscore|{\"max_hold\": 12, \"n\": 20, \"sides\": \"long\", \"stop_atr\": 3.0, \"trend\": 0, \"z_in\": 2.0, \"z_out\": 0.5}|US500|H4": {
+       "y1": 109,
+       "last2": 479,
+       "sepoct": -39,
+       "unseen3": 589
+      },
+      "research.search.public_eas.strategies|build_connors_rsi2|{}|EURCHF|D1": {
+       "y1": -95,
+       "last2": 428,
+       "sepoct": 32,
+       "unseen3": 333
+      },
+      "research.search3.crypto.strategies|build_weekday|{\"atr_mult\": 1.5}|BTCUSD|D1": {
+       "y1": 383,
+       "last2": 777,
+       "sepoct": 50,
+       "unseen3": 1161
+      },
+      "research.search3.oil_gas.strategies|build_spread_reversion|{\"lookback\": 100, \"max_hold\": 120, \"mode\": \"diff\", \"other\": \"XBRUSD\", \"sl_atr\": 2, \"z_in\": 2.5, \"z_out\": 0}|XTIUSD|H4": {
+       "y1": 50,
+       "last2": 804,
+       "sepoct": 7,
+       "unseen3": 854
+      },
+      "research.search3.oil_gas.strategies|build_donchian|{\"n\": 160, \"side\": \"both\", \"sl_atr\": 2, \"trail_atr\": 3}|XTIUSD|H4": {
+       "y1": -190,
+       "last2": 1555,
+       "sepoct": 87,
+       "unseen3": 1365
+      },
+      "research.search3.oil_gas.strategies|build_report_momentum|{\"atr_n\": 20, \"direction\": \"fade\", \"exit_hour\": 21, \"min_move_atr\": 0.3, \"report_hour\": 17, \"report_wd\": 2, \"sl_atr\": 1, \"tp_r\": null}|XTIUSD|M30": {
+       "y1": -20,
+       "last2": 969,
+       "sepoct": -5,
+       "unseen3": 950
+      },
+      "research.search3.oil_gas.strategies|build_inside_bar|{\"atr_n\": 14, \"max_hold\": 10, \"sl_atr\": 1.5, \"sl_mode\": \"atr\", \"tp_r\": 2.5}|XTIUSD|H4": {
+       "y1": -191,
+       "last2": 644,
+       "sepoct": -1,
+       "unseen3": 453
+      },
+      "research.search3.asia_indices.strategies|build_rsi_mr|{\"hi\": 85, \"lo\": 15, \"max_hold\": 8, \"n\": 2, \"sl_atr\": 1.5, \"trend_n\": 200}|AUS200|H4": {
+       "y1": 0,
+       "last2": 556,
+       "sepoct": 79,
+       "unseen3": 556
+      },
+      "research.search3.asia_indices.strategies|build_rsi_mr|{\"hi\": 75, \"lo\": 25, \"max_hold\": 8, \"n\": 2, \"sl_atr\": 2, \"trend_n\": 0}|JPN225|H1": {
+       "y1": 0,
+       "last2": 0,
+       "sepoct": 0,
+       "unseen3": 0
+      },
+      "research.search3.europe_indices.strategies|build_prev_week|{\"sides\": \"long\", \"sl_atr\": 1.5, \"trail_atr\": 3}|DE40|M30": {
+       "y1": 493,
+       "last2": 385,
+       "sepoct": 18,
+       "unseen3": 877
+      },
+      "research.search3.europe_indices.strategies|build_us_open_fade|{\"k\": 1, \"sides\": \"short\"}|FRA40|M30": {
+       "y1": -45,
+       "last2": 908,
+       "sepoct": -6,
+       "unseen3": 863
+      },
+      "research.search3.us_indices.strategies|build_rsi2|{\"exit_sma\": 5, \"thresh\": 10}|US500|D1": {
+       "y1": 179,
+       "last2": 676,
+       "sepoct": 29,
+       "unseen3": 855
+      },
+      "research.search3.us_indices.strategies|build_weekday|{\"enter_dow\": 4, \"hold\": 1, \"trend\": \"with\"}|USTEC|D1": {
+       "y1": 216,
+       "last2": 1284,
+       "sepoct": 148,
+       "unseen3": 1499
+      },
+      "research.search3.us_indices.strategies|build_round|{\"mode\": \"bounce\", \"step\": \"big\", \"tp_r\": null}|USTEC|M30": {
+       "y1": -39,
+       "last2": 646,
+       "sepoct": -9,
+       "unseen3": 607
+      },
+      "research.search3.metals.strategies|build_nr_break|{\"inside\": false, \"nr\": 7, \"stop\": \"mid\", \"tp\": \"r:2\"}|XAGUSD|H1": {
+       "y1": -320,
+       "last2": 1090,
+       "sepoct": -89,
+       "unseen3": 770
+      },
+      "research.search3.metals.strategies|build_session_hold|{\"dows\": null, \"h_in\": 21, \"h_out\": 3, \"side\": \"long\", \"stop_atr\": 3}|XAUUSD|H1": {
+       "y1": 310,
+       "last2": 708,
+       "sepoct": 34,
+       "unseen3": 1018
+      },
+      "research.search3.metals.strategies|build_asia_break|{\"a0\": 3, \"a1\": 8, \"be_r\": null, \"exit_hour\": 21, \"last_entry\": 14, \"max_rng\": 1.6, \"min_rng\": 0.3, \"stop\": \"mid\", \"tp\": \"range\"}|XAUUSD|M30": {
+       "y1": 214,
+       "last2": 568,
+       "sepoct": 78,
+       "unseen3": 782
+      },
+      "research.search3.majors.strategies|build_monday_gap_fade|{\"max_hold\": 36, \"min_gap\": 0.2, \"sl_mult\": 1}|GBPUSD|H1": {
+       "y1": 55,
+       "last2": 1278,
+       "sepoct": 67,
+       "unseen3": 1333
+      },
+      "research.search3.majors.strategies|build_inside_nr_break|{\"kind\": \"inside\", \"max_hold\": 18, \"rr\": 2, \"sl_mode\": \"opp\"}|USDCHF|H4": {
+       "y1": 277,
+       "last2": 555,
+       "sepoct": -180,
+       "unseen3": 832
+      },
+      "research.search3.majors.strategies|build_friday_week_fade|{\"hour\": 14, \"thr\": 1.8, \"tp_frac\": 0.5}|EURUSD|H1": {
+       "y1": -230,
+       "last2": 661,
+       "sepoct": 116,
+       "unseen3": 432
+      },
+      "research.search.jpy_session.strategies|build_turn_of_month|{\"hold\": 72, \"hour\": 20, \"k\": 0, \"sl_atr\": 3.0}|DE40|H1": {
+       "y1": 31,
+       "last2": -47,
+       "sepoct": 0,
+       "unseen3": -17
+      },
+      "research.search.public_eas.strategies|build_bb_breakout|{\"dev\": 2.75, \"period\": 250}|XAUUSD|H1": {
+       "y1": -194,
+       "last2": 208,
+       "sepoct": -23,
+       "unseen3": 14
+      },
+      "research.search.breakout.strategies|build_prev_week|{\"be_r\": 1.0, \"sl_atr\": 1.0, \"trail_after_r\": 1.0, \"trail_atr\": 8.0}|DE40|H1": {
+       "y1": 106,
+       "last2": 19,
+       "sepoct": 0,
+       "unseen3": 125
+      },
+      "research.search.trend.strategies|build_htf_breakout|{\"d_n\": 50, \"n_entry\": 24}|XAUUSD|H1": {
+       "y1": 50,
+       "last2": 636,
+       "sepoct": -12,
+       "unseen3": 686
+      },
+      "research.search.mean_reversion.strategies|build_dip_combo|{\"exit_mode\": \"ma10\", \"ibs_lo\": 0.2, \"max_hold\": 8, \"need\": 2, \"nlow_n\": 5, \"stop_atr\": 3.0, \"trend\": 200, \"wpr_lo\": -90, \"wpr_n\": 10}|US500|D1": {
+       "y1": 37,
+       "last2": 112,
+       "sepoct": -12,
+       "unseen3": 149
+      },
+      "research.search.breakout.strategies|build_crabel|{\"exit_h\": 18, \"filt\": null, \"k\": 0.5, \"ss\": 10.0, \"te\": 14.0}|DE40|M30": {
+       "y1": 276,
+       "last2": 650,
+       "sepoct": -95,
+       "unseen3": 925
+      },
+      "research.search.breakout.strategies|build_nr_break|{\"exit_h\": null, \"kind\": \"inside\", \"max_hold\": 48, \"sl\": \"far\", \"te\": 20, \"tp_r\": 2.0, \"ts\": 0}|XAUUSD|H1": {
+       "y1": 14,
+       "last2": 109,
+       "sepoct": 0,
+       "unseen3": 123
+      },
+      "research.search.breakout.strategies|build_session_orb|{\"exit_h\": 18, \"min_rng\": 0.1, \"re\": 12.0, \"rs\": 10, \"sl\": \"far\", \"te\": 14, \"tp_r\": 2.0, \"trend\": null}|DE40|H1": {
+       "y1": 458,
+       "last2": 186,
+       "sepoct": 72,
+       "unseen3": 645
+      },
+      "research.search.jpy_session.strategies|build_session|{\"hold\": 23, \"hour\": 0, \"side\": \"long\", \"weekdays\": [0]}|EURJPY|H1": {
+       "y1": 283,
+       "last2": 445,
+       "sepoct": -38,
+       "unseen3": 729
+      },
+      "research.search.gold_fix.strategies|build_bos|{\"atrp_min\": 0.6, \"be_r\": 1.0, \"tp_min_r\": 2.0}|XAUUSD|M30": {
+       "y1": 313,
+       "last2": 556,
+       "sepoct": -21,
+       "unseen3": 870
+      },
+      "research.search.mean_reversion.strategies|build_vwap|{\"dev_atr\": 2.0, \"max_hold\": 24, \"sides\": \"short\", \"stop_atr\": 2.0, \"trend\": 200}|DE40|H1": {
+       "y1": -58,
+       "last2": -88,
+       "sepoct": -30,
+       "unseen3": -146
+      },
+      "research.search.indicator_screen.strategies|build_rule|{\"rule\": \"rsi_rev\", \"trend\": true}|XAUUSD|H1": {
+       "y1": 22,
+       "last2": 96,
+       "sepoct": 35,
+       "unseen3": 118
+      },
+      "research.search3.crypto.strategies|build_squeeze|{\"atr_mult\": 2.5, \"kc_mult\": 2}|ETHUSD|H4": {
+       "y1": 59,
+       "last2": 607,
+       "sepoct": 4,
+       "unseen3": 666
+      },
+      "research.search3.crypto.strategies|build_vol_spike|{\"hold\": 12, \"mode\": \"follow\", \"rr\": 2}|BTCUSD|H1": {
+       "y1": 539,
+       "last2": 631,
+       "sepoct": -20,
+       "unseen3": 1170
+      },
+      "research.search3.crypto.strategies|build_tsmom|{\"atr_mult\": 2, \"lb\": 40}|BTCUSD|D1": {
+       "y1": 115,
+       "last2": -14,
+       "sepoct": 0,
+       "unseen3": 102
+      },
+      "research.search3.oil_gas.strategies|build_tsmom|{\"atr_n\": 14, \"hold\": 5, \"mom_n\": 20, \"side\": \"both\", \"sl_atr\": 2, \"vol_filter\": \"high\", \"vol_lookback\": 120, \"vol_n\": 20}|XBRUSD|D1": {
+       "y1": -60,
+       "last2": 164,
+       "sepoct": 0,
+       "unseen3": 104
+      },
+      "research.search3.europe_indices.strategies|build_or_fail|{\"re\": 11, \"tp\": \"mid\", \"trend\": \"with\"}|FRA40|M30": {
+       "y1": -107,
+       "last2": 75,
+       "sepoct": -30,
+       "unseen3": -32
+      },
+      "research.search3.us_indices.strategies|build_down_streak|{\"exit_rule\": \"hold\", \"k\": 2, \"trend_req\": true}|US500|D1": {
+       "y1": 153,
+       "last2": 301,
+       "sepoct": -12,
+       "unseen3": 454
+      },
+      "research.search3.us_indices.strategies|build_ibs|{\"hi\": 0.8, \"lo\": 0.2, \"max_hold\": 5, \"sl_atr\": 1.5}|US30|D1": {
+       "y1": 0,
+       "last2": 0,
+       "sepoct": 0,
+       "unseen3": 0
+      },
+      "research.search3.commodity_fx.strategies|build_zmean|{\"adx_max\": 25, \"n\": 100}|NZDUSD|H4": {
+       "y1": -64,
+       "last2": 286,
+       "sepoct": -22,
+       "unseen3": 222
+      },
+      "research.search4.price_action.strategies|build_inside|{\"r\": 1.5, \"trend\": 100}|ETHUSD|D1": {
+       "y1": -136,
+       "last2": -413,
+       "sepoct": -66,
+       "unseen3": -550
+      },
+      "research.search4.price_action.strategies|build_engulf|{\"n\": 30, \"r\": 1.5}|UK100|H4": {
+       "y1": 59,
+       "last2": -170,
+       "sepoct": 17,
+       "unseen3": -111
+      },
+      "research.search4.price_action.strategies|build_double|{\"k\": 5}|USDCAD|H1": {
+       "y1": -70,
+       "last2": 78,
+       "sepoct": 37,
+       "unseen3": 7
+      },
+      "research.search4.price_action.strategies|build_pin|{\"n\": 10, \"r\": 1.5}|DE40|D1": {
+       "y1": -27,
+       "last2": 58,
+       "sepoct": 0,
+       "unseen3": 31
+      },
+      "research.search4.price_action.strategies|build_bos|{\"exit\": \"r2\", \"k\": 3}|GBPJPY|D1": {
+       "y1": -1,
+       "last2": -23,
+       "sepoct": 23,
+       "unseen3": -25
+      },
+      "research.search4.price_action.strategies|build_inside|{\"r\": 1.5, \"trend\": 0}|EURJPY|D1": {
+       "y1": -75,
+       "last2": -218,
+       "sepoct": -81,
+       "unseen3": -293
+      },
+      "research.search4.price_action.strategies|build_pin|{\"n\": 30, \"r\": 3.0}|ETHUSD|H4": {
+       "y1": 501,
+       "last2": 481,
+       "sepoct": -101,
+       "unseen3": 982
+      },
+      "research.search4.price_action.strategies|build_bos|{\"exit\": \"r2\", \"k\": 3}|GBPAUD|D1": {
+       "y1": -91,
+       "last2": -9,
+       "sepoct": -22,
+       "unseen3": -100
+      },
+      "research.search4.price_action.strategies|build_double|{\"k\": 5}|USDJPY|H1": {
+       "y1": 21,
+       "last2": 28,
+       "sepoct": 0,
+       "unseen3": 49
+      }
+     },
+     "halts": 121
+    },
+    "10k": {
+     "dev_fast": {
+      "profit": -83615,
+      "per_month": -792,
+      "green_months": "28/106",
+      "worst_month": -4425,
+      "stop_days": 527,
+      "lowest_balance": -74344,
+      "worst_day": -325,
+      "passed": 45,
+      "failed": 183,
+      "unfinished": 0,
+      "years": 8.8
+     },
+     "unseen": {
+      "y1": {
+       "profit": 3401,
+       "per_month": 283,
+       "green_months": "7/13",
+       "worst_month": -1696,
+       "stop_days": 45,
+       "lowest_balance": 8813,
+       "worst_day": -325,
+       "passed": 16,
+       "failed": 8,
+       "unfinished": 0
+      },
+      "last2": {
+       "profit": 41646,
+       "per_month": 1711,
+       "green_months": "23/25",
+       "worst_month": -503,
+       "stop_days": 60,
+       "lowest_balance": 9723,
+       "worst_day": -325,
+       "passed": 44,
+       "failed": 7,
+       "unfinished": 0
+      },
+      "sepoct": {
+       "profit": -622,
+       "per_month": -315,
+       "green_months": "0/2",
+       "worst_month": -503,
+       "stop_days": 5,
+       "lowest_balance": 8334,
+       "worst_day": -325,
+       "passed": 0,
+       "failed": 3,
+       "unfinished": 0
+      },
+      "unseen3": {
+       "profit": 45047,
+       "per_month": 1239,
+       "green_months": "30/37",
+       "worst_month": -1696,
+       "stop_days": 105,
+       "lowest_balance": 8813,
+       "worst_day": -325,
+       "passed": 62,
+       "failed": 15,
+       "unfinished": 0
+      }
+     },
+     "regime_switch": {
+      "y1": {
+       "profit": 3554,
+       "per_month": 296,
+       "green_months": "7/13",
+       "worst_month": -1491,
+       "stop_days": 32,
+       "lowest_balance": 8813,
+       "worst_day": -325,
+       "passed": 17,
+       "failed": 7,
+       "unfinished": 0
+      },
+      "last2": {
+       "profit": 41510,
+       "per_month": 1705,
+       "green_months": "23/25",
+       "worst_month": -617,
+       "stop_days": 55,
+       "lowest_balance": 9821,
+       "worst_day": -325,
+       "passed": 44,
+       "failed": 6,
+       "unfinished": 1
+      },
+      "sepoct": {
+       "profit": -677,
+       "per_month": -343,
+       "green_months": "0/2",
+       "worst_month": -617,
+       "stop_days": 1,
+       "lowest_balance": 8801,
+       "worst_day": -325,
+       "passed": 0,
+       "failed": 1,
+       "unfinished": 2
+      },
+      "unseen3": {
+       "profit": 45064,
+       "per_month": 1239,
+       "green_months": "30/37",
+       "worst_month": -1491,
+       "stop_days": 87,
+       "lowest_balance": 8813,
+       "worst_day": -325,
+       "passed": 61,
+       "failed": 15,
+       "unfinished": 1
+      }
+     },
+     "switch_share": 0.14814814814814814,
+     "per_strategy": {
+      "research.search.gold_fix.strategies|build_bos|{\"htf\": [\"1D\", 50], \"tp_mode\": \"none\", \"trail_atr\": 3.0}|XAUUSD|H1": {
+       "y1": 860,
+       "last2": 5849,
+       "sepoct": -455,
+       "unseen3": 6710
+      },
+      "research.search.mean_reversion.strategies|build_bb_fade|{\"k\": 2.5, \"max_hold\": 24, \"n\": 50, \"sides\": \"long\", \"stop_atr\": 2.0, \"trend\": 200}|EURUSD|H1": {
+       "y1": 53,
+       "last2": 1197,
+       "sepoct": 0,
+       "unseen3": 1250
+      },
+      "research.search.jpy_session.strategies|build_monday_long|{\"prior_dir\": \"down\", \"prior_n\": 120}|EURJPY|H1": {
+       "y1": 793,
+       "last2": 1111,
+       "sepoct": -214,
+       "unseen3": 1903
+      },
+      "research.search.mean_reversion.strategies|build_zscore|{\"max_hold\": 12, \"n\": 20, \"sides\": \"long\", \"stop_atr\": 3.0, \"trend\": 0, \"z_in\": 2.0, \"z_out\": 0.5}|US500|H4": {
+       "y1": 221,
+       "last2": 980,
+       "sepoct": -72,
+       "unseen3": 1201
+      },
+      "research.search.public_eas.strategies|build_connors_rsi2|{}|EURCHF|D1": {
+       "y1": -193,
+       "last2": 876,
+       "sepoct": 67,
+       "unseen3": 683
+      },
+      "research.search3.crypto.strategies|build_weekday|{\"atr_mult\": 1.5}|BTCUSD|D1": {
+       "y1": 816,
+       "last2": 2101,
+       "sepoct": 159,
+       "unseen3": 2917
+      },
+      "research.search3.oil_gas.strategies|build_spread_reversion|{\"lookback\": 100, \"max_hold\": 120, \"mode\": \"diff\", \"other\": \"XBRUSD\", \"sl_atr\": 2, \"z_in\": 2.5, \"z_out\": 0}|XTIUSD|H4": {
+       "y1": 99,
+       "last2": 1657,
+       "sepoct": 11,
+       "unseen3": 1756
+      },
+      "research.search3.oil_gas.strategies|build_donchian|{\"n\": 160, \"side\": \"both\", \"sl_atr\": 2, \"trail_atr\": 3}|XTIUSD|H4": {
+       "y1": -384,
+       "last2": 3128,
+       "sepoct": 184,
+       "unseen3": 2743
+      },
+      "research.search3.oil_gas.strategies|build_report_momentum|{\"atr_n\": 20, \"direction\": \"fade\", \"exit_hour\": 21, \"min_move_atr\": 0.3, \"report_hour\": 17, \"report_wd\": 2, \"sl_atr\": 1, \"tp_r\": null}|XTIUSD|M30": {
+       "y1": -39,
+       "last2": 1944,
+       "sepoct": -11,
+       "unseen3": 1905
+      },
+      "research.search3.oil_gas.strategies|build_inside_bar|{\"atr_n\": 14, \"max_hold\": 10, \"sl_atr\": 1.5, \"sl_mode\": \"atr\", \"tp_r\": 2.5}|XTIUSD|H4": {
+       "y1": -391,
+       "last2": 1266,
+       "sepoct": -4,
+       "unseen3": 875
+      },
+      "research.search3.asia_indices.strategies|build_rsi_mr|{\"hi\": 85, \"lo\": 15, \"max_hold\": 8, \"n\": 2, \"sl_atr\": 1.5, \"trend_n\": 200}|AUS200|H4": {
+       "y1": 0,
+       "last2": 1156,
+       "sepoct": 154,
+       "unseen3": 1156
+      },
+      "research.search3.asia_indices.strategies|build_rsi_mr|{\"hi\": 75, \"lo\": 25, \"max_hold\": 8, \"n\": 2, \"sl_atr\": 2, \"trend_n\": 0}|JPN225|H1": {
+       "y1": -2429,
+       "last2": 2061,
+       "sepoct": 0,
+       "unseen3": -368
+      },
+      "research.search3.europe_indices.strategies|build_prev_week|{\"sides\": \"long\", \"sl_atr\": 1.5, \"trail_atr\": 3}|DE40|M30": {
+       "y1": 1022,
+       "last2": 876,
+       "sepoct": 29,
+       "unseen3": 1898
+      },
+      "research.search3.europe_indices.strategies|build_us_open_fade|{\"k\": 1, \"sides\": \"short\"}|FRA40|M30": {
+       "y1": -92,
+       "last2": 1878,
+       "sepoct": -13,
+       "unseen3": 1786
+      },
+      "research.search3.us_indices.strategies|build_rsi2|{\"exit_sma\": 5, \"thresh\": 10}|US500|D1": {
+       "y1": 378,
+       "last2": 1455,
+       "sepoct": 59,
+       "unseen3": 1834
+      },
+      "research.search3.us_indices.strategies|build_weekday|{\"enter_dow\": 4, \"hold\": 1, \"trend\": \"with\"}|USTEC|D1": {
+       "y1": 435,
+       "last2": 3066,
+       "sepoct": 268,
+       "unseen3": 3502
+      },
+      "research.search3.us_indices.strategies|build_round|{\"mode\": \"bounce\", \"step\": \"big\", \"tp_r\": null}|USTEC|M30": {
+       "y1": -24,
+       "last2": 1399,
+       "sepoct": -71,
+       "unseen3": 1375
+      },
+      "research.search3.metals.strategies|build_nr_break|{\"inside\": false, \"nr\": 7, \"stop\": \"mid\", \"tp\": \"r:2\"}|XAGUSD|H1": {
+       "y1": -629,
+       "last2": 2650,
+       "sepoct": -187,
+       "unseen3": 2020
+      },
+      "research.search3.metals.strategies|build_session_hold|{\"dows\": null, \"h_in\": 21, \"h_out\": 3, \"side\": \"long\", \"stop_atr\": 3}|XAUUSD|H1": {
+       "y1": 648,
+       "last2": 2350,
+       "sepoct": -58,
+       "unseen3": 2998
+      },
+      "research.search3.metals.strategies|build_asia_break|{\"a0\": 3, \"a1\": 8, \"be_r\": null, \"exit_hour\": 21, \"last_entry\": 14, \"max_rng\": 1.6, \"min_rng\": 0.3, \"stop\": \"mid\", \"tp\": \"range\"}|XAUUSD|M30": {
+       "y1": 415,
+       "last2": 1847,
+       "sepoct": 141,
+       "unseen3": 2262
+      },
+      "research.search3.majors.strategies|build_monday_gap_fade|{\"max_hold\": 36, \"min_gap\": 0.2, \"sl_mult\": 1}|GBPUSD|H1": {
+       "y1": 110,
+       "last2": 2577,
+       "sepoct": 135,
+       "unseen3": 2687
+      },
+      "research.search3.majors.strategies|build_inside_nr_break|{\"kind\": \"inside\", \"max_hold\": 18, \"rr\": 2, \"sl_mode\": \"opp\"}|USDCHF|H4": {
+       "y1": 591,
+       "last2": 1183,
+       "sepoct": -365,
+       "unseen3": 1774
+      },
+      "research.search3.majors.strategies|build_friday_week_fade|{\"hour\": 14, \"thr\": 1.8, \"tp_frac\": 0.5}|EURUSD|H1": {
+       "y1": -465,
+       "last2": 1322,
+       "sepoct": 236,
+       "unseen3": 857
+      },
+      "research.search.jpy_session.strategies|build_turn_of_month|{\"hold\": 72, \"hour\": 20, \"k\": 0, \"sl_atr\": 3.0}|DE40|H1": {
+       "y1": 122,
+       "last2": -55,
+       "sepoct": -30,
+       "unseen3": 67
+      },
+      "research.search.public_eas.strategies|build_bb_breakout|{\"dev\": 2.75, \"period\": 250}|XAUUSD|H1": {
+       "y1": -520,
+       "last2": 752,
+       "sepoct": 20,
+       "unseen3": 232
+      },
+      "research.search.breakout.strategies|build_prev_week|{\"be_r\": 1.0, \"sl_atr\": 1.0, \"trail_after_r\": 1.0, \"trail_atr\": 8.0}|DE40|H1": {
+       "y1": 504,
+       "last2": 313,
+       "sepoct": -61,
+       "unseen3": 817
+      },
+      "research.search.trend.strategies|build_htf_breakout|{\"d_n\": 50, \"n_entry\": 24}|XAUUSD|H1": {
+       "y1": 58,
+       "last2": 2464,
+       "sepoct": -79,
+       "unseen3": 2522
+      },
+      "research.search.mean_reversion.strategies|build_dip_combo|{\"exit_mode\": \"ma10\", \"ibs_lo\": 0.2, \"max_hold\": 8, \"need\": 2, \"nlow_n\": 5, \"stop_atr\": 3.0, \"trend\": 200, \"wpr_lo\": -90, \"wpr_n\": 10}|US500|D1": {
+       "y1": 131,
+       "last2": 313,
+       "sepoct": -24,
+       "unseen3": 444
+      },
+      "research.search.breakout.strategies|build_crabel|{\"exit_h\": 18, \"filt\": null, \"k\": 0.5, \"ss\": 10.0, \"te\": 14.0}|DE40|M30": {
+       "y1": 602,
+       "last2": 1540,
+       "sepoct": -197,
+       "unseen3": 2141
+      },
+      "research.search.breakout.strategies|build_nr_break|{\"exit_h\": null, \"kind\": \"inside\", \"max_hold\": 48, \"sl\": \"far\", \"te\": 20, \"tp_r\": 2.0, \"ts\": 0}|XAUUSD|H1": {
+       "y1": 61,
+       "last2": 475,
+       "sepoct": 0,
+       "unseen3": 536
+      },
+      "research.search.breakout.strategies|build_session_orb|{\"exit_h\": 18, \"min_rng\": 0.1, \"re\": 12.0, \"rs\": 10, \"sl\": \"far\", \"te\": 14, \"tp_r\": 2.0, \"trend\": null}|DE40|H1": {
+       "y1": 917,
+       "last2": 616,
+       "sepoct": 155,
+       "unseen3": 1533
+      },
+      "research.search.jpy_session.strategies|build_session|{\"hold\": 23, \"hour\": 0, \"side\": \"long\", \"weekdays\": [0]}|EURJPY|H1": {
+       "y1": 569,
+       "last2": 915,
+       "sepoct": -79,
+       "unseen3": 1484
+      },
+      "research.search.gold_fix.strategies|build_bos|{\"atrp_min\": 0.6, \"be_r\": 1.0, \"tp_min_r\": 2.0}|XAUUSD|M30": {
+       "y1": 530,
+       "last2": 1337,
+       "sepoct": -181,
+       "unseen3": 1867
+      },
+      "research.search.mean_reversion.strategies|build_vwap|{\"dev_atr\": 2.0, \"max_hold\": 24, \"sides\": \"short\", \"stop_atr\": 2.0, \"trend\": 200}|DE40|H1": {
+       "y1": -111,
+       "last2": -216,
+       "sepoct": -61,
+       "unseen3": -327
+      },
+      "research.search.indicator_screen.strategies|build_rule|{\"rule\": \"rsi_rev\", \"trend\": true}|XAUUSD|H1": {
+       "y1": 93,
+       "last2": 181,
+       "sepoct": 67,
+       "unseen3": 274
+      },
+      "research.search3.crypto.strategies|build_squeeze|{\"atr_mult\": 2.5, \"kc_mult\": 2}|ETHUSD|H4": {
+       "y1": 121,
+       "last2": 1219,
+       "sepoct": 9,
+       "unseen3": 1340
+      },
+      "research.search3.crypto.strategies|build_vol_spike|{\"hold\": 12, \"mode\": \"follow\", \"rr\": 2}|BTCUSD|H1": {
+       "y1": 1215,
+       "last2": 1414,
+       "sepoct": -13,
+       "unseen3": 2629
+      },
+      "research.search3.crypto.strategies|build_tsmom|{\"atr_mult\": 2, \"lb\": 40}|BTCUSD|D1": {
+       "y1": 110,
+       "last2": 445,
+       "sepoct": 15,
+       "unseen3": 555
+      },
+      "research.search3.oil_gas.strategies|build_tsmom|{\"atr_n\": 14, \"hold\": 5, \"mom_n\": 20, \"side\": \"both\", \"sl_atr\": 2, \"vol_filter\": \"high\", \"vol_lookback\": 120, \"vol_n\": 20}|XBRUSD|D1": {
+       "y1": -128,
+       "last2": 354,
+       "sepoct": 0,
+       "unseen3": 225
+      },
+      "research.search3.europe_indices.strategies|build_or_fail|{\"re\": 11, \"tp\": \"mid\", \"trend\": \"with\"}|FRA40|M30": {
+       "y1": -219,
+       "last2": 240,
+       "sepoct": -45,
+       "unseen3": 21
+      },
+      "research.search3.us_indices.strategies|build_down_streak|{\"exit_rule\": \"hold\", \"k\": 2, \"trend_req\": true}|US500|D1": {
+       "y1": 375,
+       "last2": 757,
+       "sepoct": -18,
+       "unseen3": 1132
+      },
+      "research.search3.us_indices.strategies|build_ibs|{\"hi\": 0.8, \"lo\": 0.2, \"max_hold\": 5, \"sl_atr\": 1.5}|US30|D1": {
+       "y1": 144,
+       "last2": 25,
+       "sepoct": 0,
+       "unseen3": 169
+      },
+      "research.search3.commodity_fx.strategies|build_zmean|{\"adx_max\": 25, \"n\": 100}|NZDUSD|H4": {
+       "y1": -150,
+       "last2": 607,
+       "sepoct": -47,
+       "unseen3": 457
+      },
+      "research.search4.price_action.strategies|build_inside|{\"r\": 1.5, \"trend\": 100}|ETHUSD|D1": {
+       "y1": -277,
+       "last2": -839,
+       "sepoct": -132,
+       "unseen3": -1116
+      },
+      "research.search4.price_action.strategies|build_engulf|{\"n\": 30, \"r\": 1.5}|UK100|H4": {
+       "y1": 161,
+       "last2": -279,
+       "sepoct": 43,
+       "unseen3": -117
+      },
+      "research.search4.price_action.strategies|build_double|{\"k\": 5}|USDCAD|H1": {
+       "y1": -140,
+       "last2": 161,
+       "sepoct": 77,
+       "unseen3": 22
+      },
+      "research.search4.price_action.strategies|build_pin|{\"n\": 10, \"r\": 1.5}|DE40|D1": {
+       "y1": -27,
+       "last2": 268,
+       "sepoct": 8,
+       "unseen3": 241
+      },
+      "research.search4.price_action.strategies|build_bos|{\"exit\": \"r2\", \"k\": 3}|GBPJPY|D1": {
+       "y1": 64,
+       "last2": -100,
+       "sepoct": 6,
+       "unseen3": -36
+      },
+      "research.search4.price_action.strategies|build_inside|{\"r\": 1.5, \"trend\": 0}|EURJPY|D1": {
+       "y1": -193,
+       "last2": -632,
+       "sepoct": -187,
+       "unseen3": -826
+      },
+      "research.search4.price_action.strategies|build_pin|{\"n\": 30, \"r\": 3.0}|ETHUSD|H4": {
+       "y1": 1009,
+       "last2": 974,
+       "sepoct": -203,
+       "unseen3": 1983
+      },
+      "research.search4.price_action.strategies|build_bos|{\"exit\": \"r2\", \"k\": 3}|GBPAUD|D1": {
+       "y1": -179,
+       "last2": -17,
+       "sepoct": -53,
+       "unseen3": -196
+      },
+      "research.search4.price_action.strategies|build_double|{\"k\": 5}|USDJPY|H1": {
+       "y1": 31,
+       "last2": 72,
+       "sepoct": 0,
+       "unseen3": 103
+      }
+     },
+     "halts": 105
+    }
+   }
+  },
+  "honest": {
+   "n": 33,
+   "strategies": [
+    {
+     "name": "tom_k0_h20_hold72_sl3",
+     "symbol": "DE40",
+     "tf": "H1",
+     "risk": 0.003
+    },
+    {
+     "name": "bos_trail3_htfD50_H1",
+     "symbol": "XAUUSD",
+     "tf": "H1",
+     "risk": 0.003
+    },
+    {
+     "name": "bb_breakout_H1_period250_dev2.75",
+     "symbol": "XAUUSD",
+     "tf": "H1",
+     "risk": 0.003
+    },
+    {
+     "name": "pweek_sl1_trail8",
+     "symbol": "DE40",
+     "tf": "H1",
+     "risk": 0.003
+    },
+    {
+     "name": "htf_bo50_n24",
+     "symbol": "XAUUSD",
+     "tf": "H1",
+     "risk": 0.003
+    },
+    {
+     "name": "monday_long_downweek",
+     "symbol": "EURJPY",
+     "tf": "H1",
+     "risk": 0.003
+    },
+    {
+     "name": "dip_combo",
+     "symbol": "US500",
+     "tf": "D1",
+     "risk": 0.003
+    },
+    {
+     "name": "zscore",
+     "symbol": "US500",
+     "tf": "H4",
+     "risk": 0.003
+    },
+    {
+     "name": "crabel_k0.5_None",
+     "symbol": "DE40",
+     "tf": "M30",
+     "risk": 0.003
+    },
+    {
+     "name": "inside_far_tp2",
+     "symbol": "XAUUSD",
+     "tf": "H1",
+     "risk": 0.003
+    },
+    {
+     "name": "de_orb2.0_trNone_tp2.0_ex18",
+     "symbol": "DE40",
+     "tf": "H1",
+     "risk": 0.003
+    },
+    {
+     "name": "mon_long_h0_hold23",
+     "symbol": "EURJPY",
+     "tf": "H1",
+     "risk": 0.003
+    },
+    {
+     "name": "bos_hv_be1_M30",
+     "symbol": "XAUUSD",
+     "tf": "M30",
+     "risk": 0.003
+    },
+    {
+     "name": "vwap",
+     "symbol": "DE40",
+     "tf": "H1",
+     "risk": 0.003
+    },
+    {
+     "name": "rsi_rev+trend",
+     "symbol": "XAUUSD",
+     "tf": "H1",
+     "risk": 0.003
+    },
+    {
+     "name": "squeeze_h4_a25_kc2",
+     "symbol": "ETHUSD",
+     "tf": "H4",
+     "risk": 0.003
+    },
+    {
+     "name": "spike_follow",
+     "symbol": "BTCUSD",
+     "tf": "H1",
+     "risk": 0.003
+    },
+    {
+     "name": "tsmom_d1_lb40_a2",
+     "symbol": "BTCUSD",
+     "tf": "D1",
+     "risk": 0.003
+    },
+    {
+     "name": "tsmom20_highvol",
+     "symbol": "XBRUSD",
+     "tf": "D1",
+     "risk": 0.003
+    },
+    {
+     "name": "or_fail_fra40",
+     "symbol": "FRA40",
+     "tf": "M30",
+     "risk": 0.003
+    },
+    {
+     "name": "down_streak_k2_trend",
+     "symbol": "US500",
+     "tf": "D1",
+     "risk": 0.003
+    },
+    {
+     "name": "ibs_lo0.2_hi0.8",
+     "symbol": "US30",
+     "tf": "D1",
+     "risk": 0.003
+    },
+    {
+     "name": "rsi2_thresh10_sma5",
+     "symbol": "US500",
+     "tf": "D1",
+     "risk": 0.003
+    },
+    {
+     "name": "zmean_n100_adx25",
+     "symbol": "NZDUSD",
+     "tf": "H4",
+     "risk": 0.003
+    },
+    {
+     "name": "pa_inside_ETHUSD_D1",
+     "symbol": "ETHUSD",
+     "tf": "D1",
+     "risk": 0.003
+    },
+    {
+     "name": "pa_engulf_UK100_H4",
+     "symbol": "UK100",
+     "tf": "H4",
+     "risk": 0.003
+    },
+    {
+     "name": "pa_double_USDCAD_H1",
+     "symbol": "USDCAD",
+     "tf": "H1",
+     "risk": 0.003
+    },
+    {
+     "name": "pa_pin_DE40_D1",
+     "symbol": "DE40",
+     "tf": "D1",
+     "risk": 0.003
+    },
+    {
+     "name": "pa_bos_GBPJPY_D1",
+     "symbol": "GBPJPY",
+     "tf": "D1",
+     "risk": 0.003
+    },
+    {
+     "name": "pa_inside_EURJPY_D1",
+     "symbol": "EURJPY",
+     "tf": "D1",
+     "risk": 0.003
+    },
+    {
+     "name": "pa_pin_ETHUSD_H4",
+     "symbol": "ETHUSD",
+     "tf": "H4",
+     "risk": 0.003
+    },
+    {
+     "name": "pa_bos_GBPAUD_D1",
+     "symbol": "GBPAUD",
+     "tf": "D1",
+     "risk": 0.003
+    },
+    {
+     "name": "pa_double_USDJPY_H1",
+     "symbol": "USDJPY",
+     "tf": "H1",
+     "risk": 0.003
+    }
+   ],
+   "accounts": {
+    "5k": {
+     "dev_fast": {
+      "profit": 7187,
+      "per_month": 68,
+      "green_months": "65/106",
+      "worst_month": -286,
+      "stop_days": 11,
+      "lowest_balance": 4762,
+      "worst_day": -138,
+      "passed": 187,
+      "failed": 39,
+      "unfinished": 2,
+      "years": 8.8
+     },
+     "unseen": {
+      "y1": {
+       "profit": 1600,
+       "per_month": 133,
+       "green_months": "11/13",
+       "worst_month": -91,
+       "stop_days": 0,
+       "lowest_balance": 4798,
+       "worst_day": -98,
+       "passed": 15,
+       "failed": 0,
+       "unfinished": 9
+      },
+      "last2": {
+       "profit": 2892,
+       "per_month": 119,
+       "green_months": "20/25",
+       "worst_month": -202,
+       "stop_days": 0,
+       "lowest_balance": 4952,
+       "worst_day": -101,
+       "passed": 32,
+       "failed": 5,
+       "unfinished": 14
+      },
+      "sepoct": {
+       "profit": -341,
+       "per_month": -173,
+       "green_months": "0/2",
+       "worst_month": -202,
+       "stop_days": 0,
+       "lowest_balance": 4556,
+       "worst_day": -66,
+       "passed": 0,
+       "failed": 1,
+       "unfinished": 2
+      },
+      "unseen3": {
+       "profit": 4492,
+       "per_month": 124,
+       "green_months": "30/37",
+       "worst_month": -202,
+       "stop_days": 0,
+       "lowest_balance": 4798,
+       "worst_day": -101,
+       "passed": 59,
+       "failed": 4,
+       "unfinished": 14
+      }
+     },
+     "regime_switch": {
+      "y1": {
+       "profit": 1449,
+       "per_month": 121,
+       "green_months": "10/13",
+       "worst_month": -91,
+       "stop_days": 0,
+       "lowest_balance": 4798,
+       "worst_day": -98,
+       "passed": 15,
+       "failed": 0,
+       "unfinished": 9
+      },
+      "last2": {
+       "profit": 2839,
+       "per_month": 117,
+       "green_months": "19/25",
+       "worst_month": -162,
+       "stop_days": 0,
+       "lowest_balance": 4952,
+       "worst_day": -101,
+       "passed": 28,
+       "failed": 0,
+       "unfinished": 23
+      },
+      "sepoct": {
+       "profit": -231,
+       "per_month": -117,
+       "green_months": "0/2",
+       "worst_month": -162,
+       "stop_days": 0,
+       "lowest_balance": 4717,
+       "worst_day": -47,
+       "passed": 0,
+       "failed": 0,
+       "unfinished": 3
+      },
+      "unseen3": {
+       "profit": 4288,
+       "per_month": 118,
+       "green_months": "28/37",
+       "worst_month": -162,
+       "stop_days": 0,
+       "lowest_balance": 4798,
+       "worst_day": -101,
+       "passed": 54,
+       "failed": 0,
+       "unfinished": 23
+      }
+     },
+     "switch_share": 0.14001806684733514,
+     "per_strategy": {
+      "research.search.jpy_session.strategies|build_turn_of_month|{\"hold\": 72, \"hour\": 20, \"k\": 0, \"sl_atr\": 3.0}|DE40|H1": {
+       "y1": 23,
+       "last2": -14,
+       "sepoct": 0,
+       "unseen3": 9
+      },
+      "research.search.gold_fix.strategies|build_bos|{\"htf\": [\"1D\", 50], \"tp_mode\": \"none\", \"trail_atr\": 3.0}|XAUUSD|H1": {
+       "y1": 101,
+       "last2": 233,
+       "sepoct": -12,
+       "unseen3": 333
+      },
+      "research.search.public_eas.strategies|build_bb_breakout|{\"dev\": 2.75, \"period\": 250}|XAUUSD|H1": {
+       "y1": -87,
+       "last2": 133,
+       "sepoct": 0,
+       "unseen3": 46
+      },
+      "research.search.breakout.strategies|build_prev_week|{\"be_r\": 1.0, \"sl_atr\": 1.0, \"trail_after_r\": 1.0, \"trail_atr\": 8.0}|DE40|H1": {
+       "y1": 0,
+       "last2": 0,
+       "sepoct": 0,
+       "unseen3": 0
+      },
+      "research.search.trend.strategies|build_htf_breakout|{\"d_n\": 50, \"n_entry\": 24}|XAUUSD|H1": {
+       "y1": 89,
+       "last2": 255,
+       "sepoct": 0,
+       "unseen3": 344
+      },
+      "research.search.jpy_session.strategies|build_monday_long|{\"prior_dir\": \"down\", \"prior_n\": 120}|EURJPY|H1": {
+       "y1": 160,
+       "last2": 190,
+       "sepoct": -39,
+       "unseen3": 350
+      },
+      "research.search.mean_reversion.strategies|build_dip_combo|{\"exit_mode\": \"ma10\", \"ibs_lo\": 0.2, \"max_hold\": 8, \"need\": 2, \"nlow_n\": 5, \"stop_atr\": 3.0, \"trend\": 200, \"wpr_lo\": -90, \"wpr_n\": 10}|US500|D1": {
+       "y1": 27,
+       "last2": 42,
+       "sepoct": 0,
+       "unseen3": 69
+      },
+      "research.search.mean_reversion.strategies|build_zscore|{\"max_hold\": 12, \"n\": 20, \"sides\": \"long\", \"stop_atr\": 3.0, \"trend\": 0, \"z_in\": 2.0, \"z_out\": 0.5}|US500|H4": {
+       "y1": 43,
+       "last2": 162,
+       "sepoct": -19,
+       "unseen3": 205
+      },
+      "research.search.breakout.strategies|build_crabel|{\"exit_h\": 18, \"filt\": null, \"k\": 0.5, \"ss\": 10.0, \"te\": 14.0}|DE40|M30": {
+       "y1": 186,
+       "last2": -43,
+       "sepoct": -151,
+       "unseen3": 144
+      },
+      "research.search.breakout.strategies|build_nr_break|{\"exit_h\": null, \"kind\": \"inside\", \"max_hold\": 48, \"sl\": \"far\", \"te\": 20, \"tp_r\": 2.0, \"ts\": 0}|XAUUSD|H1": {
+       "y1": 33,
+       "last2": 2,
+       "sepoct": 0,
+       "unseen3": 35
+      },
+      "research.search.breakout.strategies|build_session_orb|{\"exit_h\": 18, \"min_rng\": 0.1, \"re\": 12.0, \"rs\": 10, \"sl\": \"far\", \"te\": 14, \"tp_r\": 2.0, \"trend\": null}|DE40|H1": {
+       "y1": 216,
+       "last2": 190,
+       "sepoct": 59,
+       "unseen3": 406
+      },
+      "research.search.jpy_session.strategies|build_session|{\"hold\": 23, \"hour\": 0, \"side\": \"long\", \"weekdays\": [0]}|EURJPY|H1": {
+       "y1": 168,
+       "last2": 237,
+       "sepoct": -22,
+       "unseen3": 405
+      },
+      "research.search.gold_fix.strategies|build_bos|{\"atrp_min\": 0.6, \"be_r\": 1.0, \"tp_min_r\": 2.0}|XAUUSD|M30": {
+       "y1": 245,
+       "last2": 207,
+       "sepoct": -10,
+       "unseen3": 452
+      },
+      "research.search.mean_reversion.strategies|build_vwap|{\"dev_atr\": 2.0, \"max_hold\": 24, \"sides\": \"short\", \"stop_atr\": 2.0, \"trend\": 200}|DE40|H1": {
+       "y1": -32,
+       "last2": -7,
+       "sepoct": -12,
+       "unseen3": -39
+      },
+      "research.search.indicator_screen.strategies|build_rule|{\"rule\": \"rsi_rev\", \"trend\": true}|XAUUSD|H1": {
+       "y1": -1,
+       "last2": 63,
+       "sepoct": 0,
+       "unseen3": 62
+      },
+      "research.search3.crypto.strategies|build_squeeze|{\"atr_mult\": 2.5, \"kc_mult\": 2}|ETHUSD|H4": {
+       "y1": 34,
+       "last2": 358,
+       "sepoct": 3,
+       "unseen3": 392
+      },
+      "research.search3.crypto.strategies|build_vol_spike|{\"hold\": 12, \"mode\": \"follow\", \"rr\": 2}|BTCUSD|H1": {
+       "y1": 269,
+       "last2": 391,
+       "sepoct": -5,
+       "unseen3": 660
+      },
+      "research.search3.crypto.strategies|build_tsmom|{\"atr_mult\": 2, \"lb\": 40}|BTCUSD|D1": {
+       "y1": 0,
+       "last2": 0,
+       "sepoct": 0,
+       "unseen3": 0
+      },
+      "research.search3.oil_gas.strategies|build_tsmom|{\"atr_n\": 14, \"hold\": 5, \"mom_n\": 20, \"side\": \"both\", \"sl_atr\": 2, \"vol_filter\": \"high\", \"vol_lookback\": 120, \"vol_n\": 20}|XBRUSD|D1": {
+       "y1": -35,
+       "last2": 105,
+       "sepoct": 0,
+       "unseen3": 70
+      },
+      "research.search3.europe_indices.strategies|build_or_fail|{\"re\": 11, \"tp\": \"mid\", \"trend\": \"with\"}|FRA40|M30": {
+       "y1": -6,
+       "last2": -15,
+       "sepoct": -14,
+       "unseen3": -20
+      },
+      "research.search3.us_indices.strategies|build_down_streak|{\"exit_rule\": \"hold\", \"k\": 2, \"trend_req\": true}|US500|D1": {
+       "y1": 76,
+       "last2": 118,
+       "sepoct": -27,
+       "unseen3": 193
+      },
+      "research.search3.us_indices.strategies|build_ibs|{\"hi\": 0.8, \"lo\": 0.2, \"max_hold\": 5, \"sl_atr\": 1.5}|US30|D1": {
+       "y1": 0,
+       "last2": 0,
+       "sepoct": 0,
+       "unseen3": 0
+      },
+      "research.search3.us_indices.strategies|build_rsi2|{\"exit_sma\": 5, \"thresh\": 10}|US500|D1": {
+       "y1": 26,
+       "last2": 90,
+       "sepoct": 5,
+       "unseen3": 116
+      },
+      "research.search3.commodity_fx.strategies|build_zmean|{\"adx_max\": 25, \"n\": 100}|NZDUSD|H4": {
+       "y1": -44,
+       "last2": 169,
+       "sepoct": -14,
+       "unseen3": 124
+      },
+      "research.search4.price_action.strategies|build_inside|{\"r\": 1.5, \"trend\": 100}|ETHUSD|D1": {
+       "y1": -83,
+       "last2": -238,
+       "sepoct": -39,
+       "unseen3": -322
+      },
+      "research.search4.price_action.strategies|build_engulf|{\"n\": 30, \"r\": 1.5}|UK100|H4": {
+       "y1": 39,
+       "last2": -27,
+       "sepoct": 9,
+       "unseen3": 12
+      },
+      "research.search4.price_action.strategies|build_double|{\"k\": 5}|USDCAD|H1": {
+       "y1": -43,
+       "last2": 48,
+       "sepoct": 23,
+       "unseen3": 6
+      },
+      "research.search4.price_action.strategies|build_pin|{\"n\": 10, \"r\": 1.5}|DE40|D1": {
+       "y1": -28,
+       "last2": 10,
+       "sepoct": 0,
+       "unseen3": -17
+      },
+      "research.search4.price_action.strategies|build_bos|{\"exit\": \"r2\", \"k\": 3}|GBPJPY|D1": {
+       "y1": 28,
+       "last2": 30,
+       "sepoct": 0,
+       "unseen3": 57
+      },
+      "research.search4.price_action.strategies|build_inside|{\"r\": 1.5, \"trend\": 0}|EURJPY|D1": {
+       "y1": -52,
+       "last2": -222,
+       "sepoct": -44,
+       "unseen3": -274
+      },
+      "research.search4.price_action.strategies|build_pin|{\"n\": 30, \"r\": 3.0}|ETHUSD|H4": {
+       "y1": 299,
+       "last2": 284,
+       "sepoct": -61,
+       "unseen3": 583
+      },
+      "research.search4.price_action.strategies|build_bos|{\"exit\": \"r2\", \"k\": 3}|GBPAUD|D1": {
+       "y1": 5,
+       "last2": 48,
+       "sepoct": 0,
+       "unseen3": 53
+      },
+      "research.search4.price_action.strategies|build_double|{\"k\": 5}|USDJPY|H1": {
+       "y1": 8,
+       "last2": 28,
+       "sepoct": 0,
+       "unseen3": 36
+      }
+     },
+     "halts": 0
+    },
+    "10k": {
+     "dev_fast": {
+      "profit": 15506,
+      "per_month": 147,
+      "green_months": "66/106",
+      "worst_month": -496,
+      "stop_days": 1,
+      "lowest_balance": 9524,
+      "worst_day": -325,
+      "passed": 197,
+      "failed": 22,
+      "unfinished": 9,
+      "years": 8.8
+     },
+     "unseen": {
+      "y1": {
+       "profit": 3681,
+       "per_month": 306,
+       "green_months": "8/13",
+       "worst_month": -234,
+       "stop_days": 0,
+       "lowest_balance": 9526,
+       "worst_day": -198,
+       "passed": 15,
+       "failed": 0,
+       "unfinished": 9
+      },
+      "last2": {
+       "profit": 9814,
+       "per_month": 403,
+       "green_months": "20/25",
+       "worst_month": -386,
+       "stop_days": 0,
+       "lowest_balance": 9889,
+       "worst_day": -240,
+       "passed": 45,
+       "failed": 2,
+       "unfinished": 4
+      },
+      "sepoct": {
+       "profit": -430,
+       "per_month": -218,
+       "green_months": "0/2",
+       "worst_month": -386,
+       "stop_days": 0,
+       "lowest_balance": 9132,
+       "worst_day": -159,
+       "passed": 0,
+       "failed": 1,
+       "unfinished": 2
+      },
+      "unseen3": {
+       "profit": 13495,
+       "per_month": 371,
+       "green_months": "28/37",
+       "worst_month": -386,
+       "stop_days": 0,
+       "lowest_balance": 9526,
+       "worst_day": -240,
+       "passed": 71,
+       "failed": 2,
+       "unfinished": 4
+      }
+     },
+     "regime_switch": {
+      "y1": {
+       "profit": 3151,
+       "per_month": 262,
+       "green_months": "7/13",
+       "worst_month": -234,
+       "stop_days": 0,
+       "lowest_balance": 9526,
+       "worst_day": -198,
+       "passed": 15,
+       "failed": 0,
+       "unfinished": 9
+      },
+      "last2": {
+       "profit": 9337,
+       "per_month": 384,
+       "green_months": "19/25",
+       "worst_month": -249,
+       "stop_days": 0,
+       "lowest_balance": 9888,
+       "worst_day": -240,
+       "passed": 41,
+       "failed": 0,
+       "unfinished": 10
+      },
+      "sepoct": {
+       "profit": -271,
+       "per_month": -137,
+       "green_months": "0/2",
+       "worst_month": -249,
+       "stop_days": 0,
+       "lowest_balance": 9510,
+       "worst_day": -120,
+       "passed": 0,
+       "failed": 0,
+       "unfinished": 3
+      },
+      "unseen3": {
+       "profit": 12488,
+       "per_month": 343,
+       "green_months": "26/37",
+       "worst_month": -249,
+       "stop_days": 0,
+       "lowest_balance": 9526,
+       "worst_day": -240,
+       "passed": 68,
+       "failed": 0,
+       "unfinished": 9
+      }
+     },
+     "switch_share": 0.16079494128274616,
+     "per_strategy": {
+      "research.search.jpy_session.strategies|build_turn_of_month|{\"hold\": 72, \"hour\": 20, \"k\": 0, \"sl_atr\": 3.0}|DE40|H1": {
+       "y1": 62,
+       "last2": -26,
+       "sepoct": 0,
+       "unseen3": 36
+      },
+      "research.search.gold_fix.strategies|build_bos|{\"htf\": [\"1D\", 50], \"tp_mode\": \"none\", \"trail_atr\": 3.0}|XAUUSD|H1": {
+       "y1": 298,
+       "last2": 1281,
+       "sepoct": -6,
+       "unseen3": 1579
+      },
+      "research.search.public_eas.strategies|build_bb_breakout|{\"dev\": 2.75, \"period\": 250}|XAUUSD|H1": {
+       "y1": -247,
+       "last2": 489,
+       "sepoct": 43,
+       "unseen3": 242
+      },
+      "research.search.breakout.strategies|build_prev_week|{\"be_r\": 1.0, \"sl_atr\": 1.0, \"trail_after_r\": 1.0, \"trail_atr\": 8.0}|DE40|H1": {
+       "y1": 169,
+       "last2": 123,
+       "sepoct": 0,
+       "unseen3": 292
+      },
+      "research.search.trend.strategies|build_htf_breakout|{\"d_n\": 50, \"n_entry\": 24}|XAUUSD|H1": {
+       "y1": 87,
+       "last2": 1328,
+       "sepoct": 50,
+       "unseen3": 1415
+      },
+      "research.search.jpy_session.strategies|build_monday_long|{\"prior_dir\": \"down\", \"prior_n\": 120}|EURJPY|H1": {
+       "y1": 312,
+       "last2": 425,
+       "sepoct": -78,
+       "unseen3": 737
+      },
+      "research.search.mean_reversion.strategies|build_dip_combo|{\"exit_mode\": \"ma10\", \"ibs_lo\": 0.2, \"max_hold\": 8, \"need\": 2, \"nlow_n\": 5, \"stop_atr\": 3.0, \"trend\": 200, \"wpr_lo\": -90, \"wpr_n\": 10}|US500|D1": {
+       "y1": 64,
+       "last2": 203,
+       "sepoct": -12,
+       "unseen3": 266
+      },
+      "research.search.mean_reversion.strategies|build_zscore|{\"max_hold\": 12, \"n\": 20, \"sides\": \"long\", \"stop_atr\": 3.0, \"trend\": 0, \"z_in\": 2.0, \"z_out\": 0.5}|US500|H4": {
+       "y1": 89,
+       "last2": 361,
+       "sepoct": -30,
+       "unseen3": 450
+      },
+      "research.search.breakout.strategies|build_crabel|{\"exit_h\": 18, \"filt\": null, \"k\": 0.5, \"ss\": 10.0, \"te\": 14.0}|DE40|M30": {
+       "y1": 414,
+       "last2": 501,
+       "sepoct": -202,
+       "unseen3": 915
+      },
+      "research.search.breakout.strategies|build_nr_break|{\"exit_h\": null, \"kind\": \"inside\", \"max_hold\": 48, \"sl\": \"far\", \"te\": 20, \"tp_r\": 2.0, \"ts\": 0}|XAUUSD|H1": {
+       "y1": 91,
+       "last2": 55,
+       "sepoct": 0,
+       "unseen3": 146
+      },
+      "research.search.breakout.strategies|build_session_orb|{\"exit_h\": 18, \"min_rng\": 0.1, \"re\": 12.0, \"rs\": 10, \"sl\": \"far\", \"te\": 14, \"tp_r\": 2.0, \"trend\": null}|DE40|H1": {
+       "y1": 494,
+       "last2": 502,
+       "sepoct": 123,
+       "unseen3": 996
+      },
+      "research.search.jpy_session.strategies|build_session|{\"hold\": 23, \"hour\": 0, \"side\": \"long\", \"weekdays\": [0]}|EURJPY|H1": {
+       "y1": 342,
+       "last2": 526,
+       "sepoct": -42,
+       "unseen3": 869
+      },
+      "research.search.gold_fix.strategies|build_bos|{\"atrp_min\": 0.6, \"be_r\": 1.0, \"tp_min_r\": 2.0}|XAUUSD|M30": {
+       "y1": 308,
+       "last2": 1107,
+       "sepoct": -21,
+       "unseen3": 1415
+      },
+      "research.search.mean_reversion.strategies|build_vwap|{\"dev_atr\": 2.0, \"max_hold\": 24, \"sides\": \"short\", \"stop_atr\": 2.0, \"trend\": 200}|DE40|H1": {
+       "y1": -61,
+       "last2": -124,
+       "sepoct": -31,
+       "unseen3": -185
+      },
+      "research.search.indicator_screen.strategies|build_rule|{\"rule\": \"rsi_rev\", \"trend\": true}|XAUUSD|H1": {
+       "y1": 43,
+       "last2": 135,
+       "sepoct": 40,
+       "unseen3": 177
+      },
+      "research.search3.crypto.strategies|build_squeeze|{\"atr_mult\": 2.5, \"kc_mult\": 2}|ETHUSD|H4": {
+       "y1": 73,
+       "last2": 730,
+       "sepoct": 5,
+       "unseen3": 802
+      },
+      "research.search3.crypto.strategies|build_vol_spike|{\"hold\": 12, \"mode\": \"follow\", \"rr\": 2}|BTCUSD|H1": {
+       "y1": 684,
+       "last2": 809,
+       "sepoct": 3,
+       "unseen3": 1493
+      },
+      "research.search3.crypto.strategies|build_tsmom|{\"atr_mult\": 2, \"lb\": 40}|BTCUSD|D1": {
+       "y1": 310,
+       "last2": 88,
+       "sepoct": 0,
+       "unseen3": 398
+      },
+      "research.search3.oil_gas.strategies|build_tsmom|{\"atr_n\": 14, \"hold\": 5, \"mom_n\": 20, \"side\": \"both\", \"sl_atr\": 2, \"vol_filter\": \"high\", \"vol_lookback\": 120, \"vol_n\": 20}|XBRUSD|D1": {
+       "y1": -75,
+       "last2": 222,
+       "sepoct": 0,
+       "unseen3": 148
+      },
+      "research.search3.europe_indices.strategies|build_or_fail|{\"re\": 11, \"tp\": \"mid\", \"trend\": \"with\"}|FRA40|M30": {
+       "y1": -62,
+       "last2": 124,
+       "sepoct": -27,
+       "unseen3": 62
+      },
+      "research.search3.us_indices.strategies|build_down_streak|{\"exit_rule\": \"hold\", \"k\": 2, \"trend_req\": true}|US500|D1": {
+       "y1": 206,
+       "last2": 401,
+       "sepoct": -16,
+       "unseen3": 607
+      },
+      "research.search3.us_indices.strategies|build_ibs|{\"hi\": 0.8, \"lo\": 0.2, \"max_hold\": 5, \"sl_atr\": 1.5}|US30|D1": {
+       "y1": 0,
+       "last2": -29,
+       "sepoct": 0,
+       "unseen3": -29
+      },
+      "research.search3.us_indices.strategies|build_rsi2|{\"exit_sma\": 5, \"thresh\": 10}|US500|D1": {
+       "y1": 82,
+       "last2": 280,
+       "sepoct": 9,
+       "unseen3": 362
+      },
+      "research.search3.commodity_fx.strategies|build_zmean|{\"adx_max\": 25, \"n\": 100}|NZDUSD|H4": {
+       "y1": -90,
+       "last2": 346,
+       "sepoct": -29,
+       "unseen3": 256
+      },
+      "research.search4.price_action.strategies|build_inside|{\"r\": 1.5, \"trend\": 100}|ETHUSD|D1": {
+       "y1": -165,
+       "last2": -493,
+       "sepoct": -79,
+       "unseen3": -658
+      },
+      "research.search4.price_action.strategies|build_engulf|{\"n\": 30, \"r\": 1.5}|UK100|H4": {
+       "y1": 93,
+       "last2": -139,
+       "sepoct": 26,
+       "unseen3": -45
+      },
+      "research.search4.price_action.strategies|build_double|{\"k\": 5}|USDCAD|H1": {
+       "y1": -86,
+       "last2": 83,
+       "sepoct": 46,
+       "unseen3": -3
+      },
+      "research.search4.price_action.strategies|build_pin|{\"n\": 10, \"r\": 1.5}|DE40|D1": {
+       "y1": -55,
+       "last2": 180,
+       "sepoct": 17,
+       "unseen3": 126
+      },
+      "research.search4.price_action.strategies|build_bos|{\"exit\": \"r2\", \"k\": 3}|GBPJPY|D1": {
+       "y1": 23,
+       "last2": -30,
+       "sepoct": 23,
+       "unseen3": -7
+      },
+      "research.search4.price_action.strategies|build_inside|{\"r\": 1.5, \"trend\": 0}|EURJPY|D1": {
+       "y1": -123,
+       "last2": -415,
+       "sepoct": -112,
+       "unseen3": -538
+      },
+      "research.search4.price_action.strategies|build_pin|{\"n\": 30, \"r\": 3.0}|ETHUSD|H4": {
+       "y1": 602,
+       "last2": 575,
+       "sepoct": -122,
+       "unseen3": 1177
+      },
+      "research.search4.price_action.strategies|build_bos|{\"exit\": \"r2\", \"k\": 3}|GBPAUD|D1": {
+       "y1": -77,
+       "last2": -16,
+       "sepoct": -32,
+       "unseen3": -93
+      },
+      "research.search4.price_action.strategies|build_double|{\"k\": 5}|USDJPY|H1": {
+       "y1": 21,
+       "last2": 66,
+       "sepoct": 0,
+       "unseen3": 87
+      }
+     },
+     "halts": 0
+    }
+   }
+  },
+  "strict": {
+   "n": 10,
+   "strategies": [
+    {
+     "name": "mon_long_h0_hold23",
+     "symbol": "EURJPY",
+     "tf": "H1",
+     "risk": 0.0075
+    },
+    {
+     "name": "bos_hv_be1_M30",
+     "symbol": "XAUUSD",
+     "tf": "M30",
+     "risk": 0.0075
+    },
+    {
+     "name": "tsmom_d1_lb40_a2",
+     "symbol": "BTCUSD",
+     "tf": "D1",
+     "risk": 0.0075
+    },
+    {
+     "name": "pa_bos_BTCUSD_D1",
+     "symbol": "BTCUSD",
+     "tf": "D1",
+     "risk": 0.0075
+    },
+    {
+     "name": "pa_inside_ETHUSD_D1",
+     "symbol": "ETHUSD",
+     "tf": "D1",
+     "risk": 0.0075
+    },
+    {
+     "name": "pa_engulf_USDCAD_D1",
+     "symbol": "USDCAD",
+     "tf": "D1",
+     "risk": 0.0075
+    },
+    {
+     "name": "pa_hikkake_ETHUSD_D1",
+     "symbol": "ETHUSD",
+     "tf": "D1",
+     "risk": 0.0075
+    },
+    {
+     "name": "pa_double_USDCAD_H1",
+     "symbol": "USDCAD",
+     "tf": "H1",
+     "risk": 0.0075
+    },
+    {
+     "name": "pa_pin_DE40_D1",
+     "symbol": "DE40",
+     "tf": "D1",
+     "risk": 0.0075
+    },
+    {
+     "name": "pa_pin_ETHUSD_H4",
+     "symbol": "ETHUSD",
+     "tf": "H4",
+     "risk": 0.0075
+    }
+   ],
+   "accounts": {
+    "5k": {
+     "dev_fast": {
+      "profit": 6312,
+      "per_month": 60,
+      "green_months": "60/106",
+      "worst_month": -989,
+      "stop_days": 66,
+      "lowest_balance": 4899,
+      "worst_day": -138,
+      "passed": 187,
+      "failed": 36,
+      "unfinished": 5,
+      "years": 8.8
+     },
+     "unseen": {
+      "y1": {
+       "profit": 1359,
+       "per_month": 113,
+       "green_months": "8/13",
+       "worst_month": -305,
+       "stop_days": 3,
+       "lowest_balance": 4944,
+       "worst_day": -138,
+       "passed": 14,
+       "failed": 7,
+       "unfinished": 3
+      },
+      "last2": {
+       "profit": 2379,
+       "per_month": 98,
+       "green_months": "17/25",
+       "worst_month": -244,
+       "stop_days": 5,
+       "lowest_balance": 4940,
+       "worst_day": -138,
+       "passed": 42,
+       "failed": 6,
+       "unfinished": 3
+      },
+      "sepoct": {
+       "profit": -463,
+       "per_month": -235,
+       "green_months": "0/2",
+       "worst_month": -244,
+       "stop_days": 0,
+       "lowest_balance": 4452,
+       "worst_day": -105,
+       "passed": 0,
+       "failed": 1,
+       "unfinished": 2
+      },
+      "unseen3": {
+       "profit": 3738,
+       "per_month": 103,
+       "green_months": "24/37",
+       "worst_month": -305,
+       "stop_days": 8,
+       "lowest_balance": 4944,
+       "worst_day": -138,
+       "passed": 61,
+       "failed": 13,
+       "unfinished": 3
+      }
+     },
+     "regime_switch": {
+      "y1": {
+       "profit": 1252,
+       "per_month": 104,
+       "green_months": "8/13",
+       "worst_month": -243,
+       "stop_days": 3,
+       "lowest_balance": 4944,
+       "worst_day": -138,
+       "passed": 14,
+       "failed": 2,
+       "unfinished": 8
+      },
+      "last2": {
+       "profit": 2048,
+       "per_month": 84,
+       "green_months": "17/25",
+       "worst_month": -225,
+       "stop_days": 5,
+       "lowest_balance": 4970,
+       "worst_day": -138,
+       "passed": 33,
+       "failed": 1,
+       "unfinished": 17
+      },
+      "sepoct": {
+       "profit": -335,
+       "per_month": -170,
+       "green_months": "0/2",
+       "worst_month": -225,
+       "stop_days": 0,
+       "lowest_balance": 4623,
+       "worst_day": -82,
+       "passed": 0,
+       "failed": 0,
+       "unfinished": 3
+      },
+      "unseen3": {
+       "profit": 3301,
+       "per_month": 91,
+       "green_months": "24/37",
+       "worst_month": -243,
+       "stop_days": 8,
+       "lowest_balance": 4944,
+       "worst_day": -138,
+       "passed": 58,
+       "failed": 3,
+       "unfinished": 16
+      }
+     },
+     "switch_share": 0.3017163504968383,
+     "per_strategy": {
+      "research.search.jpy_session.strategies|build_session|{\"hold\": 23, \"hour\": 0, \"side\": \"long\", \"weekdays\": [0]}|EURJPY|H1": {
+       "y1": 434,
+       "last2": 667,
+       "sepoct": -55,
+       "unseen3": 1101
+      },
+      "research.search.gold_fix.strategies|build_bos|{\"atrp_min\": 0.6, \"be_r\": 1.0, \"tp_min_r\": 2.0}|XAUUSD|M30": {
+       "y1": 437,
+       "last2": 1218,
+       "sepoct": -54,
+       "unseen3": 1655
+      },
+      "research.search3.crypto.strategies|build_tsmom|{\"atr_mult\": 2, \"lb\": 40}|BTCUSD|D1": {
+       "y1": 283,
+       "last2": 67,
+       "sepoct": 0,
+       "unseen3": 350
+      },
+      "research.search4.price_action.strategies|build_bos|{\"exit\": \"trail\", \"k\": 5}|BTCUSD|D1": {
+       "y1": -14,
+       "last2": 0,
+       "sepoct": 0,
+       "unseen3": -14
+      },
+      "research.search4.price_action.strategies|build_inside|{\"r\": 1.5, \"trend\": 100}|ETHUSD|D1": {
+       "y1": -202,
+       "last2": -624,
+       "sepoct": -100,
+       "unseen3": -827
+      },
+      "research.search4.price_action.strategies|build_engulf|{\"n\": 30, \"r\": 3.0}|USDCAD|D1": {
+       "y1": -7,
+       "last2": 2,
+       "sepoct": -34,
+       "unseen3": -5
+      },
+      "research.search4.price_action.strategies|build_hikkake|{\"r\": 3.0}|ETHUSD|D1": {
+       "y1": -199,
+       "last2": 95,
+       "sepoct": -110,
+       "unseen3": -104
+      },
+      "research.search4.price_action.strategies|build_double|{\"k\": 5}|USDCAD|H1": {
+       "y1": -100,
+       "last2": 112,
+       "sepoct": 57,
+       "unseen3": 12
+      },
+      "research.search4.price_action.strategies|build_pin|{\"n\": 10, \"r\": 1.5}|DE40|D1": {
+       "y1": 14,
+       "last2": 247,
+       "sepoct": 8,
+       "unseen3": 261
+      },
+      "research.search4.price_action.strategies|build_pin|{\"n\": 30, \"r\": 3.0}|ETHUSD|H4": {
+       "y1": 758,
+       "last2": 723,
+       "sepoct": -152,
+       "unseen3": 1480
+      }
+     },
+     "halts": 8
+    },
+    "10k": {
+     "dev_fast": {
+      "profit": 17301,
+      "per_month": 164,
+      "green_months": "64/106",
+      "worst_month": -1050,
+      "stop_days": 29,
+      "lowest_balance": 9798,
+      "worst_day": -325,
+      "passed": 193,
+      "failed": 33,
+      "unfinished": 2,
+      "years": 8.8
+     },
+     "unseen": {
+      "y1": {
+       "profit": 2228,
+       "per_month": 185,
+       "green_months": "8/13",
+       "worst_month": -702,
+       "stop_days": 2,
+       "lowest_balance": 9849,
+       "worst_day": -325,
+       "passed": 14,
+       "failed": 10,
+       "unfinished": 0
+      },
+      "last2": {
+       "profit": 6212,
+       "per_month": 255,
+       "green_months": "18/25",
+       "worst_month": -623,
+       "stop_days": 3,
+       "lowest_balance": 9845,
+       "worst_day": -325,
+       "passed": 43,
+       "failed": 8,
+       "unfinished": 0
+      },
+      "sepoct": {
+       "profit": -1176,
+       "per_month": -597,
+       "green_months": "0/2",
+       "worst_month": -623,
+       "stop_days": 0,
+       "lowest_balance": 8663,
+       "worst_day": -251,
+       "passed": 0,
+       "failed": 3,
+       "unfinished": 0
+      },
+      "unseen3": {
+       "profit": 8440,
+       "per_month": 232,
+       "green_months": "25/37",
+       "worst_month": -702,
+       "stop_days": 5,
+       "lowest_balance": 9849,
+       "worst_day": -325,
+       "passed": 59,
+       "failed": 18,
+       "unfinished": 0
+      }
+     },
+     "regime_switch": {
+      "y1": {
+       "profit": 1968,
+       "per_month": 164,
+       "green_months": "8/13",
+       "worst_month": -600,
+       "stop_days": 2,
+       "lowest_balance": 9849,
+       "worst_day": -325,
+       "passed": 14,
+       "failed": 5,
+       "unfinished": 5
+      },
+      "last2": {
+       "profit": 5400,
+       "per_month": 222,
+       "green_months": "17/25",
+       "worst_month": -561,
+       "stop_days": 3,
+       "lowest_balance": 9923,
+       "worst_day": -325,
+       "passed": 29,
+       "failed": 10,
+       "unfinished": 12
+      },
+      "sepoct": {
+       "profit": -789,
+       "per_month": -400,
+       "green_months": "0/2",
+       "worst_month": -477,
+       "stop_days": 0,
+       "lowest_balance": 9130,
+       "worst_day": -165,
+       "passed": 0,
+       "failed": 1,
+       "unfinished": 2
+      },
+      "unseen3": {
+       "profit": 7368,
+       "per_month": 203,
+       "green_months": "24/37",
+       "worst_month": -600,
+       "stop_days": 5,
+       "lowest_balance": 9849,
+       "worst_day": -325,
+       "passed": 50,
+       "failed": 13,
+       "unfinished": 14
+      }
+     },
+     "switch_share": 0.2935862691960253,
+     "per_strategy": {
+      "research.search.jpy_session.strategies|build_session|{\"hold\": 23, \"hour\": 0, \"side\": \"long\", \"weekdays\": [0]}|EURJPY|H1": {
+       "y1": 896,
+       "last2": 1364,
+       "sepoct": -124,
+       "unseen3": 2260
+      },
+      "research.search.gold_fix.strategies|build_bos|{\"atrp_min\": 0.6, \"be_r\": 1.0, \"tp_min_r\": 2.0}|XAUUSD|M30": {
+       "y1": 943,
+       "last2": 2535,
+       "sepoct": -415,
+       "unseen3": 3478
+      },
+      "research.search3.crypto.strategies|build_tsmom|{\"atr_mult\": 2, \"lb\": 40}|BTCUSD|D1": {
+       "y1": 184,
+       "last2": 792,
+       "sepoct": 15,
+       "unseen3": 976
+      },
+      "research.search4.price_action.strategies|build_bos|{\"exit\": \"trail\", \"k\": 5}|BTCUSD|D1": {
+       "y1": 200,
+       "last2": -31,
+       "sepoct": -35,
+       "unseen3": 170
+      },
+      "research.search4.price_action.strategies|build_inside|{\"r\": 1.5, \"trend\": 100}|ETHUSD|D1": {
+       "y1": -415,
+       "last2": -1266,
+       "sepoct": -200,
+       "unseen3": -1681
+      },
+      "research.search4.price_action.strategies|build_engulf|{\"n\": 30, \"r\": 3.0}|USDCAD|D1": {
+       "y1": -28,
+       "last2": -10,
+       "sepoct": -74,
+       "unseen3": -38
+      },
+      "research.search4.price_action.strategies|build_hikkake|{\"r\": 3.0}|ETHUSD|D1": {
+       "y1": -400,
+       "last2": 190,
+       "sepoct": -223,
+       "unseen3": -210
+      },
+      "research.search4.price_action.strategies|build_double|{\"k\": 5}|USDCAD|H1": {
+       "y1": -211,
+       "last2": 235,
+       "sepoct": 114,
+       "unseen3": 24
+      },
+      "research.search4.price_action.strategies|build_pin|{\"n\": 10, \"r\": 1.5}|DE40|D1": {
+       "y1": -13,
+       "last2": 526,
+       "sepoct": 17,
+       "unseen3": 513
+      },
+      "research.search4.price_action.strategies|build_pin|{\"n\": 30, \"r\": 3.0}|ETHUSD|H4": {
+       "y1": 1518,
+       "last2": 1465,
+       "sepoct": -305,
+       "unseen3": 2983
+      }
+     },
+     "halts": 5
+    }
+   }
+  },
+  "pruned+adds": {
+   "n": 46,
+   "strategies": [
+    {
+     "name": "bos_trail3_htfD50_H1",
+     "symbol": "XAUUSD",
+     "tf": "H1",
+     "risk": 0.01
+    },
+    {
+     "name": "bb_fade",
+     "symbol": "EURUSD",
+     "tf": "H1",
+     "risk": 0.0125
+    },
+    {
+     "name": "monday_long_downweek",
+     "symbol": "EURJPY",
+     "tf": "H1",
+     "risk": 0.0075
+    },
+    {
+     "name": "zscore",
+     "symbol": "US500",
+     "tf": "H4",
+     "risk": 0.0075
+    },
+    {
+     "name": "connors_rsi2_D1_",
+     "symbol": "EURCHF",
+     "tf": "D1",
+     "risk": 0.0275
+    },
+    {
+     "name": "wd_MW_Th_a15",
+     "symbol": "BTCUSD",
+     "tf": "D1",
+     "risk": 0.01
+    },
+    {
+     "name": "brent_wti_spread_z",
+     "symbol": "XTIUSD",
+     "tf": "H4",
+     "risk": 0.005
+    },
+    {
+     "name": "donchian160_h4",
+     "symbol": "XTIUSD",
+     "tf": "H4",
+     "risk": 0.01
+    },
+    {
+     "name": "rsi2_mr_aus200_h4",
+     "symbol": "AUS200",
+     "tf": "H4",
+     "risk": 0.0075
+    },
+    {
+     "name": "prev_week_high_long_de40",
+     "symbol": "DE40",
+     "tf": "M30",
+     "risk": 0.005
+    },
+    {
+     "name": "us_open_fade_short_fra40",
+     "symbol": "FRA40",
+     "tf": "M30",
+     "risk": 0.015
+    },
+    {
+     "name": "rsi2_thresh10_sma5",
+     "symbol": "US500",
+     "tf": "D1",
+     "risk": 0.0125
+    },
+    {
+     "name": "weekday_fri_to_mon",
+     "symbol": "USTEC",
+     "tf": "D1",
+     "risk": 0.025
+    },
+    {
+     "name": "round_big_bounce",
+     "symbol": "USTEC",
+     "tf": "M30",
+     "risk": 0.0075
+    },
+    {
+     "name": "monday_gap_fade_gbpusd",
+     "symbol": "GBPUSD",
+     "tf": "H1",
+     "risk": 0.025
+    },
+    {
+     "name": "inside_day_break_usdchf",
+     "symbol": "USDCHF",
+     "tf": "H4",
+     "risk": 0.01
+    },
+    {
+     "name": "friday_week_fade_eurusd",
+     "symbol": "EURUSD",
+     "tf": "H1",
+     "risk": 0.02
+    },
+    {
+     "name": "tom_k0_h20_hold72_sl3",
+     "symbol": "DE40",
+     "tf": "H1",
+     "risk": 0.005
+    },
+    {
+     "name": "bb_breakout_H1_period250_dev2.75",
+     "symbol": "XAUUSD",
+     "tf": "H1",
+     "risk": 0.005
+    },
+    {
+     "name": "pweek_sl1_trail8",
+     "symbol": "DE40",
+     "tf": "H1",
+     "risk": 0.005
+    },
+    {
+     "name": "htf_bo50_n24",
+     "symbol": "XAUUSD",
+     "tf": "H1",
+     "risk": 0.005
+    },
+    {
+     "name": "dip_combo",
+     "symbol": "US500",
+     "tf": "D1",
+     "risk": 0.005
+    },
+    {
+     "name": "crabel_k0.5_None",
+     "symbol": "DE40",
+     "tf": "M30",
+     "risk": 0.005
+    },
+    {
+     "name": "inside_far_tp2",
+     "symbol": "XAUUSD",
+     "tf": "H1",
+     "risk": 0.005
+    },
+    {
+     "name": "de_orb2.0_trNone_tp2.0_ex18",
+     "symbol": "DE40",
+     "tf": "H1",
+     "risk": 0.005
+    },
+    {
+     "name": "mon_long_h0_hold23",
+     "symbol": "EURJPY",
+     "tf": "H1",
+     "risk": 0.005
+    },
+    {
+     "name": "bos_hv_be1_M30",
+     "symbol": "XAUUSD",
+     "tf": "M30",
+     "risk": 0.005
+    },
+    {
+     "name": "vwap",
+     "symbol": "DE40",
+     "tf": "H1",
+     "risk": 0.005
+    },
+    {
+     "name": "rsi_rev+trend",
+     "symbol": "XAUUSD",
+     "tf": "H1",
+     "risk": 0.005
+    },
+    {
+     "name": "squeeze_h4_a25_kc2",
+     "symbol": "ETHUSD",
+     "tf": "H4",
+     "risk": 0.005
+    },
+    {
+     "name": "spike_follow",
+     "symbol": "BTCUSD",
+     "tf": "H1",
+     "risk": 0.005
+    },
+    {
+     "name": "tsmom_d1_lb40_a2",
+     "symbol": "BTCUSD",
+     "tf": "D1",
+     "risk": 0.005
+    },
+    {
+     "name": "tsmom20_highvol",
+     "symbol": "XBRUSD",
+     "tf": "D1",
+     "risk": 0.005
+    },
+    {
+     "name": "or_fail_fra40",
+     "symbol": "FRA40",
+     "tf": "M30",
+     "risk": 0.005
+    },
+    {
+     "name": "down_streak_k2_trend",
+     "symbol": "US500",
+     "tf": "D1",
+     "risk": 0.005
+    },
+    {
+     "name": "ibs_lo0.2_hi0.8",
+     "symbol": "US30",
+     "tf": "D1",
+     "risk": 0.005
+    },
+    {
+     "name": "zmean_n100_adx25",
+     "symbol": "NZDUSD",
+     "tf": "H4",
+     "risk": 0.005
+    },
+    {
+     "name": "pa_inside_ETHUSD_D1",
+     "symbol": "ETHUSD",
+     "tf": "D1",
+     "risk": 0.005
+    },
+    {
+     "name": "pa_engulf_UK100_H4",
+     "symbol": "UK100",
+     "tf": "H4",
+     "risk": 0.005
+    },
+    {
+     "name": "pa_double_USDCAD_H1",
+     "symbol": "USDCAD",
+     "tf": "H1",
+     "risk": 0.005
+    },
+    {
+     "name": "pa_pin_DE40_D1",
+     "symbol": "DE40",
+     "tf": "D1",
+     "risk": 0.005
+    },
+    {
+     "name": "pa_bos_GBPJPY_D1",
+     "symbol": "GBPJPY",
+     "tf": "D1",
+     "risk": 0.005
+    },
+    {
+     "name": "pa_inside_EURJPY_D1",
+     "symbol": "EURJPY",
+     "tf": "D1",
+     "risk": 0.005
+    },
+    {
+     "name": "pa_pin_ETHUSD_H4",
+     "symbol": "ETHUSD",
+     "tf": "H4",
+     "risk": 0.005
+    },
+    {
+     "name": "pa_bos_GBPAUD_D1",
+     "symbol": "GBPAUD",
+     "tf": "D1",
+     "risk": 0.005
+    },
+    {
+     "name": "pa_double_USDJPY_H1",
+     "symbol": "USDJPY",
+     "tf": "H1",
+     "risk": 0.005
+    }
+   ],
+   "accounts": {
+    "5k": {
+     "dev_fast": {
+      "profit": -23146,
+      "per_month": -219,
+      "green_months": "36/106",
+      "worst_month": -1832,
+      "stop_days": 524,
+      "lowest_balance": -18595,
+      "worst_day": -138,
+      "passed": 62,
+      "failed": 166,
+      "unfinished": 0,
+      "years": 8.8
+     },
+     "unseen": {
+      "y1": {
+       "profit": 1412,
+       "per_month": 117,
+       "green_months": "6/13",
+       "worst_month": -501,
+       "stop_days": 39,
+       "lowest_balance": 4500,
+       "worst_day": -138,
+       "passed": 14,
+       "failed": 10,
+       "unfinished": 0
+      },
+      "last2": {
+       "profit": 13649,
+       "per_month": 561,
+       "green_months": "21/25",
+       "worst_month": -297,
+       "stop_days": 49,
+       "lowest_balance": 4882,
+       "worst_day": -138,
+       "passed": 45,
+       "failed": 6,
+       "unfinished": 0
+      },
+      "sepoct": {
+       "profit": -452,
+       "per_month": -229,
+       "green_months": "0/2",
+       "worst_month": -290,
+       "stop_days": 5,
+       "lowest_balance": 4180,
+       "worst_day": -138,
+       "passed": 1,
+       "failed": 2,
+       "unfinished": 0
+      },
+      "unseen3": {
+       "profit": 15061,
+       "per_month": 414,
+       "green_months": "27/37",
+       "worst_month": -501,
+       "stop_days": 88,
+       "lowest_balance": 4500,
+       "worst_day": -138,
+       "passed": 59,
+       "failed": 18,
+       "unfinished": 0
+      }
+     },
+     "regime_switch": {
+      "y1": {
+       "profit": 978,
+       "per_month": 81,
+       "green_months": "6/13",
+       "worst_month": -347,
+       "stop_days": 28,
+       "lowest_balance": 4500,
+       "worst_day": -138,
+       "passed": 10,
+       "failed": 13,
+       "unfinished": 1
+      },
+      "last2": {
+       "profit": 13072,
+       "per_month": 537,
+       "green_months": "20/25",
+       "worst_month": -416,
+       "stop_days": 46,
+       "lowest_balance": 4882,
+       "worst_day": -138,
+       "passed": 45,
+       "failed": 5,
+       "unfinished": 1
+      },
+      "sepoct": {
+       "profit": -422,
+       "per_month": -214,
+       "green_months": "0/2",
+       "worst_month": -341,
+       "stop_days": 2,
+       "lowest_balance": 4394,
+       "worst_day": -138,
+       "passed": 0,
+       "failed": 1,
+       "unfinished": 2
+      },
+      "unseen3": {
+       "profit": 14050,
+       "per_month": 386,
+       "green_months": "26/37",
+       "worst_month": -416,
+       "stop_days": 74,
+       "lowest_balance": 4500,
+       "worst_day": -138,
+       "passed": 56,
+       "failed": 20,
+       "unfinished": 1
+      }
+     },
+     "switch_share": 0.1842818428184282,
+     "per_strategy": {
+      "research.search.gold_fix.strategies|build_bos|{\"htf\": [\"1D\", 50], \"tp_mode\": \"none\", \"trail_atr\": 3.0}|XAUUSD|H1": {
+       "y1": 348,
+       "last2": 2022,
+       "sepoct": -159,
+       "unseen3": 2371
+      },
+      "research.search.mean_reversion.strategies|build_bb_fade|{\"k\": 2.5, \"max_hold\": 24, \"n\": 50, \"sides\": \"long\", \"stop_atr\": 2.0, \"trend\": 200}|EURUSD|H1": {
+       "y1": 25,
+       "last2": 594,
+       "sepoct": 0,
+       "unseen3": 620
+      },
+      "research.search.jpy_session.strategies|build_monday_long|{\"prior_dir\": \"down\", \"prior_n\": 120}|EURJPY|H1": {
+       "y1": 380,
+       "last2": 543,
+       "sepoct": -98,
+       "unseen3": 923
+      },
+      "research.search.mean_reversion.strategies|build_zscore|{\"max_hold\": 12, \"n\": 20, \"sides\": \"long\", \"stop_atr\": 3.0, \"trend\": 0, \"z_in\": 2.0, \"z_out\": 0.5}|US500|H4": {
+       "y1": 109,
+       "last2": 479,
+       "sepoct": -39,
+       "unseen3": 589
+      },
+      "research.search.public_eas.strategies|build_connors_rsi2|{}|EURCHF|D1": {
+       "y1": -95,
+       "last2": 428,
+       "sepoct": 32,
+       "unseen3": 333
+      },
+      "research.search3.crypto.strategies|build_weekday|{\"atr_mult\": 1.5}|BTCUSD|D1": {
+       "y1": 383,
+       "last2": 777,
+       "sepoct": 50,
+       "unseen3": 1161
+      },
+      "research.search3.oil_gas.strategies|build_spread_reversion|{\"lookback\": 100, \"max_hold\": 120, \"mode\": \"diff\", \"other\": \"XBRUSD\", \"sl_atr\": 2, \"z_in\": 2.5, \"z_out\": 0}|XTIUSD|H4": {
+       "y1": 50,
+       "last2": 804,
+       "sepoct": 7,
+       "unseen3": 854
+      },
+      "research.search3.oil_gas.strategies|build_donchian|{\"n\": 160, \"side\": \"both\", \"sl_atr\": 2, \"trail_atr\": 3}|XTIUSD|H4": {
+       "y1": -190,
+       "last2": 1555,
+       "sepoct": 87,
+       "unseen3": 1365
+      },
+      "research.search3.asia_indices.strategies|build_rsi_mr|{\"hi\": 85, \"lo\": 15, \"max_hold\": 8, \"n\": 2, \"sl_atr\": 1.5, \"trend_n\": 200}|AUS200|H4": {
+       "y1": 0,
+       "last2": 556,
+       "sepoct": 79,
+       "unseen3": 556
+      },
+      "research.search3.europe_indices.strategies|build_prev_week|{\"sides\": \"long\", \"sl_atr\": 1.5, \"trail_atr\": 3}|DE40|M30": {
+       "y1": 493,
+       "last2": 385,
+       "sepoct": 18,
+       "unseen3": 877
+      },
+      "research.search3.europe_indices.strategies|build_us_open_fade|{\"k\": 1, \"sides\": \"short\"}|FRA40|M30": {
+       "y1": -45,
+       "last2": 908,
+       "sepoct": -6,
+       "unseen3": 863
+      },
+      "research.search3.us_indices.strategies|build_rsi2|{\"exit_sma\": 5, \"thresh\": 10}|US500|D1": {
+       "y1": 179,
+       "last2": 676,
+       "sepoct": 29,
+       "unseen3": 855
+      },
+      "research.search3.us_indices.strategies|build_weekday|{\"enter_dow\": 4, \"hold\": 1, \"trend\": \"with\"}|USTEC|D1": {
+       "y1": 216,
+       "last2": 1284,
+       "sepoct": 148,
+       "unseen3": 1499
+      },
+      "research.search3.us_indices.strategies|build_round|{\"mode\": \"bounce\", \"step\": \"big\", \"tp_r\": null}|USTEC|M30": {
+       "y1": -39,
+       "last2": 646,
+       "sepoct": -9,
+       "unseen3": 607
+      },
+      "research.search3.majors.strategies|build_monday_gap_fade|{\"max_hold\": 36, \"min_gap\": 0.2, \"sl_mult\": 1}|GBPUSD|H1": {
+       "y1": 55,
+       "last2": 1278,
+       "sepoct": 67,
+       "unseen3": 1333
+      },
+      "research.search3.majors.strategies|build_inside_nr_break|{\"kind\": \"inside\", \"max_hold\": 18, \"rr\": 2, \"sl_mode\": \"opp\"}|USDCHF|H4": {
+       "y1": 277,
+       "last2": 555,
+       "sepoct": -180,
+       "unseen3": 832
+      },
+      "research.search3.majors.strategies|build_friday_week_fade|{\"hour\": 14, \"thr\": 1.8, \"tp_frac\": 0.5}|EURUSD|H1": {
+       "y1": -230,
+       "last2": 661,
+       "sepoct": 116,
+       "unseen3": 432
+      },
+      "research.search.jpy_session.strategies|build_turn_of_month|{\"hold\": 72, \"hour\": 20, \"k\": 0, \"sl_atr\": 3.0}|DE40|H1": {
+       "y1": 31,
+       "last2": -47,
+       "sepoct": 0,
+       "unseen3": -17
+      },
+      "research.search.public_eas.strategies|build_bb_breakout|{\"dev\": 2.75, \"period\": 250}|XAUUSD|H1": {
+       "y1": -194,
+       "last2": 208,
+       "sepoct": -23,
+       "unseen3": 14
+      },
+      "research.search.breakout.strategies|build_prev_week|{\"be_r\": 1.0, \"sl_atr\": 1.0, \"trail_after_r\": 1.0, \"trail_atr\": 8.0}|DE40|H1": {
+       "y1": 106,
+       "last2": 19,
+       "sepoct": 0,
+       "unseen3": 125
+      },
+      "research.search.trend.strategies|build_htf_breakout|{\"d_n\": 50, \"n_entry\": 24}|XAUUSD|H1": {
+       "y1": 50,
+       "last2": 636,
+       "sepoct": -12,
+       "unseen3": 686
+      },
+      "research.search.mean_reversion.strategies|build_dip_combo|{\"exit_mode\": \"ma10\", \"ibs_lo\": 0.2, \"max_hold\": 8, \"need\": 2, \"nlow_n\": 5, \"stop_atr\": 3.0, \"trend\": 200, \"wpr_lo\": -90, \"wpr_n\": 10}|US500|D1": {
+       "y1": 37,
+       "last2": 112,
+       "sepoct": -12,
+       "unseen3": 149
+      },
+      "research.search.breakout.strategies|build_crabel|{\"exit_h\": 18, \"filt\": null, \"k\": 0.5, \"ss\": 10.0, \"te\": 14.0}|DE40|M30": {
+       "y1": 276,
+       "last2": 650,
+       "sepoct": -95,
+       "unseen3": 925
+      },
+      "research.search.breakout.strategies|build_nr_break|{\"exit_h\": null, \"kind\": \"inside\", \"max_hold\": 48, \"sl\": \"far\", \"te\": 20, \"tp_r\": 2.0, \"ts\": 0}|XAUUSD|H1": {
+       "y1": 14,
+       "last2": 109,
+       "sepoct": 0,
+       "unseen3": 123
+      },
+      "research.search.breakout.strategies|build_session_orb|{\"exit_h\": 18, \"min_rng\": 0.1, \"re\": 12.0, \"rs\": 10, \"sl\": \"far\", \"te\": 14, \"tp_r\": 2.0, \"trend\": null}|DE40|H1": {
+       "y1": 458,
+       "last2": 186,
+       "sepoct": 72,
+       "unseen3": 645
+      },
+      "research.search.jpy_session.strategies|build_session|{\"hold\": 23, \"hour\": 0, \"side\": \"long\", \"weekdays\": [0]}|EURJPY|H1": {
+       "y1": 283,
+       "last2": 445,
+       "sepoct": -38,
+       "unseen3": 729
+      },
+      "research.search.gold_fix.strategies|build_bos|{\"atrp_min\": 0.6, \"be_r\": 1.0, \"tp_min_r\": 2.0}|XAUUSD|M30": {
+       "y1": 313,
+       "last2": 556,
+       "sepoct": -21,
+       "unseen3": 870
+      },
+      "research.search.mean_reversion.strategies|build_vwap|{\"dev_atr\": 2.0, \"max_hold\": 24, \"sides\": \"short\", \"stop_atr\": 2.0, \"trend\": 200}|DE40|H1": {
+       "y1": -58,
+       "last2": -88,
+       "sepoct": -30,
+       "unseen3": -146
+      },
+      "research.search.indicator_screen.strategies|build_rule|{\"rule\": \"rsi_rev\", \"trend\": true}|XAUUSD|H1": {
+       "y1": 22,
+       "last2": 96,
+       "sepoct": 35,
+       "unseen3": 118
+      },
+      "research.search3.crypto.strategies|build_squeeze|{\"atr_mult\": 2.5, \"kc_mult\": 2}|ETHUSD|H4": {
+       "y1": 59,
+       "last2": 607,
+       "sepoct": 4,
+       "unseen3": 666
+      },
+      "research.search3.crypto.strategies|build_vol_spike|{\"hold\": 12, \"mode\": \"follow\", \"rr\": 2}|BTCUSD|H1": {
+       "y1": 539,
+       "last2": 631,
+       "sepoct": -20,
+       "unseen3": 1170
+      },
+      "research.search3.crypto.strategies|build_tsmom|{\"atr_mult\": 2, \"lb\": 40}|BTCUSD|D1": {
+       "y1": 115,
+       "last2": -14,
+       "sepoct": 0,
+       "unseen3": 102
+      },
+      "research.search3.oil_gas.strategies|build_tsmom|{\"atr_n\": 14, \"hold\": 5, \"mom_n\": 20, \"side\": \"both\", \"sl_atr\": 2, \"vol_filter\": \"high\", \"vol_lookback\": 120, \"vol_n\": 20}|XBRUSD|D1": {
+       "y1": -60,
+       "last2": 164,
+       "sepoct": 0,
+       "unseen3": 104
+      },
+      "research.search3.europe_indices.strategies|build_or_fail|{\"re\": 11, \"tp\": \"mid\", \"trend\": \"with\"}|FRA40|M30": {
+       "y1": -107,
+       "last2": 75,
+       "sepoct": -30,
+       "unseen3": -32
+      },
+      "research.search3.us_indices.strategies|build_down_streak|{\"exit_rule\": \"hold\", \"k\": 2, \"trend_req\": true}|US500|D1": {
+       "y1": 153,
+       "last2": 301,
+       "sepoct": -12,
+       "unseen3": 454
+      },
+      "research.search3.us_indices.strategies|build_ibs|{\"hi\": 0.8, \"lo\": 0.2, \"max_hold\": 5, \"sl_atr\": 1.5}|US30|D1": {
+       "y1": 0,
+       "last2": 0,
+       "sepoct": 0,
+       "unseen3": 0
+      },
+      "research.search3.commodity_fx.strategies|build_zmean|{\"adx_max\": 25, \"n\": 100}|NZDUSD|H4": {
+       "y1": -64,
+       "last2": 286,
+       "sepoct": -22,
+       "unseen3": 222
+      },
+      "research.search4.price_action.strategies|build_inside|{\"r\": 1.5, \"trend\": 100}|ETHUSD|D1": {
+       "y1": -136,
+       "last2": -413,
+       "sepoct": -66,
+       "unseen3": -550
+      },
+      "research.search4.price_action.strategies|build_engulf|{\"n\": 30, \"r\": 1.5}|UK100|H4": {
+       "y1": 59,
+       "last2": -170,
+       "sepoct": 17,
+       "unseen3": -111
+      },
+      "research.search4.price_action.strategies|build_double|{\"k\": 5}|USDCAD|H1": {
+       "y1": -70,
+       "last2": 78,
+       "sepoct": 37,
+       "unseen3": 7
+      },
+      "research.search4.price_action.strategies|build_pin|{\"n\": 10, \"r\": 1.5}|DE40|D1": {
+       "y1": -27,
+       "last2": 58,
+       "sepoct": 0,
+       "unseen3": 31
+      },
+      "research.search4.price_action.strategies|build_bos|{\"exit\": \"r2\", \"k\": 3}|GBPJPY|D1": {
+       "y1": -1,
+       "last2": -23,
+       "sepoct": 23,
+       "unseen3": -25
+      },
+      "research.search4.price_action.strategies|build_inside|{\"r\": 1.5, \"trend\": 0}|EURJPY|D1": {
+       "y1": -75,
+       "last2": -218,
+       "sepoct": -81,
+       "unseen3": -293
+      },
+      "research.search4.price_action.strategies|build_pin|{\"n\": 30, \"r\": 3.0}|ETHUSD|H4": {
+       "y1": 501,
+       "last2": 481,
+       "sepoct": -101,
+       "unseen3": 982
+      },
+      "research.search4.price_action.strategies|build_bos|{\"exit\": \"r2\", \"k\": 3}|GBPAUD|D1": {
+       "y1": -91,
+       "last2": -9,
+       "sepoct": -22,
+       "unseen3": -100
+      },
+      "research.search4.price_action.strategies|build_double|{\"k\": 5}|USDJPY|H1": {
+       "y1": 21,
+       "last2": 28,
+       "sepoct": 0,
+       "unseen3": 49
+      }
+     },
+     "halts": 88
+    },
+    "10k": {
+     "dev_fast": {
+      "profit": -27698,
+      "per_month": -262,
+      "green_months": "42/106",
+      "worst_month": -3926,
+      "stop_days": 341,
+      "lowest_balance": -18834,
+      "worst_day": -325,
+      "passed": 74,
+      "failed": 154,
+      "unfinished": 0,
+      "years": 8.8
+     },
+     "unseen": {
+      "y1": {
+       "profit": 5774,
+       "per_month": 480,
+       "green_months": "7/13",
+       "worst_month": -1287,
+       "stop_days": 26,
+       "lowest_balance": 8927,
+       "worst_day": -325,
+       "passed": 16,
+       "failed": 8,
+       "unfinished": 0
+      },
+      "last2": {
+       "profit": 35537,
+       "per_month": 1460,
+       "green_months": "21/25",
+       "worst_month": -744,
+       "stop_days": 41,
+       "lowest_balance": 9724,
+       "worst_day": -325,
+       "passed": 46,
+       "failed": 5,
+       "unfinished": 0
+      },
+      "sepoct": {
+       "profit": -656,
+       "per_month": -333,
+       "green_months": "0/2",
+       "worst_month": -406,
+       "stop_days": 4,
+       "lowest_balance": 8537,
+       "worst_day": -325,
+       "passed": 1,
+       "failed": 2,
+       "unfinished": 0
+      },
+      "unseen3": {
+       "profit": 41310,
+       "per_month": 1136,
+       "green_months": "27/37",
+       "worst_month": -1287,
+       "stop_days": 67,
+       "lowest_balance": 8927,
+       "worst_day": -325,
+       "passed": 62,
+       "failed": 15,
+       "unfinished": 0
+      }
+     },
+     "regime_switch": {
+      "y1": {
+       "profit": 4565,
+       "per_month": 380,
+       "green_months": "7/13",
+       "worst_month": -894,
+       "stop_days": 19,
+       "lowest_balance": 8927,
+       "worst_day": -325,
+       "passed": 13,
+       "failed": 11,
+       "unfinished": 0
+      },
+      "last2": {
+       "profit": 33680,
+       "per_month": 1384,
+       "green_months": "21/25",
+       "worst_month": -929,
+       "stop_days": 37,
+       "lowest_balance": 9724,
+       "worst_day": -325,
+       "passed": 47,
+       "failed": 4,
+       "unfinished": 0
+      },
+      "sepoct": {
+       "profit": -512,
+       "per_month": -260,
+       "green_months": "0/2",
+       "worst_month": -262,
+       "stop_days": 1,
+       "lowest_balance": 9085,
+       "worst_day": -325,
+       "passed": 1,
+       "failed": 2,
+       "unfinished": 0
+      },
+      "unseen3": {
+       "profit": 38245,
+       "per_month": 1052,
+       "green_months": "27/37",
+       "worst_month": -929,
+       "stop_days": 56,
+       "lowest_balance": 8927,
+       "worst_day": -325,
+       "passed": 60,
+       "failed": 17,
+       "unfinished": 0
+      }
+     },
+     "switch_share": 0.14814814814814814,
+     "per_strategy": {
+      "research.search.gold_fix.strategies|build_bos|{\"htf\": [\"1D\", 50], \"tp_mode\": \"none\", \"trail_atr\": 3.0}|XAUUSD|H1": {
+       "y1": 860,
+       "last2": 5849,
+       "sepoct": -455,
+       "unseen3": 6710
+      },
+      "research.search.mean_reversion.strategies|build_bb_fade|{\"k\": 2.5, \"max_hold\": 24, \"n\": 50, \"sides\": \"long\", \"stop_atr\": 2.0, \"trend\": 200}|EURUSD|H1": {
+       "y1": 53,
+       "last2": 1197,
+       "sepoct": 0,
+       "unseen3": 1250
+      },
+      "research.search.jpy_session.strategies|build_monday_long|{\"prior_dir\": \"down\", \"prior_n\": 120}|EURJPY|H1": {
+       "y1": 793,
+       "last2": 1111,
+       "sepoct": -214,
+       "unseen3": 1903
+      },
+      "research.search.mean_reversion.strategies|build_zscore|{\"max_hold\": 12, \"n\": 20, \"sides\": \"long\", \"stop_atr\": 3.0, \"trend\": 0, \"z_in\": 2.0, \"z_out\": 0.5}|US500|H4": {
+       "y1": 221,
+       "last2": 980,
+       "sepoct": -72,
+       "unseen3": 1201
+      },
+      "research.search.public_eas.strategies|build_connors_rsi2|{}|EURCHF|D1": {
+       "y1": -193,
+       "last2": 876,
+       "sepoct": 67,
+       "unseen3": 683
+      },
+      "research.search3.crypto.strategies|build_weekday|{\"atr_mult\": 1.5}|BTCUSD|D1": {
+       "y1": 816,
+       "last2": 2101,
+       "sepoct": 159,
+       "unseen3": 2917
+      },
+      "research.search3.oil_gas.strategies|build_spread_reversion|{\"lookback\": 100, \"max_hold\": 120, \"mode\": \"diff\", \"other\": \"XBRUSD\", \"sl_atr\": 2, \"z_in\": 2.5, \"z_out\": 0}|XTIUSD|H4": {
+       "y1": 99,
+       "last2": 1657,
+       "sepoct": 11,
+       "unseen3": 1756
+      },
+      "research.search3.oil_gas.strategies|build_donchian|{\"n\": 160, \"side\": \"both\", \"sl_atr\": 2, \"trail_atr\": 3}|XTIUSD|H4": {
+       "y1": -384,
+       "last2": 3128,
+       "sepoct": 184,
+       "unseen3": 2743
+      },
+      "research.search3.asia_indices.strategies|build_rsi_mr|{\"hi\": 85, \"lo\": 15, \"max_hold\": 8, \"n\": 2, \"sl_atr\": 1.5, \"trend_n\": 200}|AUS200|H4": {
+       "y1": 0,
+       "last2": 1156,
+       "sepoct": 154,
+       "unseen3": 1156
+      },
+      "research.search3.europe_indices.strategies|build_prev_week|{\"sides\": \"long\", \"sl_atr\": 1.5, \"trail_atr\": 3}|DE40|M30": {
+       "y1": 1022,
+       "last2": 876,
+       "sepoct": 29,
+       "unseen3": 1898
+      },
+      "research.search3.europe_indices.strategies|build_us_open_fade|{\"k\": 1, \"sides\": \"short\"}|FRA40|M30": {
+       "y1": -92,
+       "last2": 1878,
+       "sepoct": -13,
+       "unseen3": 1786
+      },
+      "research.search3.us_indices.strategies|build_rsi2|{\"exit_sma\": 5, \"thresh\": 10}|US500|D1": {
+       "y1": 378,
+       "last2": 1455,
+       "sepoct": 59,
+       "unseen3": 1834
+      },
+      "research.search3.us_indices.strategies|build_weekday|{\"enter_dow\": 4, \"hold\": 1, \"trend\": \"with\"}|USTEC|D1": {
+       "y1": 435,
+       "last2": 3066,
+       "sepoct": 268,
+       "unseen3": 3502
+      },
+      "research.search3.us_indices.strategies|build_round|{\"mode\": \"bounce\", \"step\": \"big\", \"tp_r\": null}|USTEC|M30": {
+       "y1": -24,
+       "last2": 1399,
+       "sepoct": -71,
+       "unseen3": 1375
+      },
+      "research.search3.majors.strategies|build_monday_gap_fade|{\"max_hold\": 36, \"min_gap\": 0.2, \"sl_mult\": 1}|GBPUSD|H1": {
+       "y1": 110,
+       "last2": 2577,
+       "sepoct": 135,
+       "unseen3": 2687
+      },
+      "research.search3.majors.strategies|build_inside_nr_break|{\"kind\": \"inside\", \"max_hold\": 18, \"rr\": 2, \"sl_mode\": \"opp\"}|USDCHF|H4": {
+       "y1": 591,
+       "last2": 1183,
+       "sepoct": -365,
+       "unseen3": 1774
+      },
+      "research.search3.majors.strategies|build_friday_week_fade|{\"hour\": 14, \"thr\": 1.8, \"tp_frac\": 0.5}|EURUSD|H1": {
+       "y1": -465,
+       "last2": 1322,
+       "sepoct": 236,
+       "unseen3": 857
+      },
+      "research.search.jpy_session.strategies|build_turn_of_month|{\"hold\": 72, \"hour\": 20, \"k\": 0, \"sl_atr\": 3.0}|DE40|H1": {
+       "y1": 122,
+       "last2": -55,
+       "sepoct": -30,
+       "unseen3": 67
+      },
+      "research.search.public_eas.strategies|build_bb_breakout|{\"dev\": 2.75, \"period\": 250}|XAUUSD|H1": {
+       "y1": -520,
+       "last2": 752,
+       "sepoct": 20,
+       "unseen3": 232
+      },
+      "research.search.breakout.strategies|build_prev_week|{\"be_r\": 1.0, \"sl_atr\": 1.0, \"trail_after_r\": 1.0, \"trail_atr\": 8.0}|DE40|H1": {
+       "y1": 504,
+       "last2": 313,
+       "sepoct": -61,
+       "unseen3": 817
+      },
+      "research.search.trend.strategies|build_htf_breakout|{\"d_n\": 50, \"n_entry\": 24}|XAUUSD|H1": {
+       "y1": 58,
+       "last2": 2464,
+       "sepoct": -79,
+       "unseen3": 2522
+      },
+      "research.search.mean_reversion.strategies|build_dip_combo|{\"exit_mode\": \"ma10\", \"ibs_lo\": 0.2, \"max_hold\": 8, \"need\": 2, \"nlow_n\": 5, \"stop_atr\": 3.0, \"trend\": 200, \"wpr_lo\": -90, \"wpr_n\": 10}|US500|D1": {
+       "y1": 131,
+       "last2": 313,
+       "sepoct": -24,
+       "unseen3": 444
+      },
+      "research.search.breakout.strategies|build_crabel|{\"exit_h\": 18, \"filt\": null, \"k\": 0.5, \"ss\": 10.0, \"te\": 14.0}|DE40|M30": {
+       "y1": 602,
+       "last2": 1540,
+       "sepoct": -197,
+       "unseen3": 2141
+      },
+      "research.search.breakout.strategies|build_nr_break|{\"exit_h\": null, \"kind\": \"inside\", \"max_hold\": 48, \"sl\": \"far\", \"te\": 20, \"tp_r\": 2.0, \"ts\": 0}|XAUUSD|H1": {
+       "y1": 61,
+       "last2": 475,
+       "sepoct": 0,
+       "unseen3": 536
+      },
+      "research.search.breakout.strategies|build_session_orb|{\"exit_h\": 18, \"min_rng\": 0.1, \"re\": 12.0, \"rs\": 10, \"sl\": \"far\", \"te\": 14, \"tp_r\": 2.0, \"trend\": null}|DE40|H1": {
+       "y1": 917,
+       "last2": 616,
+       "sepoct": 155,
+       "unseen3": 1533
+      },
+      "research.search.jpy_session.strategies|build_session|{\"hold\": 23, \"hour\": 0, \"side\": \"long\", \"weekdays\": [0]}|EURJPY|H1": {
+       "y1": 569,
+       "last2": 915,
+       "sepoct": -79,
+       "unseen3": 1484
+      },
+      "research.search.gold_fix.strategies|build_bos|{\"atrp_min\": 0.6, \"be_r\": 1.0, \"tp_min_r\": 2.0}|XAUUSD|M30": {
+       "y1": 530,
+       "last2": 1337,
+       "sepoct": -181,
+       "unseen3": 1867
+      },
+      "research.search.mean_reversion.strategies|build_vwap|{\"dev_atr\": 2.0, \"max_hold\": 24, \"sides\": \"short\", \"stop_atr\": 2.0, \"trend\": 200}|DE40|H1": {
+       "y1": -111,
+       "last2": -216,
+       "sepoct": -61,
+       "unseen3": -327
+      },
+      "research.search.indicator_screen.strategies|build_rule|{\"rule\": \"rsi_rev\", \"trend\": true}|XAUUSD|H1": {
+       "y1": 93,
+       "last2": 181,
+       "sepoct": 67,
+       "unseen3": 274
+      },
+      "research.search3.crypto.strategies|build_squeeze|{\"atr_mult\": 2.5, \"kc_mult\": 2}|ETHUSD|H4": {
+       "y1": 121,
+       "last2": 1219,
+       "sepoct": 9,
+       "unseen3": 1340
+      },
+      "research.search3.crypto.strategies|build_vol_spike|{\"hold\": 12, \"mode\": \"follow\", \"rr\": 2}|BTCUSD|H1": {
+       "y1": 1215,
+       "last2": 1414,
+       "sepoct": -13,
+       "unseen3": 2629
+      },
+      "research.search3.crypto.strategies|build_tsmom|{\"atr_mult\": 2, \"lb\": 40}|BTCUSD|D1": {
+       "y1": 110,
+       "last2": 445,
+       "sepoct": 15,
+       "unseen3": 555
+      },
+      "research.search3.oil_gas.strategies|build_tsmom|{\"atr_n\": 14, \"hold\": 5, \"mom_n\": 20, \"side\": \"both\", \"sl_atr\": 2, \"vol_filter\": \"high\", \"vol_lookback\": 120, \"vol_n\": 20}|XBRUSD|D1": {
+       "y1": -128,
+       "last2": 354,
+       "sepoct": 0,
+       "unseen3": 225
+      },
+      "research.search3.europe_indices.strategies|build_or_fail|{\"re\": 11, \"tp\": \"mid\", \"trend\": \"with\"}|FRA40|M30": {
+       "y1": -219,
+       "last2": 240,
+       "sepoct": -45,
+       "unseen3": 21
+      },
+      "research.search3.us_indices.strategies|build_down_streak|{\"exit_rule\": \"hold\", \"k\": 2, \"trend_req\": true}|US500|D1": {
+       "y1": 375,
+       "last2": 757,
+       "sepoct": -18,
+       "unseen3": 1132
+      },
+      "research.search3.us_indices.strategies|build_ibs|{\"hi\": 0.8, \"lo\": 0.2, \"max_hold\": 5, \"sl_atr\": 1.5}|US30|D1": {
+       "y1": 144,
+       "last2": 25,
+       "sepoct": 0,
+       "unseen3": 169
+      },
+      "research.search3.commodity_fx.strategies|build_zmean|{\"adx_max\": 25, \"n\": 100}|NZDUSD|H4": {
+       "y1": -150,
+       "last2": 607,
+       "sepoct": -47,
+       "unseen3": 457
+      },
+      "research.search4.price_action.strategies|build_inside|{\"r\": 1.5, \"trend\": 100}|ETHUSD|D1": {
+       "y1": -277,
+       "last2": -839,
+       "sepoct": -132,
+       "unseen3": -1116
+      },
+      "research.search4.price_action.strategies|build_engulf|{\"n\": 30, \"r\": 1.5}|UK100|H4": {
+       "y1": 161,
+       "last2": -279,
+       "sepoct": 43,
+       "unseen3": -117
+      },
+      "research.search4.price_action.strategies|build_double|{\"k\": 5}|USDCAD|H1": {
+       "y1": -140,
+       "last2": 161,
+       "sepoct": 77,
+       "unseen3": 22
+      },
+      "research.search4.price_action.strategies|build_pin|{\"n\": 10, \"r\": 1.5}|DE40|D1": {
+       "y1": -27,
+       "last2": 268,
+       "sepoct": 8,
+       "unseen3": 241
+      },
+      "research.search4.price_action.strategies|build_bos|{\"exit\": \"r2\", \"k\": 3}|GBPJPY|D1": {
+       "y1": 64,
+       "last2": -100,
+       "sepoct": 6,
+       "unseen3": -36
+      },
+      "research.search4.price_action.strategies|build_inside|{\"r\": 1.5, \"trend\": 0}|EURJPY|D1": {
+       "y1": -193,
+       "last2": -632,
+       "sepoct": -187,
+       "unseen3": -826
+      },
+      "research.search4.price_action.strategies|build_pin|{\"n\": 30, \"r\": 3.0}|ETHUSD|H4": {
+       "y1": 1009,
+       "last2": 974,
+       "sepoct": -203,
+       "unseen3": 1983
+      },
+      "research.search4.price_action.strategies|build_bos|{\"exit\": \"r2\", \"k\": 3}|GBPAUD|D1": {
+       "y1": -179,
+       "last2": -17,
+       "sepoct": -53,
+       "unseen3": -196
+      },
+      "research.search4.price_action.strategies|build_double|{\"k\": 5}|USDJPY|H1": {
+       "y1": 31,
+       "last2": 72,
+       "sepoct": 0,
+       "unseen3": 103
+      }
+     },
+     "halts": 67
+    }
+   }
+  }
+ },
+ "rules": {
+  "strict": [
+   "mon_long_h0_hold23 EURJPY",
+   "bos_hv_be1_M30 XAUUSD",
+   "tsmom_d1_lb40_a2 BTCUSD",
+   "pa_bos_BTCUSD_D1 BTCUSD",
+   "pa_inside_ETHUSD_D1 ETHUSD",
+   "pa_engulf_USDCAD_D1 USDCAD",
+   "pa_hikkake_ETHUSD_D1 ETHUSD",
+   "pa_double_USDCAD_H1 USDCAD",
+   "pa_pin_DE40_D1 DE40",
+   "pa_pin_ETHUSD_H4 ETHUSD"
+  ],
+  "relaxed": [
+   "tom_k0_h20_hold72_sl3 DE40",
+   "bos_trail3_htfD50_H1 XAUUSD",
+   "bb_breakout_H1_period250_dev2.75 XAUUSD",
+   "pweek_sl1_trail8 DE40",
+   "htf_bo50_n24 XAUUSD",
+   "monday_long_downweek EURJPY",
+   "dip_combo US500",
+   "zscore US500",
+   "crabel_k0.5_None DE40",
+   "inside_far_tp2 XAUUSD",
+   "de_orb2.0_trNone_tp2.0_ex18 DE40",
+   "mon_long_h0_hold23 EURJPY",
+   "bos_hv_be1_M30 XAUUSD",
+   "vwap DE40",
+   "rsi_rev+trend XAUUSD",
+   "squeeze_h4_a25_kc2 ETHUSD",
+   "spike_follow BTCUSD",
+   "tsmom_d1_lb40_a2 BTCUSD",
+   "tsmom20_highvol XBRUSD",
+   "or_fail_fra40 FRA40",
+   "down_streak_k2_trend US500",
+   "ibs_lo0.2_hi0.8 US30",
+   "rsi2_thresh10_sma5 US500",
+   "zmean_n100_adx25 NZDUSD",
+   "pa_inside_ETHUSD_D1 ETHUSD",
+   "pa_engulf_UK100_H4 UK100",
+   "pa_double_USDCAD_H1 USDCAD",
+   "pa_pin_DE40_D1 DE40",
+   "pa_bos_GBPJPY_D1 GBPJPY",
+   "pa_inside_EURJPY_D1 EURJPY",
+   "pa_pin_ETHUSD_H4 ETHUSD",
+   "pa_bos_GBPAUD_D1 GBPAUD",
+   "pa_double_USDJPY_H1 USDJPY"
+  ],
+  "losers": [
+   "eia_fade_m30 XTIUSD",
+   "inside_bar_h4 XTIUSD",
+   "rsi2_mr_jpn225_h1 JPN225",
+   "nr_7_mid_r2 XAGUSD",
+   "sh_long_21-3_s3.0 XAUUSD",
+   "ab_mql_range_mid_mr0.3 XAUUSD"
+  ],
+  "honest_risk": 0.003,
+  "strict_risk": 0.0075,
+  "add_risk": 0.005
+ }
+}
