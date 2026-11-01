@@ -89,9 +89,10 @@ def test_search3_strategy_is_live_ready_or_on_the_skip_list(strat, no_data_reads
     skipped = multi.skip_reasons([spec], multi.load_skip_list())
     df = synth(strat["symbol"], strat["tf"])
     if skipped:
-        with pytest.raises(RuntimeError, match="data read blocked"):
-            build(df, **strat["params"])
-        return
+        if "second symbol" in next(iter(skipped.values())):     # cross-symbol builders read data/search
+            with pytest.raises(RuntimeError, match="data read blocked"):
+                build(df, **strat["params"])
+        return                                                  # others are off by choice (e.g. JPN225 lot floor)
     sig = build(df, **strat["params"])
     assert len(sig) == len(df), "signals must be one per bar"
     full = [_key(e) for e in sig]
