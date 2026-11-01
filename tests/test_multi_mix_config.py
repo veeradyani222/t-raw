@@ -92,15 +92,16 @@ def test_skip_list_matches_module_fn_and_optional_symbol_tf(caplog):
 
 def test_repo_skip_list_names_only_cross_symbol_strategies_and_they_exist():
     skip = multi.load_skip_list()
-    # build_spread_reversion left the list: the runner now feeds it live Brent bars (SECOND_SYMBOL)
-    assert {e["fn"] for e in skip} == {"build_ratio_z"}
+    # build_spread_reversion left the list: the runner now feeds it live Brent bars (SECOND_SYMBOL).
+    # build_rsi_mr JPN225 H1 joined it 2026-11-01 (1-lot minimum: unfunded small, a heavy loser big).
+    assert {e["fn"] for e in skip} == {"build_ratio_z", "build_rsi_mr"}
     for e in skip:
         assert e["reason"]
     hit = set()
     for p in ROUND3:
         for idx, why in multi.skip_reasons(multi.load_mix(p), skip).items():
             hit.add(why)
-    assert len(hit) == 1, "every skip entry must still match a strategy in some mix"
+    assert len(hit) == 2, "every skip entry must still match a strategy in some mix"
     assert multi.load_skip_list(multi.ROOT / "config" / "nope.json") == []
 
 

@@ -5,6 +5,13 @@
       "module": "research.search3.metals.strategies",
       "fn": "build_ratio_z",
       "reason": "needs a second symbol's bars (XAGUSD via harness.load from data/search); the live window only carries its own symbol"
+    },
+    {
+      "module": "research.search3.asia_indices.strategies",
+      "fn": "build_rsi_mr",
+      "symbol": "JPN225",
+      "tf": "H1",
+      "reason": "Veer 2026-11-01: 1-lot minimum means it is unfunded on $5K/$10K (343 trades in 3 years) and a heavy loser when funded on bigger accounts (3,289 trades, -$11.7k per $10K at $25K); dev 2015-2023 -$181/month. See research/search6/out/live23_big.json and docs/2026-11-01-round6-results.md"
     }
   ]
 }
