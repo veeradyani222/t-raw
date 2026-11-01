@@ -75,13 +75,16 @@ def account_rules() -> dict:
       MULTI_ACCOUNT_SIZE     starting balance in USD (default 10000)
       MULTI_DAILY_LIMIT_PCT  firm's daily loss limit, % of size (default 4)
       MULTI_MAX_LOSS_PCT     firm's static max loss, % of size (default 8)
-    Rails: daily stop = 75% of the daily limit; halt floor = size - 87.5% of max loss;
+      MULTI_DAILY_STOP_FRAC  the bot's daily close-all as a fraction of the firm's daily
+                             limit (default 0.75; 0.625 = a $75 buffer on a $200 limit)
+    Rails: daily stop = MULTI_DAILY_STOP_FRAC of the daily limit; halt floor = size - 87.5% of max loss;
     half size below size - 37.5% of max loss, full again above size - 12.5%.
     Trade risk is a fraction of the account size (the research sized on $10K)."""
     size = float(os.environ.get("MULTI_ACCOUNT_SIZE") or 10_000)
     daily = size * float(os.environ.get("MULTI_DAILY_LIMIT_PCT") or 4) / 100
     max_loss = size * float(os.environ.get("MULTI_MAX_LOSS_PCT") or 8) / 100
-    return dict(size=size, daily_limit=daily, max_loss=max_loss, daily_stop=0.75 * daily,
+    frac = float(os.environ.get("MULTI_DAILY_STOP_FRAC") or 0.75)
+    return dict(size=size, daily_limit=daily, max_loss=max_loss, daily_stop=frac * daily,
                 floor=size - 0.875 * max_loss, scale_low=size - 0.375 * max_loss,
                 scale_high=size - 0.125 * max_loss)
 SPECS_PATHS = (ROOT / "config" / "symbol_specs.json", ROOT / "data" / "search" / "symbol_specs.json")

@@ -30,3 +30,9 @@ def test_saved_state_never_overrides_the_current_limits(monkeypatch):
     monkeypatch.setenv("MULTI_ACCOUNT_SIZE", "5000")
     g = multi.AccountGuard.from_dict(dict(daily_stop=300.0, floor=9_300.0, scale_low=9_700.0, day="2026-11-02", blown=False))
     assert g.daily_stop == 150 and g.floor == 4_650 and g.day == "2026-11-02"
+
+
+def test_daily_stop_fraction_from_env(monkeypatch):
+    monkeypatch.setenv("MULTI_ACCOUNT_SIZE", "5000"); monkeypatch.setenv("MULTI_DAILY_LIMIT_PCT", "4")
+    monkeypatch.setenv("MULTI_DAILY_STOP_FRAC", "0.625")
+    assert multi.AccountGuard().daily_stop == 125.0           # $75 under the $200 limit
