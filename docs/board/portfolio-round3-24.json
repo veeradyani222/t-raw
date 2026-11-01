@@ -1,0 +1,416 @@
+{
+ "mix": [
+  {
+   "name": "bos_trail3_htfD50_H1",
+   "symbol": "XAUUSD",
+   "tf": "H1",
+   "module": "research.search.gold_fix.strategies",
+   "fn": "build_bos",
+   "params": {
+    "tp_mode": "none",
+    "trail_atr": 3.0,
+    "htf": [
+     "1D",
+     50
+    ]
+   },
+   "risk": 0.01,
+   "src": "live66",
+   "group": "live",
+   "added": false
+  },
+  {
+   "name": "monday_long_downweek",
+   "symbol": "EURJPY",
+   "tf": "H1",
+   "module": "research.search.jpy_session.strategies",
+   "fn": "build_monday_long",
+   "params": {
+    "prior_n": 120,
+    "prior_dir": "down"
+   },
+   "risk": 0.0075,
+   "src": "live66",
+   "group": "live",
+   "added": false
+  },
+  {
+   "name": "connors_rsi2_D1_",
+   "symbol": "EURCHF",
+   "tf": "D1",
+   "module": "research.search.public_eas.strategies",
+   "fn": "build_connors_rsi2",
+   "params": {},
+   "risk": 0.0275,
+   "src": "live66",
+   "group": "live",
+   "added": false
+  },
+  {
+   "name": "wd_MW_Th_a15",
+   "symbol": "BTCUSD",
+   "tf": "D1",
+   "module": "research.search3.crypto.strategies",
+   "fn": "build_weekday",
+   "params": {
+    "atr_mult": 1.5
+   },
+   "risk": 0.01,
+   "src": "new",
+   "group": "crypto",
+   "added": false
+  },
+  {
+   "name": "pw_h4_sfp_trail2",
+   "symbol": "SOLUSD",
+   "tf": "H4",
+   "module": "research.search3.crypto.strategies",
+   "fn": "build_pw_sfp",
+   "params": {
+    "trail_mult": 2
+   },
+   "risk": 0.0075,
+   "src": "new",
+   "group": "crypto",
+   "added": false
+  },
+  {
+   "name": "brent_wti_spread_z",
+   "symbol": "XTIUSD",
+   "tf": "H4",
+   "module": "research.search3.oil_gas.strategies",
+   "fn": "build_spread_reversion",
+   "params": {
+    "other": "XBRUSD",
+    "lookback": 100,
+    "z_in": 2.5,
+    "z_out": 0,
+    "sl_atr": 2,
+    "max_hold": 120,
+    "mode": "diff"
+   },
+   "risk": 0.005,
+   "src": "new",
+   "group": "oil_gas",
+   "added": false
+  },
+  {
+   "name": "donchian160_h4",
+   "symbol": "XTIUSD",
+   "tf": "H4",
+   "module": "research.search3.oil_gas.strategies",
+   "fn": "build_donchian",
+   "params": {
+    "n": 160,
+    "trail_atr": 3,
+    "sl_atr": 2,
+    "side": "both"
+   },
+   "risk": 0.01,
+   "src": "new",
+   "group": "oil_gas",
+   "added": false
+  },
+  {
+   "name": "eia_fade_m30",
+   "symbol": "XTIUSD",
+   "tf": "M30",
+   "module": "research.search3.oil_gas.strategies",
+   "fn": "build_report_momentum",
+   "params": {
+    "report_wd": 2,
+    "report_hour": 17,
+    "exit_hour": 21,
+    "sl_atr": 1,
+    "atr_n": 20,
+    "tp_r": null,
+    "min_move_atr": 0.3,
+    "direction": "fade"
+   },
+   "risk": 0.0075,
+   "src": "new",
+   "group": "oil_gas",
+   "added": false
+  },
+  {
+   "name": "inside_bar_h4",
+   "symbol": "XTIUSD",
+   "tf": "H4",
+   "module": "research.search3.oil_gas.strategies",
+   "fn": "build_inside_bar",
+   "params": {
+    "sl_mode": "atr",
+    "sl_atr": 1.5,
+    "tp_r": 2.5,
+    "max_hold": 10,
+    "atr_n": 14
+   },
+   "risk": 0.005,
+   "src": "new",
+   "group": "oil_gas",
+   "added": false
+  },
+  {
+   "name": "rsi2_mr_aus200_h4",
+   "symbol": "AUS200",
+   "tf": "H4",
+   "module": "research.search3.asia_indices.strategies",
+   "fn": "build_rsi_mr",
+   "params": {
+    "n": 2,
+    "lo": 15,
+    "hi": 85,
+    "trend_n": 200,
+    "sl_atr": 1.5,
+    "max_hold": 8
+   },
+   "risk": 0.0075,
+   "src": "new",
+   "group": "asia_indices",
+   "added": false
+  },
+  {
+   "name": "rsi2_mr_jpn225_h1",
+   "symbol": "JPN225",
+   "tf": "H1",
+   "module": "research.search3.asia_indices.strategies",
+   "fn": "build_rsi_mr",
+   "params": {
+    "n": 2,
+    "lo": 25,
+    "hi": 75,
+    "trend_n": 0,
+    "sl_atr": 2,
+    "max_hold": 8
+   },
+   "risk": 0.0125,
+   "src": "new",
+   "group": "asia_indices",
+   "added": false
+  },
+  {
+   "name": "prev_week_high_long_de40",
+   "symbol": "DE40",
+   "tf": "M30",
+   "module": "research.search3.europe_indices.strategies",
+   "fn": "build_prev_week",
+   "params": {
+    "sl_atr": 1.5,
+    "trail_atr": 3,
+    "sides": "long"
+   },
+   "risk": 0.005,
+   "src": "new",
+   "group": "europe_indices",
+   "added": false
+  },
+  {
+   "name": "rsi2_thresh10_sma5",
+   "symbol": "US500",
+   "tf": "D1",
+   "module": "research.search3.us_indices.strategies",
+   "fn": "build_rsi2",
+   "params": {
+    "thresh": 10,
+    "exit_sma": 5
+   },
+   "risk": 0.0125,
+   "src": "new",
+   "group": "us_indices",
+   "added": false
+  },
+  {
+   "name": "round_big_bounce",
+   "symbol": "USTEC",
+   "tf": "M30",
+   "module": "research.search3.us_indices.strategies",
+   "fn": "build_round",
+   "params": {
+    "step": "big",
+    "mode": "bounce",
+    "tp_r": null
+   },
+   "risk": 0.0075,
+   "src": "new",
+   "group": "us_indices",
+   "added": false
+  },
+  {
+   "name": "nr_7_mid_r2",
+   "symbol": "XAGUSD",
+   "tf": "H1",
+   "module": "research.search3.metals.strategies",
+   "fn": "build_nr_break",
+   "params": {
+    "nr": 7,
+    "inside": false,
+    "stop": "mid",
+    "tp": "r:2"
+   },
+   "risk": 0.0125,
+   "src": "new",
+   "group": "metals",
+   "added": false
+  },
+  {
+   "name": "ab_mql_range_mid_mr0.3",
+   "symbol": "XAUUSD",
+   "tf": "M30",
+   "module": "research.search3.metals.strategies",
+   "fn": "build_asia_break",
+   "params": {
+    "a0": 3,
+    "a1": 8,
+    "last_entry": 14,
+    "exit_hour": 21,
+    "tp": "range",
+    "stop": "mid",
+    "min_rng": 0.3,
+    "max_rng": 1.6,
+    "be_r": null
+   },
+   "risk": 0.005,
+   "src": "new",
+   "group": "metals",
+   "added": false
+  },
+  {
+   "name": "monday_gap_fade_gbpusd",
+   "symbol": "GBPUSD",
+   "tf": "H1",
+   "module": "research.search3.majors.strategies",
+   "fn": "build_monday_gap_fade",
+   "params": {
+    "min_gap": 0.2,
+    "sl_mult": 1,
+    "max_hold": 36
+   },
+   "risk": 0.025,
+   "src": "new",
+   "group": "majors",
+   "added": false
+  },
+  {
+   "name": "inside_day_break_usdchf",
+   "symbol": "USDCHF",
+   "tf": "H4",
+   "module": "research.search3.majors.strategies",
+   "fn": "build_inside_nr_break",
+   "params": {
+    "kind": "inside",
+    "sl_mode": "opp",
+    "rr": 2,
+    "max_hold": 18
+   },
+   "risk": 0.01,
+   "src": "new",
+   "group": "majors",
+   "added": false
+  },
+  {
+   "name": "friday_week_fade_eurusd",
+   "symbol": "EURUSD",
+   "tf": "H1",
+   "module": "research.search3.majors.strategies",
+   "fn": "build_friday_week_fade",
+   "params": {
+    "hour": 14,
+    "thr": 1.8,
+    "tp_frac": 0.5
+   },
+   "risk": 0.02,
+   "src": "new",
+   "group": "majors",
+   "added": false
+  },
+  {
+   "name": "us_open_fade_short_fra40",
+   "symbol": "FRA40",
+   "tf": "M30",
+   "module": "research.search3.europe_indices.strategies",
+   "fn": "build_us_open_fade",
+   "params": {
+    "k": 1,
+    "sides": "short"
+   },
+   "risk": 0.015,
+   "src": "new",
+   "group": "europe_indices",
+   "added": true
+  },
+  {
+   "name": "weekday_fri_to_mon",
+   "symbol": "USTEC",
+   "tf": "D1",
+   "module": "research.search3.us_indices.strategies",
+   "fn": "build_weekday",
+   "params": {
+    "enter_dow": 4,
+    "hold": 1,
+    "trend": "with"
+   },
+   "risk": 0.025,
+   "src": "new",
+   "group": "us_indices",
+   "added": true
+  },
+  {
+   "name": "sh_long_21-3_s3.0",
+   "symbol": "XAUUSD",
+   "tf": "H1",
+   "module": "research.search3.metals.strategies",
+   "fn": "build_session_hold",
+   "params": {
+    "side": "long",
+    "h_in": 21,
+    "h_out": 3,
+    "stop_atr": 3,
+    "dows": null
+   },
+   "risk": 0.01,
+   "src": "new",
+   "group": "metals",
+   "added": true
+  },
+  {
+   "name": "bb_fade",
+   "symbol": "EURUSD",
+   "tf": "H1",
+   "module": "research.search.mean_reversion.strategies",
+   "fn": "build_bb_fade",
+   "params": {
+    "n": 50,
+    "k": 2.5,
+    "trend": 200,
+    "sides": "long",
+    "stop_atr": 2.0,
+    "max_hold": 24
+   },
+   "risk": 0.0125,
+   "src": "live66",
+   "group": "live",
+   "added": true
+  },
+  {
+   "name": "zscore",
+   "symbol": "US500",
+   "tf": "H4",
+   "module": "research.search.mean_reversion.strategies",
+   "fn": "build_zscore",
+   "params": {
+    "n": 20,
+    "z_in": 2.0,
+    "z_out": 0.5,
+    "sides": "long",
+    "trend": 0,
+    "stop_atr": 3.0,
+    "max_hold": 12
+   },
+   "risk": 0.0075,
+   "src": "live66",
+   "group": "live",
+   "added": true
+  }
+ ],
+ "note": "Round-3 core: the 51's 19 strategies that made $1,000+ in 2y, plus 5 add-ons picked greedily from the pool (each $1,000+ on its own, lowest balance kept >= $9,500, <= 12 stop days). Risk capped at 2.75%. Built 2026-11-01."
+}
