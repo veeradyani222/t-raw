@@ -21,7 +21,16 @@ from .multi import CONV_PAIR, LivePos, conv_pair_for, research_spec
 
 log = logging.getLogger("trader")
 
-DEVIATION = 50          # points of slippage tolerance on market orders
+DEVIATION = 50          # minimum points of slippage tolerance on market orders
+
+
+def deviation_for(symbol: str, price: float) -> int:
+    """Slippage tolerance in points: at least DEVIATION, and at least 0.05% of the
+    price (50 points is $0.50 on BTCUSD, a guaranteed requote in a fast market)."""
+    si = mt5.symbol_info(symbol)
+    if si is None or not si.point or not price:
+        return DEVIATION
+    return max(DEVIATION, int(0.0005 * float(price) / si.point))
 COLS = ["time", "open", "high", "low", "close", "tick_volume", "spread"]
 
 
@@ -71,6 +80,9 @@ def connect(cfg: Config) -> dict:
                        "Click the 'Algo Trading' toolbar button, or start the terminal via ops/run_bot.ps1.")
     if not account_ok(info):
         raise MT5Error(f"account {info.login}: trading or EA trading disabled server-side")
+    if time.localtime().tm_gmtoff != 0:
+        log.warning("this machine's clock is UTC%+d h; MT5 history calls take naive local times, so "
+                    "'today's closed P&L' would be offset. Run the bot on a UTC machine.", time.localtime().tm_gmtoff // 3600)
     log.info("connected: account %s (%s), balance %.2f %s, hedging, algo trading on",
              info.login, info.server, info.balance, info.currency)
     return dict(login=info.login, server=info.server, balance=info.balance, equity=info.equity,
@@ -263,7 +275,7 @@ class MT5Market:
                "type": mt5.ORDER_TYPE_BUY if long_ else mt5.ORDER_TYPE_SELL,
                "price": tick.ask if long_ else tick.bid,
                "sl": self._round(symbol, sl), "tp": self._round(symbol, tp),
-               "deviation": DEVIATION, "magic": int(magic), "comment": comment[:31],
+               "deviation": deviation_for(symbol, tick.ask), "magic": int(magic), "comment": comment[:31],
                "type_time": mt5.ORDER_TIME_GTC}
         res = _send_order(req, symbol)
         ticket = res.order                   # hedging: position id == opening order ticket
@@ -281,7 +293,7 @@ class MT5Market:
         req = {"action": mt5.TRADE_ACTION_DEAL, "symbol": pos.symbol, "volume": float(pos.lots),
                "type": mt5.ORDER_TYPE_SELL if closing_long else mt5.ORDER_TYPE_BUY,
                "position": int(pos.ticket), "price": tick.bid if closing_long else tick.ask,
-               "deviation": DEVIATION, "magic": int(pos.magic), "comment": comment[:31],
+               "deviation": deviation_for(pos.symbol, tick.bid), "magic": int(pos.magic), "comment": comment[:31],
                "type_time": mt5.ORDER_TIME_GTC}
         _send_order(req, pos.symbol)
         return self.realized_pnl(pos.ticket)

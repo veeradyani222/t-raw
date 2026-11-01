@@ -465,6 +465,7 @@ class AccountGuard:
     scale_high: float = field(default_factory=lambda: account_rules()["scale_high"])
     scale_size: float = SCALE_SIZE
     scaled: bool = False                 # new trades at scale_size of their risk
+    baseline_unknown: bool = False       # day-start balance could not be read: no new trades
 
     def update(self, now: pd.Timestamp, equity: float, balance: float,
                day_start_balance: float | None = None) -> list[str]:
@@ -504,6 +505,8 @@ class AccountGuard:
     def may_open(self) -> tuple[bool, str]:
         if self.blown:
             return False, f"permanent halt: equity reached {self.floor:.0f}"
+        if self.baseline_unknown:
+            return False, "day-start balance unknown (broker history unavailable) — no new trades until it is read"
         if self.blocked_day == self.day:
             return False, f"daily stop hit ({self.daily_stop:.0f}) — no entries until next server day"
         return True, ""
@@ -672,12 +675,23 @@ class MultiRunner:
         equity, balance = self.market.account()
         now = pd.Timestamp(now)
         day_start = None
-        if str(now.normalize().date()) != self.guard.day:
+        new_day = str(now.normalize().date()) != self.guard.day
+        if new_day or self.guard.baseline_unknown:
             # true 00:00-server balance = balance now minus what closed today
             try:
                 day_start = balance - self.market.realized_since(now.normalize())
-            except Exception as exc:      # noqa: BLE001 — a history hiccup must not stop the guard
-                log.warning("realized_since failed (%s); anchoring day on current balance", exc)
+                if self.guard.baseline_unknown:
+                    self.guard.baseline_unknown = False
+                    self.guard.day_start_balance = day_start
+                    log.info("day-start balance read: %.2f", day_start)
+            except Exception as exc:      # noqa: BLE001 — fail CLOSED: anchoring on the current
+                # balance after a loss would let the day lose up to the stop twice
+                if not self.guard.baseline_unknown:
+                    log.error("realized_since failed (%s); no new trades until the day-start balance is known", exc)
+                    self.alert(f"⚠️ cannot read today's closed P&L from the broker ({exc}); "
+                               "no new trades until it is readable. Open trades still managed.")
+                self.guard.baseline_unknown = True
+                day_start = balance          # provisional; the stop stays at least this tight
         events = self.guard.update(now, equity, balance, day_start)
         for ev in events:
             if ev == "new_day":
@@ -727,8 +741,15 @@ class MultiRunner:
             self.market.cancel_pending()
         except Exception as exc:          # noqa: BLE001
             log.error("cancel_pending failed: %s", exc)
+        try:
+            left = {p.ticket for p in self.market.positions()}
+        except Exception:                 # noqa: BLE001 — assume all closed; _sync re-adopts any survivor
+            left = set()
         for st in self.states.values():
-            st.clear()
+            if st.open and st.ticket in left:
+                log.error("ticket %s is STILL OPEN after close_everything(%s); will retry", st.ticket, reason)
+            else:
+                st.clear()
         return n
 
     # ---------------------------------------------------------------- poll
@@ -737,6 +758,8 @@ class MultiRunner:
         bar. Returns the events produced in this pass."""
         start = len(self.events)
         self.check_guard()
+        if self.guard.blocked and any(st.open for st in self.states.values()):
+            self.close_everything("daily_stop" if not self.guard.blown else "floor")    # retry a failed close
         for key, group in self.keys.items():
             group = [s for s in group if s.idx not in self.disabled]
             if not group:
