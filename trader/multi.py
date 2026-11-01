@@ -168,6 +168,19 @@ def load_skip_list(path: Path | str = SKIP_PATH) -> list[dict]:
     return [e for e in data.get("skip", []) if not str(e.get("module", "")).startswith("_")]
 
 
+# Strategies whose builder reads a SECOND symbol's closes through a module cache
+# (research loads it from data/search). Live, the runner fills that cache with the
+# broker's bars of the second symbol before every build. (module, fn) -> param, default.
+SECOND_SYMBOL = {
+    ("research.search3.oil_gas.strategies", "build_spread_reversion"): ("other", "XBRUSD"),
+}
+
+
+def second_symbol(spec: "StrategySpec") -> str | None:
+    hit = SECOND_SYMBOL.get((spec.module, spec.fn))
+    return None if hit is None else str(spec.params.get(hit[0], hit[1])).upper()
+
+
 def skip_reasons(specs: list[StrategySpec], skip: list[dict]) -> dict[int, str]:
     """idx -> reason for every spec matched by an entry of the skip list.
     An entry matches on module + fn, and on symbol / tf when it names them.
@@ -684,6 +697,14 @@ class MultiRunner:
         hit = self._sig_cache.get(spec.idx)
         if hit is not None and hit[0] == t:
             return hit[1]
+        other = second_symbol(spec)
+        if other is not None:
+            bars = self.market.rates(self.broker_symbol(other), spec.tf, self.window)
+            if bars is None or bars.empty:
+                raise RuntimeError(f"no bars for {other} {spec.tf} (second symbol of {spec.name})")
+            bars = bars.drop_duplicates("time").sort_values("time")
+            mod = importlib.import_module(spec.module)
+            mod._other_cache[(other, spec.tf)] = bars[["time", "close"]].rename(columns={"close": "oc"}).reset_index(drop=True)
         sig = spec.build(window)
         self._sig_cache[spec.idx] = (t, sig)
         return sig

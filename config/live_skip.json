@@ -5,11 +5,6 @@
       "module": "research.search3.metals.strategies",
       "fn": "build_ratio_z",
       "reason": "needs a second symbol's bars (XAGUSD via harness.load from data/search); the live window only carries its own symbol"
-    },
-    {
-      "module": "research.search3.oil_gas.strategies",
-      "fn": "build_spread_reversion",
-      "reason": "needs XBRUSD bars via harness.load from data/search while trading XTIUSD; the live window only carries its own symbol"
     }
   ]
 }

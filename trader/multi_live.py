@@ -38,7 +38,7 @@ from .alerts import send_alert
 from .config import CONFIG, Config
 from .multi import (DAILY_STOP, FLOOR, SCALE_HIGH, SCALE_LOW, SCALE_SIZE, STATE_PATH, WINDOW_BARS,
                     MultiRunner, conv_symbols, load_mix, load_skip_list, load_symbol_map,
-                    load_symbol_specs, mix_path, skip_reasons)
+                    load_symbol_specs, mix_path, second_symbol, skip_reasons)
 from .mt5_market import MT5Error, MT5Market
 from .telegram_commands import fetch_commands
 
@@ -149,12 +149,18 @@ def startup(cfg: Config, preflight_only: bool = False) -> MultiRunner | None:
     skipped = skip_reasons(specs, load_skip_list())
     symbol_map = load_symbol_map(server=acct["server"])
     conv = conv_symbols([s for s in specs if s.idx not in skipped])
-    rows, problems = mt5_market.preflight([s.symbol for s in specs if s.idx not in skipped], symbol_map,
+    seconds = {s.idx: second_symbol(s) for s in specs if s.idx not in skipped and second_symbol(s)}
+    rows, problems = mt5_market.preflight(sorted({s.symbol for s in specs if s.idx not in skipped}
+                                                 | set(seconds.values())), symbol_map,
                                           quote_only=set(conv))
     table = mt5_market.preflight_table(rows)
     log.info("pre-flight:\n%s", table)
     print(table)
     disabled = disabled_strategies(specs, problems, conv, skipped)
+    for i, other in seconds.items():
+        if i not in disabled and other in problems:
+            disabled[i] = f"second symbol {other}: {problems[other]}"
+            log.warning("%s DISABLED (%s)", specs[i].name, disabled[i])
     if problems:
         msg = "\n".join(f"  {k}: {v}" for k, v in problems.items())
         n_pf = len([i for i in disabled if i not in skipped])
