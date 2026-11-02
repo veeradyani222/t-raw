@@ -279,10 +279,14 @@ class MT5Market:
                "type_time": mt5.ORDER_TIME_GTC}
         res = _send_order(req, symbol)
         ticket = res.order                   # hedging: position id == opening order ticket
+        for _ in range(5):                   # the position can lag the order reply by a moment
+            if mt5.positions_get(ticket=ticket):
+                break
+            time.sleep(0.2)
         for p in mt5.positions_get(ticket=ticket) or ():
             return LivePos(p.ticket, symbol, magic, side, p.volume, p.price_open, p.sl, p.tp,
                            pd.to_datetime(p.time, unit="s"))
-        return LivePos(ticket, symbol, magic, side, float(lots), res.price, req["sl"], req["tp"],
+        return LivePos(ticket, symbol, magic, side, float(lots), res.price or req["price"], req["sl"], req["tp"],
                        pd.to_datetime(tick.time, unit="s"))
 
     def close(self, pos: LivePos, comment: str) -> float:

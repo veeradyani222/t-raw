@@ -72,3 +72,13 @@ def test_close_everything_keeps_state_of_a_position_that_did_not_close(tmp_path)
     r.guard.blocked_day = r.guard.day = "2026-11-03"
     r.poll()                                                  # blocked day + open state -> retry
     assert mkt.closed == [8, 7] and not r.states[0].open
+
+
+def test_sync_takes_the_brokers_entry_price_when_ours_is_zero(tmp_path):
+    mkt = Mkt(); mkt.fail_history = False; r = _runner(tmp_path, mkt)
+    spec = multi.StrategySpec(0, "m", "f", {}, "EURJPY", "H1", 0.01)
+    st = multi.StratState(ticket=5, side="long", entry=0.0, sl=175.02, sl0=175.02, lots=0.07)
+    live = multi.LivePos(5, "EURJPY", spec.magic, "long", 0.07, 175.775, 175.534, 0.0, pd.Timestamp("2026-11-02 01:00"))
+    mkt.positions_ = [live]
+    r._sync(spec, st, pd.DataFrame({"time": [pd.Timestamp("2026-11-02 01:00")]}), [None])
+    assert st.entry == 175.775 and st.sl == 175.534        # broker's fill and the hand-moved stop

@@ -775,12 +775,19 @@ class MultiRunner:
                 log.warning("%s %s: window end %s != latest %s; retry next poll",
                             key[0], key[1], window["time"].iloc[-1], t)
                 continue
+            market_closed = False
             for spec in group:
                 try:
                     self.on_bar(spec, window)
                 except Exception as exc:    # noqa: BLE001 — one strategy must not stop the rest
+                    if "10018" in str(exc):    # market not open yet (e.g. index CFDs after the weekend)
+                        market_closed = True
+                        log.info("%s: market closed on bar %s; retrying next poll", spec.name, t)
+                        continue
                     log.exception("%s failed on bar %s", spec.name, t)
                     self.alert(f"⚠️ {spec.name} error on bar {t}: {exc}")
+            if market_closed:
+                continue                    # same bar again next poll, until the market opens or a new bar arrives
             self.last_bar[key] = t
             self.save_state()
         return self.events[start:]
@@ -841,6 +848,8 @@ class MultiRunner:
                      live.side, live.lots, live.entry)
         elif live is not None:
             st.sl = live.sl if live.sl else st.sl      # the broker's stop is the truth
+            if live.entry and abs(live.entry - st.entry) > 1e-12:
+                st.entry = live.entry                  # some brokers report no fill price in the order reply
         return live
 
     def _pos_dict(self, st: StratState, bar_idx: int) -> dict:
