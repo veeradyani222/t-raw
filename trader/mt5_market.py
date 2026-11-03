@@ -303,7 +303,12 @@ class MT5Market:
         return self.realized_pnl(pos.ticket)
 
     def realized_pnl(self, ticket: int) -> float:
-        deals = mt5.history_deals_get(position=ticket) or []
+        deals = []
+        for _ in range(10):                  # the closing deal can reach history a moment after the reply
+            deals = mt5.history_deals_get(position=ticket) or []
+            if any(d.entry == mt5.DEAL_ENTRY_OUT for d in deals):
+                break
+            time.sleep(0.3)
         return float(sum(d.profit + d.swap + d.commission for d in deals))
 
     def modify(self, pos: LivePos, sl: float, tp: float) -> None:
