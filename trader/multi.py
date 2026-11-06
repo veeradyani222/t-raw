@@ -341,6 +341,11 @@ def size_trade(symbol: str, side: str, close: float, sl: float, tp: float | None
                 risk_usd=lots * loss_per_lot)
 
 
+# order_send retcodes worth retrying on the same bar: 10018 market closed, 10031 no connection
+# to the trade server, 10004 requote, 10021 no quotes, 10012 request timed out, 10024 too frequent
+TRANSIENT_RETCODES = ("10018", "10031", "10004", "10021", "10012", "10024")
+
+
 def broker_lots(symbol: str, research_lots: float, broker: dict) -> float | None:
     """Research-sized lots expressed in the broker's contract, rounded DOWN to the
     broker's lot step (never more exposure than the research sized). None when that
@@ -776,13 +781,17 @@ class MultiRunner:
                             key[0], key[1], window["time"].iloc[-1], t)
                 continue
             market_closed = False
+            retry_logged = self.__dict__.setdefault("_retry_logged", {})
             for spec in group:
                 try:
                     self.on_bar(spec, window)
                 except Exception as exc:    # noqa: BLE001 — one strategy must not stop the rest
-                    if "10018" in str(exc):    # market not open yet (e.g. index CFDs after the weekend)
+                    code = next((c for c in TRANSIENT_RETCODES if c in str(exc)), None)
+                    if code is not None:       # market shut / broker connection blip: try this bar again
                         market_closed = True
-                        log.info("%s: market closed on bar %s; retrying next poll", spec.name, t)
+                        if retry_logged.get((spec.idx, t)) is None:
+                            retry_logged[(spec.idx, t)] = code
+                            log.info("%s: broker said %s on bar %s; retrying every poll", spec.name, code, t)
                         continue
                     log.exception("%s failed on bar %s", spec.name, t)
                     self.alert(f"⚠️ {spec.name} error on bar {t}: {exc}")
